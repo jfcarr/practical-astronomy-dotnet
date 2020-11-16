@@ -1,3 +1,3 @@
 # practical-astronomy-dotnet
 
-![.NET Core](https://github.com/jfcarr-astronomy/practical-astronomy-dotnet/workflows/.NET%20Core/badge.svg)
+![Main](https://github.com/jfcarr-astronomy/practical-astronomy-dotnet/workflows/Main/badge.svg)
