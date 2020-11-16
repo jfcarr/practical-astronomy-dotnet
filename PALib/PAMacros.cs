@@ -80,5 +80,56 @@ namespace PALib
 
 			return d;
 		}
+
+		/// <summary>
+		/// Convert a Greenwich Date/Civil Date (day,month,year) to Julian Date
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: CDJD
+		/// </remarks>
+		/// <param name="day"></param>
+		/// <param name="month"></param>
+		/// <param name="year"></param>
+		/// <returns></returns>
+		public static double CivilDateToJulianDate(double day, double month, double year)
+		{
+			var fDay = (double)day;
+			var fMonth = (double)month;
+			var fYear = (double)year;
+
+			var y = (fMonth < 3) ? fYear - 1 : fYear;
+			var m = (fMonth < 3) ? fMonth + 12 : fMonth;
+
+			double b;
+
+			if (fYear > 1582)
+			{
+				var a = Math.Floor(y / 100);
+				b = 2 - a + Math.Floor(a / 4);
+			}
+			else
+			{
+				if (fYear == 1582 && fMonth > 10)
+				{
+					var a = Math.Floor(y / 100);
+					b = 2 - a + Math.Floor(a / 4);
+				}
+				else
+				{
+					if (fYear == 1582 && fMonth == 10 && fDay >= 15)
+					{
+						var a = Math.Floor(y / 100);
+						b = 2 - a + Math.Floor(a / 4);
+					}
+					else
+						b = 0;
+				}
+			}
+
+			var c = (y < 0) ? Math.Floor(((365.25 * y) - 0.75)) : Math.Floor(365.25 * y);
+			var d = Math.Floor(30.6001 * (m + 1.0));
+
+			return b + c + d + fDay + 1720994.5;
+		}
 	}
 }
