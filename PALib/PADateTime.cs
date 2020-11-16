@@ -69,5 +69,19 @@ namespace PALib
 		{
 			return PAMacros.HMStoDH(hours, minutes, seconds);
 		}
+
+		/// <summary>
+		/// Convert Decimal Hours to Civil Time
+		/// </summary>
+		/// <param name="decimalHours"></param>
+		/// <returns>Tuple(hours (double), minutes (double), seconds (double))</returns>
+		public (double hours, double minutes, double seconds) DecimalHoursToCivilTime(double decimalHours)
+		{
+			var hours = PAMacros.DecimalHoursHour(decimalHours);
+			var minutes = PAMacros.DecimalHoursMinute(decimalHours);
+			var seconds = PAMacros.DecimalHoursSecond(decimalHours);
+
+			return (hours, minutes, seconds);
+		}
 	}
 }

@@ -34,5 +34,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal(18.52416667, Math.Round(_paDateTime.CivilTimeToDecimalHours(18, 31, 27), 8));
 		}
+
+		[Fact]
+		public void DecimalHoursToCivilTime()
+		{
+			Assert.Equal((18, 31, 27), _paDateTime.DecimalHoursToCivilTime(18.52416667));
+		}
 	}
 }
