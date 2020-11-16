@@ -23,7 +23,7 @@ namespace PALib.Tests
 		[Fact]
 		public void CivilDateToDayNumber()
 		{
-			Assert.Equal(2, _paDateTime.CivilDateToDayNumber(1, 1, 2000));
+			Assert.Equal(1, _paDateTime.CivilDateToDayNumber(1, 1, 2000));
 			Assert.Equal(61, _paDateTime.CivilDateToDayNumber(3, 1, 2000));
 			Assert.Equal(152, _paDateTime.CivilDateToDayNumber(6, 1, 2003));
 			Assert.Equal(331, _paDateTime.CivilDateToDayNumber(11, 27, 2009));
