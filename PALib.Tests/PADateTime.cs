@@ -1,38 +1,32 @@
 using System;
 using Xunit;
-using PALib;
 
 namespace PALib.Tests
 {
 	public class PADateTime_Tests
 	{
+		private readonly PADateTime _paDateTime;
+
+		public PADateTime_Tests()
+		{
+			_paDateTime = new PADateTime();
+		}
+
 		[Fact]
 		public void GetDateOfEaster()
 		{
-			var paDateTime = new PADateTime();
-
-			var result1 = paDateTime.GetDateOfEaster(2003);
-
-			Assert.Equal(4, result1.Month);
-			Assert.Equal(20, result1.Day);
-			Assert.Equal(2003, result1.Year);
-
-			var result2 = paDateTime.GetDateOfEaster(2019);
-
-			Assert.Equal(4, result2.Month);
-			Assert.Equal(21, result2.Day);
-			Assert.Equal(2019, result2.Year);
+			Assert.Equal((4, 20, 2003), _paDateTime.GetDateOfEaster(2003));
+			Assert.Equal((4, 21, 2019), _paDateTime.GetDateOfEaster(2019));
+			Assert.Equal((4, 12, 2020), _paDateTime.GetDateOfEaster(2020));
 		}
 
 		[Fact]
 		public void CivilDateToDayNumber()
 		{
-			var paDateTime = new PADateTime();
-
-			Assert.Equal(1, paDateTime.CivilDateToDayNumber(1, 1, 2000));
-			Assert.Equal(61, paDateTime.CivilDateToDayNumber(3, 1, 2000));
-			Assert.Equal(152, paDateTime.CivilDateToDayNumber(6, 1, 2003));
-			Assert.Equal(331, paDateTime.CivilDateToDayNumber(11, 27, 2009));
+			Assert.Equal(1, _paDateTime.CivilDateToDayNumber(1, 1, 2000));
+			Assert.Equal(61, _paDateTime.CivilDateToDayNumber(3, 1, 2000));
+			Assert.Equal(152, _paDateTime.CivilDateToDayNumber(6, 1, 2003));
+			Assert.Equal(331, _paDateTime.CivilDateToDayNumber(11, 27, 2009));
 		}
 	}
 }
