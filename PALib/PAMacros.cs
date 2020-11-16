@@ -82,7 +82,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Convert a Greenwich Date/Civil Date (day,month,year) to Julian Date
+		/// Convert a Greenwich Date/Civil Date (day,month,year) to Julian Date.
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: CDJD
