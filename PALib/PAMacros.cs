@@ -5,7 +5,7 @@ namespace PALib
 	public static class PAMacros
 	{
 		/// <summary>
-		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours
+		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours.
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: HMSDH
@@ -28,7 +28,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the hour part of a Decimal Hours
+		/// Return the hour part of a Decimal Hours.
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHHour
@@ -46,7 +46,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the minutes part of a Decimal Hours
+		/// Return the minutes part of a Decimal Hours.
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHMin
@@ -64,7 +64,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the seconds part of a Decimal Hours
+		/// Return the seconds part of a Decimal Hours.
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHSec
