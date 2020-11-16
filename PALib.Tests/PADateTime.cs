@@ -28,5 +28,11 @@ namespace PALib.Tests
 			Assert.Equal(152, _paDateTime.CivilDateToDayNumber(6, 1, 2003));
 			Assert.Equal(331, _paDateTime.CivilDateToDayNumber(11, 27, 2009));
 		}
+
+		[Fact]
+		public void CivilTimeToDecimalHours()
+		{
+			Assert.Equal(18.52416667, Math.Round(_paDateTime.CivilTimeToDecimalHours(18, 31, 27), 8));
+		}
 	}
 }

@@ -57,5 +57,17 @@ namespace PALib
 
 			return month + day;
 		}
+
+		/// <summary>
+		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours
+		/// </summary>
+		/// <param name="hours"></param>
+		/// <param name="minutes"></param>
+		/// <param name="seconds"></param>
+		/// <returns></returns>
+		public double CivilTimeToDecimalHours(double hours, double minutes, double seconds)
+		{
+			return PAMacros.HMStoDH(hours, minutes, seconds);
+		}
 	}
 }
