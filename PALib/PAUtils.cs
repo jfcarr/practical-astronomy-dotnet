@@ -2,6 +2,11 @@ namespace PALib
 {
 	public static class PAUtils
 	{
+		/// <summary>
+		/// Determine if year is a leap year.
+		/// </summary>
+		/// <param name="inputYear"></param>
+		/// <returns></returns>
 		public static bool IsLeapYear(this int inputYear)
 		{
 			double year = inputYear;

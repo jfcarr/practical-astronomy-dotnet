@@ -4,6 +4,11 @@ namespace PALib
 {
 	public class PADateTime
 	{
+		/// <summary>
+		/// Gets the date of Easter for the year specified.
+		/// </summary>
+		/// <param name="inputYear"></param>
+		/// <returns>(Month, Day, Year)</returns>
 		public (int Month, int Day, int Year) GetDateOfEaster(int inputYear)
 		{
 			double year = inputYear;
@@ -29,6 +34,13 @@ namespace PALib
 			return ((int)month, (int)day, (int)year);
 		}
 
+		/// <summary>
+		/// Calculate day number for a date.
+		/// </summary>
+		/// <param name="month"></param>
+		/// <param name="day"></param>
+		/// <param name="year"></param>
+		/// <returns></returns>
 		public int CivilDateToDayNumber(int month, int day, int year)
 		{
 			if (month <= 2)
