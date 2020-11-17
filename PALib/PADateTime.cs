@@ -83,5 +83,80 @@ namespace PALib
 
 			return (hours, minutes, seconds);
 		}
+
+		/// <summary>
+		/// Convert local Civil Time to Universal Time
+		/// </summary>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="isDaylightSavings"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <returns>Tuple (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear)</returns>
+		public (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear) LocalCivilTimeToUniversalTime(double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear)
+		{
+			var lct = CivilTimeToDecimalHours(lctHours, lctMinutes, lctSeconds);
+
+			var daylightSavingsOffset = (isDaylightSavings) ? 1 : 0;
+
+			var utInterim = lct - daylightSavingsOffset - zoneCorrection;
+			var gdayInterim = localDay + (utInterim / 24);
+
+			var jd = PAMacros.CivilDateToJulianDate(gdayInterim, localMonth, localYear);
+
+			var gDay = PAMacros.JulianDateDay(jd);
+			var gMonth = PAMacros.JulianDateMonth(jd);
+			var gYear = PAMacros.JulianDateYear(jd);
+
+			var ut = 24 * (gDay - Math.Floor(gDay));
+
+			return (
+				PAMacros.DecimalHoursHour(ut),
+				PAMacros.DecimalHoursMinute(ut),
+				(int)PAMacros.DecimalHoursSecond(ut),
+				(int)Math.Floor(gDay),
+				gMonth,
+				gYear
+			);
+		}
+
+		/// <summary>
+		/// Convert Universal Time to local Civil Time
+		/// </summary>
+		/// <param name="utHours"></param>
+		/// <param name="utMinutes"></param>
+		/// <param name="utSeconds"></param>
+		/// <param name="isDaylightSavings"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="gwDay"></param>
+		/// <param name="gwMonth"></param>
+		/// <param name="gwYear"></param>
+		/// <returns>Tuple (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear)</returns>
+		public (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear) UniversalTimeToLocalCivilTime(double utHours, double utMinutes, double utSeconds, bool isDaylightSavings, int zoneCorrection, int gwDay, int gwMonth, int gwYear)
+		{
+			var dstValue = (isDaylightSavings) ? 1 : 0;
+			var ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
+			var zoneTime = ut + zoneCorrection;
+			var localTime = zoneTime + dstValue;
+			var localJDPlusLocalTime = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear) + (localTime / 24);
+			var localDay = PAMacros.JulianDateDay(localJDPlusLocalTime);
+			var integerDay = Math.Floor(localDay);
+			var localMonth = PAMacros.JulianDateMonth(localJDPlusLocalTime);
+			var localYear = PAMacros.JulianDateYear(localJDPlusLocalTime);
+
+			var lct = 24 * (localDay - integerDay);
+
+			return (
+				PAMacros.DecimalHoursHour(lct),
+				PAMacros.DecimalHoursMinute(lct),
+				(int)PAMacros.DecimalHoursSecond(lct),
+				(int)integerDay,
+				localMonth,
+				localYear
+			);
+		}
 	}
 }

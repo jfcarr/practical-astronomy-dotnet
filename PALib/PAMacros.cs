@@ -5,7 +5,7 @@ namespace PALib
 	public static class PAMacros
 	{
 		/// <summary>
-		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours.
+		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: HMSDH
@@ -28,7 +28,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the hour part of a Decimal Hours.
+		/// Return the hour part of a Decimal Hours
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHHour
@@ -46,7 +46,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the minutes part of a Decimal Hours.
+		/// Return the minutes part of a Decimal Hours
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHMin
@@ -64,7 +64,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Return the seconds part of a Decimal Hours.
+		/// Return the seconds part of a Decimal Hours
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: DHSec
@@ -82,7 +82,7 @@ namespace PALib
 		}
 
 		/// <summary>
-		/// Convert a Greenwich Date/Civil Date (day,month,year) to Julian Date.
+		/// Convert a Greenwich Date/Civil Date (day,month,year) to Julian Date
 		/// </summary>
 		/// <remarks>
 		/// Original macro name: CDJD
@@ -130,6 +130,76 @@ namespace PALib
 			var d = Math.Floor(30.6001 * (m + 1.0));
 
 			return b + c + d + fDay + 1720994.5;
+		}
+
+		/// <summary>
+		/// Returns the day part of a Julian Date
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: JDCDay
+		/// </remarks>
+		/// <param name="julianDate"></param>
+		/// <returns></returns>
+		public static double JulianDateDay(double julianDate)
+		{
+			var i = Math.Floor(julianDate + 0.5);
+			var f = julianDate + 0.5 - i;
+			var a = Math.Floor((i - 1867216.25) / 36524.25);
+			var b = (i > 2299160) ? i + 1 + a - Math.Floor(a / 4) : i;
+			var c = b + 1524;
+			var d = Math.Floor((c - 122.1) / 365.25);
+			var e = Math.Floor(365.25 * d);
+			var g = Math.Floor((c - e) / 30.6001);
+
+			return c - e + f - Math.Floor(30.6001 * g);
+		}
+
+		/// <summary>
+		/// Returns the month part of a Julian Date
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: JDCMonth
+		/// </remarks>
+		/// <param name="julianDate"></param>
+		/// <returns></returns>
+		public static int JulianDateMonth(double julianDate)
+		{
+			var i = Math.Floor(julianDate + 0.5);
+			var a = Math.Floor((i - 1867216.25) / 36524.25);
+			var b = (i > 2299160) ? i + 1 + a - Math.Floor(a / 4) : i;
+			var c = b + 1524;
+			var d = Math.Floor((c - 122.1) / 365.25);
+			var e = Math.Floor(365.25 * d);
+			var g = Math.Floor((c - e) / 30.6001);
+
+			var returnValue = (g < 13.5) ? g - 1 : g - 13;
+
+			return (int)returnValue;
+		}
+
+		/// <summary>
+		/// Returns the year part of a Julian Date
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: JDCYear
+		/// </remarks>
+		/// <param name="julianDate"></param>
+		/// <returns></returns>
+		public static int JulianDateYear(double julianDate)
+		{
+			var i = Math.Floor(julianDate + 0.5);
+			// var _f = julian_date + 0.5 - i;
+			var a = Math.Floor((i - 1867216.25) / 36524.25);
+			var b = (i > 2299160) ? i + 1.0 + a - Math.Floor(a / 4.0) : i;
+			var c = b + 1524;
+			var d = Math.Floor((c - 122.1) / 365.25);
+			var e = Math.Floor(365.25 * d);
+			var g = Math.Floor((c - e) / 30.6001);
+			var h = (g < 13.5) ? g - 1 : g - 13;
+
+			var returnValue = (h > 2.5) ? d - 4716 : d - 4715;
+
+			return (int)returnValue;
 		}
 	}
 }
