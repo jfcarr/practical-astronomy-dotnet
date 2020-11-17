@@ -40,5 +40,41 @@ namespace PALib.Tests
 		{
 			Assert.Equal((18, 31, 27), _paDateTime.DecimalHoursToCivilTime(18.52416667));
 		}
+
+		[Fact]
+		public void LocalCivilTimeToUniversalTime()
+		{
+			Assert.Equal((22, 37, 0, 30, 6, 2013), _paDateTime.LocalCivilTimeToUniversalTime(3, 37, 0, true, 4, 1, 7, 2013));
+		}
+
+		[Fact]
+		public void UniversalTimeToLocalCivilTime()
+		{
+			Assert.Equal((3, 37, 0, 1, 7, 2013), _paDateTime.UniversalTimeToLocalCivilTime(22, 37, 0, true, 4, 30, 6, 2013));
+		}
+
+		[Fact]
+		public void UniversalTimeToGreenwichSiderealTime()
+		{
+			Assert.Equal((4, 40, 5.23), _paDateTime.UniversalTimeToGreenwichSiderealTime(14, 36, 51.67, 22, 4, 1980));
+		}
+
+		[Fact]
+		public void GreenwichSiderealTimeToUniversalTime()
+		{
+			Assert.Equal((14, 36, 51.67, "OK"), _paDateTime.GreenwichSiderealTimeToUniversalTime(4, 40, 5.23, 22, 4, 1980));
+		}
+
+		[Fact]
+		public void GreenwichSiderealTimeToLocalSiderealTime()
+		{
+			Assert.Equal((0, 24, 5.23), _paDateTime.GreenwichSiderealTimeToLocalSiderealTime(4, 40, 5.23, -64));
+		}
+
+		[Fact]
+		public void LocalSiderealTimeToGreenwichSiderealTime()
+		{
+			Assert.Equal((4, 40, 5.23), _paDateTime.LocalSiderealTimeToGreenwichSiderealTime(0, 24, 5.23, -64));
+		}
 	}
 }
