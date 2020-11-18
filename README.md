@@ -20,8 +20,8 @@ If you're interested in this topic, please buy the book! It provides far more de
 
 ### Coordinates
 
-- [ ] Convert -> Angle <-> Decimal Degrees
-- [ ] Convert -> Right Ascension <-> Hour Angle
+- [x] Convert -> Angle <-> Decimal Degrees
+- [x] Convert -> Right Ascension <-> Hour Angle
 - [ ] Convert -> Equatorial Coordinates <-> Horizon Coordinates
 - [ ] Calculate -> Obliquity of the Ecliptic
 - [ ] Convert -> Ecliptic Coordinates <-> Equatorial Coordinates
