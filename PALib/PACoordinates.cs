@@ -41,5 +41,63 @@ namespace PALib
 
 			return (signedDegrees, minutes, Math.Floor(correctedSeconds));
 		}
+
+		/// <summary>
+		/// Convert Right Ascension to Hour Angle
+		/// </summary>
+		/// <param name="raHours"></param>
+		/// <param name="raMinutes"></param>
+		/// <param name="raSeconds"></param>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="isDaylightSavings"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="geographicalLongitude"></param>
+		/// <returns></returns>
+		public (double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds) RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
+		{
+			var daylightSaving = (isDaylightSavings) ? 1 : 0;
+
+			var hourAngle = PAMacros.RightAscensionToHourAngle(raHours, raMinutes, raSeconds, lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear, geographicalLongitude);
+
+			var hourAngleHours = PAMacros.DecimalHoursHour(hourAngle);
+			var hourAngleMinutes = PAMacros.DecimalHoursMinute(hourAngle);
+			var hourAngleSeconds = PAMacros.DecimalHoursSecond(hourAngle);
+
+			return (hourAngleHours, hourAngleMinutes, hourAngleSeconds);
+		}
+
+		/// <summary>
+		/// Convert Hour Angle to Right Ascension
+		/// </summary>
+		/// <param name="hourAngleHours"></param>
+		/// <param name="hourAngleMinutes"></param>
+		/// <param name="hourAngleSeconds"></param>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="geographicalLongitude"></param>
+		/// <returns></returns>
+		public (double raHours, double raMinutes, double raSeconds) HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var rightAscension = PAMacros.HourAngleToRightAscension(hourAngleHours, hourAngleMinutes, hourAngleSeconds, lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear, geographicalLongitude);
+
+			var rightAscensionHours = PAMacros.DecimalHoursHour(rightAscension);
+			var rightAscensionMinutes = PAMacros.DecimalHoursMinute(rightAscension);
+			var rightAscensionSeconds = PAMacros.DecimalHoursSecond(rightAscension);
+
+			return (rightAscensionHours, rightAscensionMinutes, rightAscensionSeconds);
+		}
 	}
 }

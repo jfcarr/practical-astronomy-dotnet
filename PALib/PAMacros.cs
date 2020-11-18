@@ -201,5 +201,221 @@ namespace PALib
 
 			return (int)returnValue;
 		}
+
+		/// <summary>
+		/// Convert Right Ascension to Hour Angle
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: RAHA
+		/// </remarks>
+		/// <param name="raHours"></param>
+		/// <param name="raMinutes"></param>
+		/// <param name="raSeconds"></param>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="isDaylightSavings"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="geographicalLongitude"></param>
+		/// <returns></returns>
+		public static double RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
+		{
+			var a = LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var b = LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var c = LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var d = LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var e = UniversalTimeToGreenwichSiderealTime(a, 0, 0, b, c, d);
+			var f = GreenwichSiderealTimeToLocalSiderealTime(e, 0, 0, geographicalLongitude);
+			var g = HMStoDH(raHours, raMinutes, raSeconds);
+			var h = f - g;
+
+			return (h < 0) ? 24 + h : h;
+		}
+
+		/// <summary>
+		/// Convert Hour Angle to Right Ascension
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: HARA
+		/// </remarks>
+		/// <param name="hourAngleHours"></param>
+		/// <param name="hourAngleMinutes"></param>
+		/// <param name="hourAngleSeconds"></param>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="geographicalLongitude"></param>
+		/// <returns></returns>
+		public static double HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
+		{
+			var a = LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var b = LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var c = LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var d = LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var e = UniversalTimeToGreenwichSiderealTime(a, 0, 0, b, c, d);
+			var f = GreenwichSiderealTimeToLocalSiderealTime(e, 0, 00, geographicalLongitude);
+			var g = HMStoDH(hourAngleHours, hourAngleMinutes, hourAngleSeconds);
+			var h = f - g;
+
+			return (h < 0) ? 24 + h : h;
+		}
+
+		/// <summary>
+		/// Convert Local Civil Time to Universal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LctUT
+		/// </remarks>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <returns></returns>
+		public static double LocalCivilTimeToUniversalTime(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
+		{
+			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
+			var b = a - daylightSaving - zoneCorrection;
+			var c = localDay + (b / 24);
+			var d = CivilDateToJulianDate(c, localMonth, localYear);
+			var e = JulianDateDay(d);
+			var e1 = Math.Floor(e);
+
+			return 24 * (e - e1);
+		}
+
+		/// <summary>
+		/// Determine Greenwich Day for Local Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LctGDay
+		/// </remarks>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <returns></returns>
+		public static double LocalCivilTimeGreenwichDay(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
+		{
+			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
+			var b = a - daylightSaving - zoneCorrection;
+			var c = localDay + (b / 24);
+			var d = CivilDateToJulianDate(c, localMonth, localYear);
+			var e = JulianDateDay(d);
+
+			return Math.Floor(e);
+		}
+
+		/// <summary>
+		/// Determine Greenwich Month for Local Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LctGMonth
+		/// </remarks>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <returns></returns>
+		public static int LocalCivilTimeGreenwichMonth(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
+		{
+			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
+			var b = a - daylightSaving - zoneCorrection;
+			var c = localDay + (b / 24);
+			var d = CivilDateToJulianDate(c, localMonth, localYear);
+
+			return JulianDateMonth(d);
+		}
+
+		/// <summary>
+		/// Determine Greenwich Year for Local Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LctGYear
+		/// </remarks>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <returns></returns>
+		public static int LocalCivilTimeGreenwichYear(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
+		{
+			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
+			var b = a - daylightSaving - zoneCorrection;
+			var c = localDay + (b / 24);
+			var d = CivilDateToJulianDate(c, localMonth, localYear);
+
+			return JulianDateYear(d);
+		}
+
+		/// <summary>
+		/// Convert Universal Time to Greenwich Sidereal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTGST
+		/// </remarks>
+		/// <param name="uHours"></param>
+		/// <param name="uMinutes"></param>
+		/// <param name="uSeconds"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double UniversalTimeToGreenwichSiderealTime(double uHours, double uMinutes, double uSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
+			var b = a - 2451545;
+			var c = b / 36525;
+			var d = 6.697374558 + (2400.051336 * c) + (0.000025862 * c * c);
+			var e = d - (24 * Math.Floor(d / 24));
+			var f = HMStoDH(uHours, uMinutes, uSeconds);
+			var g = f * 1.002737909;
+			var h = e + g;
+
+			return h - (24 * Math.Floor(h / 24));
+		}
+
+		/// <summary>
+		/// Convert Greenwich Sidereal Time to Local Sidereal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: GSTLST
+		/// </remarks>
+		/// <param name="greenwichHours"></param>
+		/// <param name="greenwichMinutes"></param>
+		/// <param name="greenwichSeconds"></param>
+		/// <param name="geographicalLongitude"></param>
+		/// <returns></returns>
+		public static double GreenwichSiderealTimeToLocalSiderealTime(double greenwichHours, double greenwichMinutes, double greenwichSeconds, double geographicalLongitude)
+		{
+			var a = HMStoDH(greenwichHours, greenwichMinutes, greenwichSeconds);
+			var b = geographicalLongitude / 15;
+			var c = a + b;
+
+			return c - (24 * Math.Floor(c / 24));
+		}
 	}
 }
