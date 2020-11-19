@@ -145,5 +145,23 @@ namespace PALib
 
 			return (hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds);
 		}
+
+		/// <summary>
+		/// Calculate Mean Obliquity of the Ecliptic for a Greenwich Date
+		/// </summary>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public double MeanObliquityOfTheEcliptic(double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var jd = PAMacros.CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
+			var mjd = jd - 2451545;
+			var t = mjd / 36525;
+			var de1 = t * (46.815 + t * (0.0006 - (t * 0.00181)));
+			var de2 = de1 / 3600;
+
+			return 23.439292 - de2;
+		}
 	}
 }
