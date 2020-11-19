@@ -35,5 +35,17 @@ namespace PALib.Tests
 		{
 			Assert.Equal((18, 32, 21), _paCoordinates.HourAngleToRightAscension(9, 52, 23.66, 14, 36, 51.67, false, -4, 22, 4, 1980, -64));
 		}
+
+		[Fact]
+		public void EquatorialCoordinatesToHorizonCoordinates()
+		{
+			Assert.Equal((283, 16, 15.7, 19, 20, 3.64), _paCoordinates.EquatorialCoordinatesToHorizonCoordinates(5, 51, 44, 23, 13, 10, 52));
+		}
+
+		[Fact]
+		public void HorizonCoordinatesToEquatorialCoordinates()
+		{
+			Assert.Equal((5, 51, 44, 23, 13, 10), _paCoordinates.HorizonCoordinatesToEquatorialCoordinates(283, 16, 15.7, 19, 20, 3.64, 52));
+		}
 	}
 }

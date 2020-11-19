@@ -99,5 +99,51 @@ namespace PALib
 
 			return (rightAscensionHours, rightAscensionMinutes, rightAscensionSeconds);
 		}
+
+		/// <summary>
+		/// Convert Equatorial Coordinates to Horizon Coordinates
+		/// </summary>
+		/// <param name="hourAngleHours"></param>
+		/// <param name="hourAngleMinutes"></param>
+		/// <param name="hourAngleSeconds"></param>
+		/// <param name="declinationDegrees"></param>
+		/// <param name="declinationMinutes"></param>
+		/// <param name="declinationSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns>Tuple (azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds)</returns>
+		public (double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds) EquatorialCoordinatesToHorizonCoordinates(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
+		{
+			var azimuthInDecimalDegrees = PAMacros.EquatorialCoordinatesToAzimuth(hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds, geographicalLatitude);
+
+			var altitudeInDecimalDegrees = PAMacros.EquatorialCoordinatesToAltitude(hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds, geographicalLatitude);
+
+			var azimuthDegrees = PAMacros.DecimalDegreesDegrees(azimuthInDecimalDegrees);
+			var azimuthMinutes = PAMacros.DecimalDegreesMinutes(azimuthInDecimalDegrees);
+			var azimuthSeconds = PAMacros.DecimalDegreesSeconds(azimuthInDecimalDegrees);
+
+			var altitudeDegrees = PAMacros.DecimalDegreesDegrees(altitudeInDecimalDegrees);
+			var altitudeMinutes = PAMacros.DecimalDegreesMinutes(altitudeInDecimalDegrees);
+			var altitudeSeconds = PAMacros.DecimalDegreesSeconds(altitudeInDecimalDegrees);
+
+			return (azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds);
+		}
+
+		/// Convert Horizon Coordinates to Equatorial Coordinates
+		public (double hour_angle_hours, double hour_angle_minutes, double hour_angle_seconds, double declination_degrees, double declination_minutes, double declination_seconds) HorizonCoordinatesToEquatorialCoordinates(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
+		{
+			var hourAngleInDecimalDegrees = PAMacros.HorizonCoordinatesToHourAngle(azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds, geographicalLatitude);
+
+			var declinationInDecimalDegrees = PAMacros.HorizonCoordinatesToDeclination(azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds, geographicalLatitude);
+
+			var hourAngleHours = PAMacros.DecimalHoursHour(hourAngleInDecimalDegrees);
+			var hourAngleMinutes = PAMacros.DecimalHoursMinute(hourAngleInDecimalDegrees);
+			var hourAngleSeconds = PAMacros.DecimalHoursSecond(hourAngleInDecimalDegrees);
+
+			var declinationDegrees = PAMacros.DecimalDegreesDegrees(declinationInDecimalDegrees);
+			var declinationMinutes = PAMacros.DecimalDegreesMinutes(declinationInDecimalDegrees);
+			var declinationSeconds = PAMacros.DecimalDegreesSeconds(declinationInDecimalDegrees);
+
+			return (hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds);
+		}
 	}
 }
