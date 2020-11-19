@@ -417,5 +417,229 @@ namespace PALib
 
 			return c - (24 * Math.Floor(c / 24));
 		}
+
+		/// <summary>
+		/// Convert Equatorial Coordinates to Azimuth (in decimal degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: EQAz
+		/// </remarks>
+		/// <param name="hourAngleHours"></param>
+		/// <param name="hourAngleMinutes"></param>
+		/// <param name="hourAngleSeconds"></param>
+		/// <param name="declinationDegrees"></param>
+		/// <param name="declinationMinutes"></param>
+		/// <param name="declinationSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns></returns>
+		public static double EquatorialCoordinatesToAzimuth(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
+		{
+			var a = HMStoDH(hourAngleHours, hourAngleMinutes, hourAngleSeconds);
+			var b = a * 15;
+			var c = b.ToRadians();
+			var d = DegreesMinutesSecondsToDecimalDegrees(declinationDegrees, declinationMinutes, declinationSeconds);
+			var e = d.ToRadians();
+			var f = geographicalLatitude.ToRadians();
+			var g = Math.Sin(e) * Math.Sin(f) + Math.Cos(e) * Math.Cos(f) * Math.Cos(c);
+			var h = -Math.Cos(e) * Math.Cos(f) * Math.Sin(c);
+			var i = Math.Sin(e) - (Math.Sin(f) * g);
+			var j = Degrees(Math.Atan2(h, i));
+
+			return j - 360.0 * Math.Floor(j / 360);
+		}
+
+		/// <summary>
+		/// Convert Equatorial Coordinates to Altitude (in decimal degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: EQAlt
+		/// </remarks>
+		/// <param name="hourAngleHours"></param>
+		/// <param name="hourAngleMinutes"></param>
+		/// <param name="hourAngleSeconds"></param>
+		/// <param name="declinationDegrees"></param>
+		/// <param name="declinationMinutes"></param>
+		/// <param name="declinationSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns></returns>
+		public static double EquatorialCoordinatesToAltitude(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
+		{
+			var a = HMStoDH(hourAngleHours, hourAngleMinutes, hourAngleSeconds);
+			var b = a * 15;
+			var c = b.ToRadians();
+			var d = DegreesMinutesSecondsToDecimalDegrees(declinationDegrees, declinationMinutes, declinationSeconds);
+			var e = d.ToRadians();
+			var f = geographicalLatitude.ToRadians();
+			var g = Math.Sin(e) * Math.Sin(f) + Math.Cos(e) * Math.Cos(f) * Math.Cos(c);
+
+			return Degrees(Math.Asin(g));
+		}
+
+		/// <summary>
+		/// Convert Degrees Minutes Seconds to Decimal Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DMSDD
+		/// </remarks>
+		/// <param name="degrees"></param>
+		/// <param name="minutes"></param>
+		/// <param name="seconds"></param>
+		/// <returns></returns>
+		public static double DegreesMinutesSecondsToDecimalDegrees(double degrees, double minutes, double seconds)
+		{
+			var a = Math.Abs(seconds) / 60;
+			var b = (Math.Abs(minutes) + a) / 60;
+			var c = Math.Abs(degrees) + b;
+
+			return (degrees < 0 || minutes < 0 || seconds < 0) ? -c : c;
+		}
+
+		/// <summary>
+		/// Convert W to Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: Degrees
+		/// </remarks>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double Degrees(double w)
+		{
+			return w * 57.29577951;
+		}
+
+		/// <summary>
+		/// Return Degrees part of Decimal Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DDDeg
+		/// </remarks>
+		/// <param name="decimalDegrees"></param>
+		/// <returns></returns>
+		public static double DecimalDegreesDegrees(double decimalDegrees)
+		{
+			var a = Math.Abs(decimalDegrees);
+			var b = a * 3600;
+			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var e = (c == 60) ? 60 : b;
+
+			return (decimalDegrees < 0) ? -(Math.Floor(e / 3600)) : Math.Floor(e / 3600);
+		}
+
+		/// <summary>
+		/// Return Minutes part of Decimal Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DDMin
+		/// </remarks>
+		/// <param name="decimalDegrees"></param>
+		/// <returns></returns>
+		public static double DecimalDegreesMinutes(double decimalDegrees)
+		{
+			var a = Math.Abs(decimalDegrees);
+			var b = a * 3600;
+			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var e = (c == 60) ? b + 60 : b;
+
+			return Math.Floor(e / 60) % 60;
+		}
+
+		/// <summary>
+		/// Return Seconds part of Decimal Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DDSec
+		/// </remarks>
+		/// <param name="decimalDegrees"></param>
+		/// <returns></returns>
+		public static double DecimalDegreesSeconds(double decimalDegrees)
+		{
+			var a = Math.Abs(decimalDegrees);
+			var b = a * 3600;
+			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var d = (c == 60) ? 0 : c;
+
+			return d;
+		}
+
+		/// <summary>
+		/// Convert Decimal Degrees to Degree-Hours
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DDDH
+		/// </remarks>
+		/// <param name="decimalDegrees"></param>
+		/// <returns></returns>
+		public static double DecimalDegreesToDegreeHours(double decimalDegrees)
+		{
+			return decimalDegrees / 15;
+		}
+
+		/// <summary>
+		/// Convert Degree-Hours to Decimal Degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: DHDD
+		/// </remarks>
+		/// <param name="degreeHours"></param>
+		/// <returns></returns>
+		public static double DegreeHoursToDecimalDegrees(double degreeHours)
+		{
+			return degreeHours * 15;
+		}
+
+		/// <summary>
+		/// Convert Horizon Coordinates to Declination (in decimal degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: HORDec
+		/// </remarks>
+		/// <param name="azimuthDegrees"></param>
+		/// <param name="azimuthMinutes"></param>
+		/// <param name="azimuthSeconds"></param>
+		/// <param name="altitudeDegrees"></param>
+		/// <param name="altitudeMinutes"></param>
+		/// <param name="altitudeSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns></returns>
+		public static double HorizonCoordinatesToDeclination(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
+		{
+			var a = DegreesMinutesSecondsToDecimalDegrees(azimuthDegrees, azimuthMinutes, azimuthSeconds);
+			var b = DegreesMinutesSecondsToDecimalDegrees(altitudeDegrees, altitudeMinutes, altitudeSeconds);
+			var c = a.ToRadians();
+			var d = b.ToRadians();
+			var e = geographicalLatitude.ToRadians();
+			var f = Math.Sin(d) * Math.Sin(e) + Math.Cos(d) * Math.Cos(e) * Math.Cos(c);
+
+			return Degrees(Math.Asin(f));
+		}
+
+		/// <summary>
+		/// Convert Horizon Coordinates to Hour Angle (in decimal degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: HORHa
+		/// </remarks>
+		/// <param name="azimuthDegrees"></param>
+		/// <param name="azimuthMinutes"></param>
+		/// <param name="azimuthSeconds"></param>
+		/// <param name="altitudeDegrees"></param>
+		/// <param name="altitudeMinutes"></param>
+		/// <param name="altitudeSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns></returns>
+		public static double HorizonCoordinatesToHourAngle(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
+		{
+			var a = DegreesMinutesSecondsToDecimalDegrees(azimuthDegrees, azimuthMinutes, azimuthSeconds);
+			var b = DegreesMinutesSecondsToDecimalDegrees(altitudeDegrees, altitudeMinutes, altitudeSeconds);
+			var c = a.ToRadians();
+			var d = b.ToRadians();
+			var e = geographicalLatitude.ToRadians();
+			var f = Math.Sin(d) * Math.Sin(e) + Math.Cos(d) * Math.Cos(e) * Math.Cos(c);
+			var g = -Math.Cos(d) * Math.Cos(e) * Math.Sin(c);
+			var h = Math.Sin(d) - Math.Sin(e) * f;
+			var i = DecimalDegreesToDegreeHours(Degrees(Math.Atan2(g, h)));
+
+			return i - 24 * Math.Floor(i / 24.0);
+		}
 	}
 }
