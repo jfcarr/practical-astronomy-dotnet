@@ -53,5 +53,17 @@ namespace PALib.Tests
 		{
 			Assert.Equal(23.43805531, Math.Round(_paCoordinates.MeanObliquityOfTheEcliptic(6, 7, 2009), 8));
 		}
+
+		[Fact]
+		public void EclipticCoordinateToEquatorialCoordinate()
+		{
+			Assert.Equal((9, 34, 53.4, 19, 32, 8.52), _paCoordinates.EclipticCoordinateToEquatorialCoordinate(139, 41, 10, 4, 52, 31, 6, 7, 2009));
+		}
+
+		[Fact]
+		public void EquatorialCoordinateToEclipticCoordinate()
+		{
+			Assert.Equal((139, 41, 9.97, 4, 52, 30.99), _paCoordinates.EquatorialCoordinateToEclipticCoordinate(9, 34, 53.4, 19, 32, 8.52, 6, 7, 2009));
+		}
 	}
 }

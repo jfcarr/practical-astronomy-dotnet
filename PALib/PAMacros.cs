@@ -641,5 +641,80 @@ namespace PALib
 
 			return i - 24 * Math.Floor(i / 24.0);
 		}
+
+		/// <summary>
+		/// Obliquity of the Ecliptic for a Greenwich Date
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: Obliq
+		/// </remarks>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double Obliq(double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
+			var b = a - 2415020;
+			var c = (b / 36525) - 1;
+			var d = c * (46.815 + c * (0.0006 - (c * 0.00181)));
+			var e = d / 3600;
+
+			return 23.43929167 - e + NutatObl(greenwichDay, greenwichMonth, greenwichYear);
+		}
+
+		/// <summary>
+		/// Nutation of Obliquity
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: NutatObl
+		/// </remarks>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double NutatObl(double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var dj = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) - 2415020;
+			var t = dj / 36525;
+			var t2 = t * t;
+
+			var a = 100.0021358 * t;
+			var b = 360 * (a - Math.Floor(a));
+
+			var l1 = 279.6967 + 0.000303 * t2 + b;
+			var l2 = 2 * l1.ToRadians();
+
+			a = 1336.855231 * t;
+			b = 360 * (a - Math.Floor(a));
+
+			var d1 = 270.4342 - 0.001133 * t2 + b;
+			var d2 = 2 * d1.ToRadians();
+
+			a = 99.99736056 * t;
+			b = 360 * (a - Math.Floor(a));
+
+			var m1 = (358.4758 - 0.00015 * t2 + b).ToRadians();
+
+			a = 1325.552359 * t;
+			b = 360 * (a - Math.Floor(a));
+
+			var m2 = (296.1046 + 0.009192 * t2 + b).ToRadians();
+
+			a = 5.372616667 * t;
+			b = 360 * (a - Math.Floor(a));
+
+			var n1 = (259.1833 + 0.002078 * t2 - b).ToRadians();
+
+			var n2 = 2 * n1;
+
+			var ddo = (9.21 + 0.00091 * t) * Math.Cos(n1);
+			ddo = ddo + (0.5522 - 0.00029 * t) * Math.Cos(l2) - 0.0904 * Math.Cos(n2);
+			ddo = ddo + 0.0884 * Math.Cos(d2) + 0.0216 * Math.Cos(l2 + m1);
+			ddo = ddo + 0.0183 * Math.Cos(d2 - n1) + 0.0113 * Math.Cos(d2 + m2);
+			ddo = ddo - 0.0093 * Math.Cos(l2 - m1) - 0.0066 * Math.Cos(l2 - n1);
+
+			return ddo / 3600;
+		}
 	}
 }
