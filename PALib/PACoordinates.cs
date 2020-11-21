@@ -1,4 +1,5 @@
 using System;
+using PALib.Helpers;
 
 namespace PALib
 {
@@ -35,11 +36,11 @@ namespace PALib
 			var seconds2DP = Math.Round(totalSeconds % 60, 2);
 			var correctedSeconds = (seconds2DP == 60) ? 0 : seconds2DP;
 			var correctedRemainder = (seconds2DP == 60) ? totalSeconds + 60 : totalSeconds;
-			var minutes = Math.Floor(correctedRemainder / 60) % 60;
-			var unsignedDegrees = Math.Floor(correctedRemainder / 3600);
+			var minutes = (correctedRemainder / 60).Floor() % 60;
+			var unsignedDegrees = (correctedRemainder / 3600).Floor();
 			var signedDegrees = (decimalDegrees < 0) ? -1 * unsignedDegrees : unsignedDegrees;
 
-			return (signedDegrees, minutes, Math.Floor(correctedSeconds));
+			return (signedDegrees, minutes, correctedSeconds.Floor());
 		}
 
 		/// <summary>
@@ -185,14 +186,14 @@ namespace PALib
 			var eclatRad = eclatDeg.ToRadians();
 			var obliqDeg = PAMacros.Obliq(greenwichDay, greenwichMonth, greenwichYear);
 			var obliqRad = obliqDeg.ToRadians();
-			var sinDec = Math.Sin(eclatRad) * Math.Cos(obliqRad) + Math.Cos(eclatRad) * Math.Sin(obliqRad) * Math.Sin(eclonRad);
-			var decRad = Math.Asin(sinDec);
+			var sinDec = eclatRad.Sine() * obliqRad.Cosine() + eclatRad.Cosine() * obliqRad.Sine() * eclonRad.Sine();
+			var decRad = sinDec.ASine();
 			var decDeg = PAMacros.Degrees(decRad);
-			var y = Math.Sin(eclonRad) * Math.Cos(obliqRad) - Math.Tan(eclatRad) * Math.Sin(obliqRad);
-			var x = Math.Cos(eclonRad);
-			var raRad = Math.Atan2(y, x);
+			var y = eclonRad.Sine() * obliqRad.Cosine() - eclatRad.Tangent() * obliqRad.Sine();
+			var x = eclonRad.Cosine();
+			var raRad = y.AngleTangent(x);
 			var raDeg1 = PAMacros.Degrees(raRad);
-			var raDeg2 = raDeg1 - 360 * Math.Floor(raDeg1 / 360);
+			var raDeg2 = raDeg1 - 360 * (raDeg1 / 360).Floor();
 			var raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg2);
 
 			var outRAHours = PAMacros.DecimalHoursHour(raHours);
@@ -226,14 +227,14 @@ namespace PALib
 			var decRad = decDeg.ToRadians();
 			var obliqDeg = PAMacros.Obliq(gwDay, gwMonth, gwYear);
 			var obliqRad = obliqDeg.ToRadians();
-			var sinEclLat = Math.Sin(decRad) * Math.Cos(obliqRad) - Math.Cos(decRad) * Math.Sin(obliqRad) * Math.Sin(raRad);
-			var eclLatRad = Math.Asin(sinEclLat);
+			var sinEclLat = decRad.Sine() * obliqRad.Cosine() - decRad.Cosine() * obliqRad.Sine() * raRad.Sine();
+			var eclLatRad = sinEclLat.ASine();
 			var eclLatDeg = PAMacros.Degrees(eclLatRad);
-			var y = Math.Sin(raRad) * Math.Cos(obliqRad) + Math.Tan(decRad) * Math.Sin(obliqRad);
-			var x = Math.Cos(raRad);
-			var eclLongRad = Math.Atan2(y, x);
+			var y = raRad.Sine() * obliqRad.Cosine() + decRad.Tangent() * obliqRad.Sine();
+			var x = raRad.Cosine();
+			var eclLongRad = y.AngleTangent(x);
 			var eclLongDeg1 = PAMacros.Degrees(eclLongRad);
-			var eclLongDeg2 = eclLongDeg1 - 360 * Math.Floor(eclLongDeg1 / 360.0);
+			var eclLongDeg2 = eclLongDeg1 - 360 * (eclLongDeg1 / 360).Floor();
 
 			var outEclLongDeg = PAMacros.DecimalDegreesDegrees(eclLongDeg2);
 			var outEclLongMin = PAMacros.DecimalDegreesMinutes(eclLongDeg2);

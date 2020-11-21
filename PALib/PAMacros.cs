@@ -1,4 +1,5 @@
 using System;
+using PALib.Helpers;
 
 namespace PALib
 {
@@ -39,10 +40,10 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalHours);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var e = (c == 60) ? b + 60 : b;
 
-			return (decimalHours < 0) ? (int)-(Math.Floor(e / 3600)) : (int)Math.Floor(e / 3600);
+			return (decimalHours < 0) ? (int)-((e / 3600).Floor()) : (int)(e / 3600).Floor();
 		}
 
 		/// <summary>
@@ -57,10 +58,10 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalHours);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var e = (c == 60) ? b + 60 : b;
 
-			return (int)Math.Floor(e / 60) % 60;
+			return (int)(e / 60).Floor() % 60;
 		}
 
 		/// <summary>
@@ -75,7 +76,7 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalHours);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var d = (c == 60) ? 0 : c;
 
 			return d;
@@ -104,30 +105,30 @@ namespace PALib
 
 			if (fYear > 1582)
 			{
-				var a = Math.Floor(y / 100);
-				b = 2 - a + Math.Floor(a / 4);
+				var a = (y / 100).Floor();
+				b = 2 - a + (a / 4).Floor();
 			}
 			else
 			{
 				if (fYear == 1582 && fMonth > 10)
 				{
-					var a = Math.Floor(y / 100);
-					b = 2 - a + Math.Floor(a / 4);
+					var a = (y / 100).Floor();
+					b = 2 - a + (a / 4).Floor();
 				}
 				else
 				{
 					if (fYear == 1582 && fMonth == 10 && fDay >= 15)
 					{
-						var a = Math.Floor(y / 100);
-						b = 2 - a + Math.Floor(a / 4);
+						var a = (y / 100).Floor();
+						b = 2 - a + (a / 4).Floor();
 					}
 					else
 						b = 0;
 				}
 			}
 
-			var c = (y < 0) ? Math.Floor(((365.25 * y) - 0.75)) : Math.Floor(365.25 * y);
-			var d = Math.Floor(30.6001 * (m + 1.0));
+			var c = (y < 0) ? (((365.25 * y) - 0.75)).Floor() : (365.25 * y).Floor();
+			var d = (30.6001 * (m + 1.0)).Floor();
 
 			return b + c + d + fDay + 1720994.5;
 		}
@@ -142,16 +143,16 @@ namespace PALib
 		/// <returns></returns>
 		public static double JulianDateDay(double julianDate)
 		{
-			var i = Math.Floor(julianDate + 0.5);
+			var i = (julianDate + 0.5).Floor();
 			var f = julianDate + 0.5 - i;
-			var a = Math.Floor((i - 1867216.25) / 36524.25);
-			var b = (i > 2299160) ? i + 1 + a - Math.Floor(a / 4) : i;
+			var a = ((i - 1867216.25) / 36524.25).Floor();
+			var b = (i > 2299160) ? i + 1 + a - (a / 4).Floor() : i;
 			var c = b + 1524;
-			var d = Math.Floor((c - 122.1) / 365.25);
-			var e = Math.Floor(365.25 * d);
-			var g = Math.Floor((c - e) / 30.6001);
+			var d = ((c - 122.1) / 365.25).Floor();
+			var e = (365.25 * d).Floor();
+			var g = ((c - e) / 30.6001).Floor();
 
-			return c - e + f - Math.Floor(30.6001 * g);
+			return c - e + f - (30.6001 * g).Floor();
 		}
 
 		/// <summary>
@@ -164,13 +165,13 @@ namespace PALib
 		/// <returns></returns>
 		public static int JulianDateMonth(double julianDate)
 		{
-			var i = Math.Floor(julianDate + 0.5);
-			var a = Math.Floor((i - 1867216.25) / 36524.25);
-			var b = (i > 2299160) ? i + 1 + a - Math.Floor(a / 4) : i;
+			var i = (julianDate + 0.5).Floor();
+			var a = ((i - 1867216.25) / 36524.25).Floor();
+			var b = (i > 2299160) ? i + 1 + a - (a / 4).Floor() : i;
 			var c = b + 1524;
-			var d = Math.Floor((c - 122.1) / 365.25);
-			var e = Math.Floor(365.25 * d);
-			var g = Math.Floor((c - e) / 30.6001);
+			var d = ((c - 122.1) / 365.25).Floor();
+			var e = (365.25 * d).Floor();
+			var g = ((c - e) / 30.6001).Floor();
 
 			var returnValue = (g < 13.5) ? g - 1 : g - 13;
 
@@ -187,14 +188,14 @@ namespace PALib
 		/// <returns></returns>
 		public static int JulianDateYear(double julianDate)
 		{
-			var i = Math.Floor(julianDate + 0.5);
+			var i = (julianDate + 0.5).Floor();
 			// var _f = julian_date + 0.5 - i;
-			var a = Math.Floor((i - 1867216.25) / 36524.25);
-			var b = (i > 2299160) ? i + 1.0 + a - Math.Floor(a / 4.0) : i;
+			var a = ((i - 1867216.25) / 36524.25).Floor();
+			var b = (i > 2299160) ? i + 1.0 + a - (a / 4.0).Floor() : i;
 			var c = b + 1524;
-			var d = Math.Floor((c - 122.1) / 365.25);
-			var e = Math.Floor(365.25 * d);
-			var g = Math.Floor((c - e) / 30.6001);
+			var d = ((c - 122.1) / 365.25).Floor();
+			var e = (365.25 * d).Floor();
+			var g = ((c - e) / 30.6001).Floor();
 			var h = (g < 13.5) ? g - 1 : g - 13;
 
 			var returnValue = (h > 2.5) ? d - 4716 : d - 4715;
@@ -290,7 +291,7 @@ namespace PALib
 			var c = localDay + (b / 24);
 			var d = CivilDateToJulianDate(c, localMonth, localYear);
 			var e = JulianDateDay(d);
-			var e1 = Math.Floor(e);
+			var e1 = e.Floor();
 
 			return 24 * (e - e1);
 		}
@@ -318,7 +319,7 @@ namespace PALib
 			var d = CivilDateToJulianDate(c, localMonth, localYear);
 			var e = JulianDateDay(d);
 
-			return Math.Floor(e);
+			return e.Floor();
 		}
 
 		/// <summary>
@@ -390,12 +391,12 @@ namespace PALib
 			var b = a - 2451545;
 			var c = b / 36525;
 			var d = 6.697374558 + (2400.051336 * c) + (0.000025862 * c * c);
-			var e = d - (24 * Math.Floor(d / 24));
+			var e = d - (24 * (d / 24).Floor());
 			var f = HMStoDH(uHours, uMinutes, uSeconds);
 			var g = f * 1.002737909;
 			var h = e + g;
 
-			return h - (24 * Math.Floor(h / 24));
+			return h - (24 * (h / 24).Floor());
 		}
 
 		/// <summary>
@@ -415,7 +416,7 @@ namespace PALib
 			var b = geographicalLongitude / 15;
 			var c = a + b;
 
-			return c - (24 * Math.Floor(c / 24));
+			return c - (24 * (c / 24).Floor());
 		}
 
 		/// <summary>
@@ -440,12 +441,12 @@ namespace PALib
 			var d = DegreesMinutesSecondsToDecimalDegrees(declinationDegrees, declinationMinutes, declinationSeconds);
 			var e = d.ToRadians();
 			var f = geographicalLatitude.ToRadians();
-			var g = Math.Sin(e) * Math.Sin(f) + Math.Cos(e) * Math.Cos(f) * Math.Cos(c);
-			var h = -Math.Cos(e) * Math.Cos(f) * Math.Sin(c);
-			var i = Math.Sin(e) - (Math.Sin(f) * g);
-			var j = Degrees(Math.Atan2(h, i));
+			var g = e.Sine() * f.Sine() + e.Cosine() * f.Cosine() * c.Cosine();
+			var h = -e.Cosine() * f.Cosine() * c.Sine();
+			var i = e.Sine() - (f.Sine() * g);
+			var j = Degrees(h.AngleTangent(i));
 
-			return j - 360.0 * Math.Floor(j / 360);
+			return j - 360.0 * (j / 360).Floor();
 		}
 
 		/// <summary>
@@ -470,9 +471,9 @@ namespace PALib
 			var d = DegreesMinutesSecondsToDecimalDegrees(declinationDegrees, declinationMinutes, declinationSeconds);
 			var e = d.ToRadians();
 			var f = geographicalLatitude.ToRadians();
-			var g = Math.Sin(e) * Math.Sin(f) + Math.Cos(e) * Math.Cos(f) * Math.Cos(c);
+			var g = e.Sine() * f.Sine() + e.Cosine() * f.Cosine() * c.Cosine();
 
-			return Degrees(Math.Asin(g));
+			return Degrees(g.ASine());
 		}
 
 		/// <summary>
@@ -519,10 +520,10 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalDegrees);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var e = (c == 60) ? 60 : b;
 
-			return (decimalDegrees < 0) ? -(Math.Floor(e / 3600)) : Math.Floor(e / 3600);
+			return (decimalDegrees < 0) ? -((e / 3600).Floor()) : (e / 3600).Floor();
 		}
 
 		/// <summary>
@@ -537,10 +538,10 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalDegrees);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var e = (c == 60) ? b + 60 : b;
 
-			return Math.Floor(e / 60) % 60;
+			return (e / 60).Floor() % 60;
 		}
 
 		/// <summary>
@@ -555,7 +556,7 @@ namespace PALib
 		{
 			var a = Math.Abs(decimalDegrees);
 			var b = a * 3600;
-			var c = Math.Round(b - 60 * Math.Floor(b / 60), 2);
+			var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 			var d = (c == 60) ? 0 : c;
 
 			return d;
@@ -608,9 +609,9 @@ namespace PALib
 			var c = a.ToRadians();
 			var d = b.ToRadians();
 			var e = geographicalLatitude.ToRadians();
-			var f = Math.Sin(d) * Math.Sin(e) + Math.Cos(d) * Math.Cos(e) * Math.Cos(c);
+			var f = d.Sine() * e.Sine() + d.Cosine() * e.Cosine() * c.Cosine();
 
-			return Degrees(Math.Asin(f));
+			return Degrees(f.ASine());
 		}
 
 		/// <summary>
@@ -634,12 +635,12 @@ namespace PALib
 			var c = a.ToRadians();
 			var d = b.ToRadians();
 			var e = geographicalLatitude.ToRadians();
-			var f = Math.Sin(d) * Math.Sin(e) + Math.Cos(d) * Math.Cos(e) * Math.Cos(c);
-			var g = -Math.Cos(d) * Math.Cos(e) * Math.Sin(c);
-			var h = Math.Sin(d) - Math.Sin(e) * f;
-			var i = DecimalDegreesToDegreeHours(Degrees(Math.Atan2(g, h)));
+			var f = d.Sine() * e.Sine() + d.Cosine() * e.Cosine() * c.Cosine();
+			var g = -d.Cosine() * e.Cosine() * c.Sine();
+			var h = d.Sine() - e.Sine() * f;
+			var i = DecimalDegreesToDegreeHours(Degrees(g.AngleTangent(h)));
 
-			return i - 24 * Math.Floor(i / 24.0);
+			return i - 24 * (i / 24).Floor();
 		}
 
 		/// <summary>
@@ -680,39 +681,39 @@ namespace PALib
 			var t2 = t * t;
 
 			var a = 100.0021358 * t;
-			var b = 360 * (a - Math.Floor(a));
+			var b = 360 * (a - a.Floor());
 
 			var l1 = 279.6967 + 0.000303 * t2 + b;
 			var l2 = 2 * l1.ToRadians();
 
 			a = 1336.855231 * t;
-			b = 360 * (a - Math.Floor(a));
+			b = 360 * (a - a.Floor());
 
 			var d1 = 270.4342 - 0.001133 * t2 + b;
 			var d2 = 2 * d1.ToRadians();
 
 			a = 99.99736056 * t;
-			b = 360 * (a - Math.Floor(a));
+			b = 360 * (a - a.Floor());
 
 			var m1 = (358.4758 - 0.00015 * t2 + b).ToRadians();
 
 			a = 1325.552359 * t;
-			b = 360 * (a - Math.Floor(a));
+			b = 360 * (a - a.Floor());
 
 			var m2 = (296.1046 + 0.009192 * t2 + b).ToRadians();
 
 			a = 5.372616667 * t;
-			b = 360 * (a - Math.Floor(a));
+			b = 360 * (a - a.Floor());
 
 			var n1 = (259.1833 + 0.002078 * t2 - b).ToRadians();
 
 			var n2 = 2 * n1;
 
-			var ddo = (9.21 + 0.00091 * t) * Math.Cos(n1);
-			ddo = ddo + (0.5522 - 0.00029 * t) * Math.Cos(l2) - 0.0904 * Math.Cos(n2);
-			ddo = ddo + 0.0884 * Math.Cos(d2) + 0.0216 * Math.Cos(l2 + m1);
-			ddo = ddo + 0.0183 * Math.Cos(d2 - n1) + 0.0113 * Math.Cos(d2 + m2);
-			ddo = ddo - 0.0093 * Math.Cos(l2 - m1) - 0.0066 * Math.Cos(l2 - n1);
+			var ddo = (9.21 + 0.00091 * t) * n1.Cosine();
+			ddo = ddo + (0.5522 - 0.00029 * t) * l2.Cosine() - 0.0904 * n2.Cosine();
+			ddo = ddo + 0.0884 * d2.Cosine() + 0.0216 * (l2 + m1).Cosine();
+			ddo = ddo + 0.0183 * (d2 - n1).Cosine() + 0.0113 * (d2 + m2).Cosine();
+			ddo = ddo - 0.0093 * (l2 - m1).Cosine() - 0.0066 * (l2 - n1).Cosine();
 
 			return ddo / 3600;
 		}
