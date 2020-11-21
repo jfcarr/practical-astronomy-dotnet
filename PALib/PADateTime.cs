@@ -1,4 +1,5 @@
 ﻿using System;
+using PALib.Helpers;
 
 namespace PALib
 {
@@ -14,18 +15,18 @@ namespace PALib
 			double year = inputYear;
 
 			var a = year % 19;
-			var b = Math.Floor(year / 100);
+			var b = (year / 100).Floor();
 			var c = year % 100;
-			var d = Math.Floor(b / 4);
+			var d = (b / 4).Floor();
 			var e = b % 4;
-			var f = Math.Floor((b + 8) / 25);
-			var g = Math.Floor((b - f + 1) / 3);
+			var f = ((b + 8) / 25).Floor();
+			var g = ((b - f + 1) / 3).Floor();
 			var h = ((19 * a) + b - d - g + 15) % 30;
-			var i = Math.Floor(c / 4);
+			var i = (c / 4).Floor();
 			var k = c % 4;
 			var l = (32 + 2 * (e + i) - h - k) % 7;
-			var m = Math.Floor((a + (11 * h) + (22 * l)) / 451);
-			var n = Math.Floor((h + l - (7 * m) + 114) / 31);
+			var m = ((a + (11 * h) + (22 * l)) / 451).Floor();
+			var n = ((h + l - (7 * m) + 114) / 31).Floor();
 			var p = (h + l - (7 * m) + 114) % 31;
 
 			var day = p + 1;
@@ -47,11 +48,11 @@ namespace PALib
 			{
 				month = month - 1;
 				month = (year.IsLeapYear()) ? month * 62 : month * 63;
-				month = (int)Math.Floor((double)month / 2);
+				month = (int)((double)month / 2).Floor();
 			}
 			else
 			{
-				month = (int)Math.Floor(((double)month + 1) * 30.6);
+				month = (int)(((double)month + 1) * 30.6).Floor();
 				month = (year.IsLeapYear()) ? month - 62 : month - 63;
 			}
 
@@ -111,13 +112,13 @@ namespace PALib
 			var gMonth = PAMacros.JulianDateMonth(jd);
 			var gYear = PAMacros.JulianDateYear(jd);
 
-			var ut = 24 * (gDay - Math.Floor(gDay));
+			var ut = 24 * (gDay - gDay.Floor());
 
 			return (
 				PAMacros.DecimalHoursHour(ut),
 				PAMacros.DecimalHoursMinute(ut),
 				(int)PAMacros.DecimalHoursSecond(ut),
-				(int)Math.Floor(gDay),
+				(int)gDay.Floor(),
 				gMonth,
 				gYear
 			);
@@ -143,7 +144,7 @@ namespace PALib
 			var localTime = zoneTime + dstValue;
 			var localJDPlusLocalTime = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear) + (localTime / 24);
 			var localDay = PAMacros.JulianDateDay(localJDPlusLocalTime);
-			var integerDay = Math.Floor(localDay);
+			var integerDay = localDay.Floor();
 			var localMonth = PAMacros.JulianDateMonth(localJDPlusLocalTime);
 			var localYear = PAMacros.JulianDateYear(localJDPlusLocalTime);
 
@@ -175,11 +176,11 @@ namespace PALib
 			var s = jd - 2451545;
 			var t = s / 36525;
 			var t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
-			var t02 = t01 - (24.0 * Math.Floor(t01 / 24.0));
+			var t02 = t01 - (24.0 * (t01 / 24).Floor());
 			var ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
 			var a = ut * 1.002737909;
 			var gst1 = t02 + a;
-			var gst2 = gst1 - (24.0 * Math.Floor(gst1 / 24.0));
+			var gst2 = gst1 - (24.0 * (gst1 / 24).Floor());
 
 			var gstHours = PAMacros.DecimalHoursHour(gst2);
 			var gstMinutes = PAMacros.DecimalHoursMinute(gst2);
@@ -204,11 +205,11 @@ namespace PALib
 			var s = jd - 2451545;
 			var t = s / 36525;
 			var t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
-			var t02 = t01 - (24 * Math.Floor(t01 / 24));
+			var t02 = t01 - (24 * (t01 / 24).Floor());
 			var gstHours1 = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
 
 			var a = gstHours1 - t02;
-			var b = a - (24 * Math.Floor(a / 24));
+			var b = a - (24 * (a / 24).Floor());
 			var ut = b * 0.9972695663;
 			var utHours = PAMacros.DecimalHoursHour(ut);
 			var utMinutes = PAMacros.DecimalHoursMinute(ut);
@@ -232,7 +233,7 @@ namespace PALib
 			var gst = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
 			var offset = geographicalLongitude / 15;
 			var lstHours1 = gst + offset;
-			var lstHours2 = lstHours1 - (24 * Math.Floor(lstHours1 / 24));
+			var lstHours2 = lstHours1 - (24 * (lstHours1 / 24).Floor());
 
 			var lstHours = PAMacros.DecimalHoursHour(lstHours2);
 			var lstMinutes = PAMacros.DecimalHoursMinute(lstHours2);
@@ -254,7 +255,7 @@ namespace PALib
 			var gst = PAMacros.HMStoDH(lstHours, lstMinutes, lstSeconds);
 			var longHours = geographicalLongitude / 15;
 			var gst1 = gst - longHours;
-			var gst2 = gst1 - (24 * Math.Floor(gst1 / 24));
+			var gst2 = gst1 - (24 * (gst1 / 24).Floor());
 
 			var gstHours = PAMacros.DecimalHoursHour(gst2);
 			var gstMinutes = PAMacros.DecimalHoursMinute(gst2);
