@@ -25,7 +25,7 @@ If you're interested in this topic, please buy the book! It provides far more de
 - [x] Convert -> Equatorial Coordinates <-> Horizon Coordinates
 - [x] Calculate -> Obliquity of the Ecliptic
 - [x] Convert -> Ecliptic Coordinates <-> Equatorial Coordinates
-- [ ] Convert -> Equatorial Coordinates <-> Galactic Coordinates
+- [x] Convert -> Equatorial Coordinates <-> Galactic Coordinates
 - [ ] Calculate -> Angle between two objects
 - [ ] Calculate -> Rising and Setting times for an object
 - [ ] Calculate -> Precession (corrected coordinates between two epochs)

@@ -129,7 +129,7 @@ namespace PALib
 		}
 
 		/// Convert Horizon Coordinates to Equatorial Coordinates
-		public (double hour_angle_hours, double hour_angle_minutes, double hour_angle_seconds, double declination_degrees, double declination_minutes, double declination_seconds) HorizonCoordinatesToEquatorialCoordinates(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
+		public (double hour_angle_hours, double hour_angle_minutes, double hour_angle_seconds, double declination_degrees, double declination_minutes, double declinationseconds) HorizonCoordinatesToEquatorialCoordinates(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
 		{
 			var hourAngleInDecimalDegrees = PAMacros.HorizonCoordinatesToHourAngle(azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds, geographicalLatitude);
 
@@ -243,6 +243,76 @@ namespace PALib
 			var outEclLatSec = PAMacros.DecimalDegreesSeconds(eclLatDeg);
 
 			return (outEclLongDeg, outEclLongMin, outEclLongSec, outEclLatDeg, outEclLatMin, outEclLatSec);
+		}
+
+		/// <summary>
+		/// Convert Equatorial Coordinates to Galactic Coordinates
+		/// </summary>
+		/// <param name="raHours"></param>
+		/// <param name="raMinutes"></param>
+		/// <param name="raSeconds"></param>
+		/// <param name="decDegrees"></param>
+		/// <param name="decMinutes"></param>
+		/// <param name="decSeconds"></param>
+		/// <returns></returns>
+		public (double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec) EquatorialCoordinateToGalacticCoordinate(double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds)
+		{
+			var raDeg = PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHours, raMinutes, raSeconds));
+			var decDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDegrees, decMinutes, decSeconds);
+			var raRad = raDeg.ToRadians();
+			var decRad = decDeg.ToRadians();
+			var sinB = decRad.Cosine() * (27.4).ToRadians().Cosine() * (raRad - (192.25).ToRadians()).Cosine() + decRad.Sine() * (27.4).ToRadians().Sine();
+			var bRadians = sinB.ASine();
+			var bDeg = PAMacros.Degrees(bRadians);
+			var y = decRad.Sine() - sinB * (27.4).ToRadians().Sine();
+			var x = decRad.Cosine() * (raRad - (192.25).ToRadians()).Sine() * (27.4).ToRadians().Cosine();
+			var longDeg1 = PAMacros.Degrees(y.AngleTangent(x)) + 33;
+			var longDeg2 = longDeg1 - 360 * (longDeg1 / 360).Floor();
+
+			var galLongDeg = PAMacros.DecimalDegreesDegrees(longDeg2);
+			var galLongMin = PAMacros.DecimalDegreesMinutes(longDeg2);
+			var galLongSec = PAMacros.DecimalDegreesSeconds(longDeg2);
+			var galLatDeg = PAMacros.DecimalDegreesDegrees(bDeg);
+			var galLatMin = PAMacros.DecimalDegreesMinutes(bDeg);
+			var galLatSec = PAMacros.DecimalDegreesSeconds(bDeg);
+
+			return (galLongDeg, galLongMin, galLongSec, galLatDeg, galLatMin, galLatSec);
+		}
+
+		/// <summary>
+		/// Convert Galactic Coordinates to Equatorial Coordinates
+		/// </summary>
+		/// <param name="galLongDeg"></param>
+		/// <param name="galLongMin"></param>
+		/// <param name="galLongSec"></param>
+		/// <param name="galLatDeg"></param>
+		/// <param name="galLatMin"></param>
+		/// <param name="galLatSec"></param>
+		/// <returns></returns>
+		public (double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds) GalacticCoordinateToEquatorialCoordinate(double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec)
+		{
+			var glongDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(galLongDeg, galLongMin, galLongSec);
+			var glatDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(galLatDeg, galLatMin, galLatSec);
+			var glongRad = glongDeg.ToRadians();
+			var glatRad = glatDeg.ToRadians();
+			var sinDec = glatRad.Cosine() * (27.4).ToRadians().Cosine() * (glongRad - (33.0).ToRadians()).Sine() + glatRad.Sine() * (27.4).ToRadians().Sine();
+			var decRadians = sinDec.ASine();
+			var decDeg = PAMacros.Degrees(decRadians);
+			var y = glatRad.Cosine() * (glongRad - (33.0).ToRadians()).Cosine();
+			var x = glatRad.Sine() * ((27.4).ToRadians()).Cosine() - (glatRad).Cosine() * ((27.4).ToRadians()).Sine() * (glongRad - (33.0).ToRadians()).Sine();
+
+			var raDeg1 = PAMacros.Degrees(y.AngleTangent(x)) + 192.25;
+			var raDeg2 = raDeg1 - 360 * (raDeg1 / 360).Floor();
+			var raHours1 = PAMacros.DecimalDegreesToDegreeHours(raDeg2);
+
+			var raHours = PAMacros.DecimalHoursHour(raHours1);
+			var raMinutes = PAMacros.DecimalHoursMinute(raHours1);
+			var raSeconds = PAMacros.DecimalHoursSecond(raHours1);
+			var decDegrees = PAMacros.DecimalDegreesDegrees(decDeg);
+			var decMinutes = PAMacros.DecimalDegreesMinutes(decDeg);
+			var decSeconds = PAMacros.DecimalDegreesSeconds(decDeg);
+
+			return (raHours, raMinutes, raSeconds, decDegrees, decMinutes, decSeconds);
 		}
 	}
 }
