@@ -315,5 +315,48 @@ namespace PALib
 
 			return (raHours, raMinutes, raSeconds, decDegrees, decMinutes, decSeconds);
 		}
+
+		/// <summary>
+		/// Calculate the angle between two celestial objects
+		/// </summary>
+		/// <param name="raLong1HourDeg"></param>
+		/// <param name="raLong1Min"></param>
+		/// <param name="raLong1Sec"></param>
+		/// <param name="decLat1Deg"></param>
+		/// <param name="decLat1Min"></param>
+		/// <param name="decLat1Sec"></param>
+		/// <param name="raLong2HourDeg"></param>
+		/// <param name="raLong2Min"></param>
+		/// <param name="raLong2Sec"></param>
+		/// <param name="decLat2Deg"></param>
+		/// <param name="decLat2Min"></param>
+		/// <param name="decLat2Sec"></param>
+		/// <param name="hourOrDegree"></param>
+		/// <returns></returns>
+		public (double angleDeg, double angleMin, double angleSec) AngleBetweenTwoObjects(double raLong1HourDeg, double raLong1Min, double raLong1Sec, double decLat1Deg, double decLat1Min, double decLat1Sec, double raLong2HourDeg, double raLong2Min, double raLong2Sec, double decLat2Deg, double decLat2Min, double decLat2Sec, string hourOrDegree)
+		{
+			var raLong1Decimal = (hourOrDegree.Equals("H")) ? PAMacros.HMStoDH(raLong1HourDeg, raLong1Min, raLong1Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong1HourDeg, raLong1Min, raLong1Sec);
+			var raLong1Deg = (hourOrDegree.Equals("H")) ? PAMacros.DegreeHoursToDecimalDegrees(raLong1Decimal) : raLong1Decimal;
+
+			var raLong1Rad = raLong1Deg.ToRadians();
+			var decLat1Deg1 = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decLat1Deg, decLat1Min, decLat1Sec);
+			var decLat1Rad = decLat1Deg1.ToRadians();
+
+			var raLong2Decimal = (hourOrDegree.Equals("H")) ? PAMacros.HMStoDH(raLong2HourDeg, raLong2Min, raLong2Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong2HourDeg, raLong2Min, raLong2Sec);
+			var raLong2Deg = (hourOrDegree.Equals("H")) ? PAMacros.DegreeHoursToDecimalDegrees(raLong2Decimal) : raLong2Decimal;
+			var raLong2Rad = raLong2Deg.ToRadians();
+			var decLat2Deg1 = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decLat2Deg, decLat2Min, decLat2Sec);
+			var decLat2Rad = decLat2Deg1.ToRadians();
+
+			var cosD = decLat1Rad.Sine() * decLat2Rad.Sine() + decLat1Rad.Cosine() * decLat2Rad.Cosine() * (raLong1Rad - raLong2Rad).Cosine();
+			var dRad = cosD.ACosine();
+			var dDeg = PAMacros.Degrees(dRad);
+
+			var angleDeg = PAMacros.DecimalDegreesDegrees(dDeg);
+			var angleMin = PAMacros.DecimalDegreesMinutes(dDeg);
+			var angleSec = PAMacros.DecimalDegreesSeconds(dDeg);
+
+			return (angleDeg, angleMin, angleSec);
+		}
 	}
 }
