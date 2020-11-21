@@ -42,5 +42,56 @@ namespace PALib
 		{
 			return radians * Math.PI / 180;
 		}
+
+		/// <summary>
+		/// Returns the cosine of the specified angle.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static double Cosine(this double d)
+		{
+			return Math.Cos(d);
+		}
+
+		/// <summary>
+		/// Returns the sine of the specified angle.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static double Sine(this double a)
+		{
+			return Math.Sin(a);
+		}
+
+		/// <summary>
+		/// Returns the angle whose sine is the specified number.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double ASine(this double d)
+		{
+			return Math.Asin(d);
+		}
+
+		/// <summary>
+		/// Returns the angle whose tangent is the quotient of two specified numbers.
+		/// </summary>
+		/// <param name="y"></param>
+		/// <param name="x"></param>
+		/// <returns></returns>
+		public static double AngleTangent(this double y, double x)
+		{
+			return Math.Atan2(y, x);
+		}
+
+		/// <summary>
+		/// Returns the largest integral value less than or equal to the specified double-precision floating-point number.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double Floor(this double d)
+		{
+			return Math.Floor(d);
+		}
 	}
 }

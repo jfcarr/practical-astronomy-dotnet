@@ -65,5 +65,21 @@ namespace PALib.Tests
 		{
 			Assert.Equal((139, 41, 9.97, 4, 52, 30.99), _paCoordinates.EquatorialCoordinateToEclipticCoordinate(9, 34, 53.4, 19, 32, 8.52, 6, 7, 2009));
 		}
+
+		[Fact]
+		public void EquatorialCoordinateToGalacticCoordinate()
+		{
+			var result = _paCoordinates.EquatorialCoordinateToGalacticCoordinate(10, 21, 0, 10, 3, 11);
+
+			Assert.Equal((232, 14, 52.38, 51, 7, 20.16), result);
+		}
+
+		[Fact]
+		public void GalacticCoordinateToEquatorialCoordinate()
+		{
+			var result = _paCoordinates.GalacticCoordinateToEquatorialCoordinate(232, 14, 52.38, 51, 7, 20.16);
+
+			Assert.Equal((10, 21, 0, 10, 3, 11), result);
+		}
 	}
 }
