@@ -5,6 +5,16 @@ namespace PALib.Helpers
 	public static class MathExtensions
 	{
 		/// <summary>
+		/// Returns the angle whose cosine is the specified number.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double ACosine(this double d)
+		{
+			return Math.Acos(d);
+		}
+
+		/// <summary>
 		/// Returns the angle whose tangent is the quotient of two specified numbers.
 		/// </summary>
 		/// <param name="y"></param>

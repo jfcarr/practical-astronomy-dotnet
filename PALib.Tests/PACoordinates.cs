@@ -69,17 +69,19 @@ namespace PALib.Tests
 		[Fact]
 		public void EquatorialCoordinateToGalacticCoordinate()
 		{
-			var result = _paCoordinates.EquatorialCoordinateToGalacticCoordinate(10, 21, 0, 10, 3, 11);
-
-			Assert.Equal((232, 14, 52.38, 51, 7, 20.16), result);
+			Assert.Equal((232, 14, 52.38, 51, 7, 20.16), _paCoordinates.EquatorialCoordinateToGalacticCoordinate(10, 21, 0, 10, 3, 11));
 		}
 
 		[Fact]
 		public void GalacticCoordinateToEquatorialCoordinate()
 		{
-			var result = _paCoordinates.GalacticCoordinateToEquatorialCoordinate(232, 14, 52.38, 51, 7, 20.16);
+			Assert.Equal((10, 21, 0, 10, 3, 11), _paCoordinates.GalacticCoordinateToEquatorialCoordinate(232, 14, 52.38, 51, 7, 20.16));
+		}
 
-			Assert.Equal((10, 21, 0, 10, 3, 11), result);
+		[Fact]
+		public void AngleBetweenTwoObjects()
+		{
+			Assert.Equal((23, 40, 25.86), _paCoordinates.AngleBetweenTwoObjects(5, 13, 31.7, -8, 13, 30, 6, 44, 13.4, -16, 41, 11, "H"));
 		}
 	}
 }
