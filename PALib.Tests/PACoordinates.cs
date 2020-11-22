@@ -83,5 +83,12 @@ namespace PALib.Tests
 		{
 			Assert.Equal((23, 40, 25.86), _paCoordinates.AngleBetweenTwoObjects(5, 13, 31.7, -8, 13, 30, 6, 44, 13.4, -16, 41, 11, "H"));
 		}
+
+		[Fact]
+		public void RisingAndSetting()
+		{
+			Assert.Equal(("OK", 14, 16, 4, 10, 64.36, 295.64), _paCoordinates.RisingAndSetting(23, 39, 20, 21, 42, 0, 24, 8, 2010, 64, 30, 0.5667));
+		}
+
 	}
 }
