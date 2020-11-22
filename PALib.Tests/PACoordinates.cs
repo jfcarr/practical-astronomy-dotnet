@@ -95,5 +95,13 @@ namespace PALib.Tests
 		{
 			Assert.Equal((9, 12, 20.18, 14, 16, 9.12), _paCoordinates.CorrectForPrecession(9, 10, 43, 14, 23, 25, 0.923, 1, 1950, 1, 6, 1979));
 		}
+
+		[Fact]
+		public void NutationInEclipticLongitudeAndObliquity()
+		{
+			var result = _paCoordinates.NutationInEclipticLongitudeAndObliquity(1, 9, 1988);
+
+			Assert.Equal((0.001525808, 0.0025671), (Math.Round(result.nutInLongDeg, 9), Math.Round(result.nutInOblDeg, 7)));
+		}
 	}
 }
