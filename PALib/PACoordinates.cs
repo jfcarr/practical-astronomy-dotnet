@@ -58,7 +58,7 @@ namespace PALib
 		/// <param name="localMonth"></param>
 		/// <param name="localYear"></param>
 		/// <param name="geographicalLongitude"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (hourAngleHours, hourAngleMinutes, hourAngleSeconds)</returns>
 		public (double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds) RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
 			var daylightSaving = (isDaylightSavings) ? 1 : 0;
@@ -87,7 +87,7 @@ namespace PALib
 		/// <param name="localMonth"></param>
 		/// <param name="localYear"></param>
 		/// <param name="geographicalLongitude"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (rightAscensionHours, rightAscensionMinutes, rightAscensionSeconds)</returns>
 		public (double raHours, double raMinutes, double raSeconds) HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
 			var daylightSaving = (isDaylightSaving) ? 1 : 0;
@@ -129,7 +129,17 @@ namespace PALib
 			return (azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds);
 		}
 
+		/// <summary>
 		/// Convert Horizon Coordinates to Equatorial Coordinates
+		/// </summary>
+		/// <param name="azimuthDegrees"></param>
+		/// <param name="azimuthMinutes"></param>
+		/// <param name="azimuthSeconds"></param>
+		/// <param name="altitudeDegrees"></param>
+		/// <param name="altitudeMinutes"></param>
+		/// <param name="altitudeSeconds"></param>
+		/// <param name="geographicalLatitude"></param>
+		/// <returns>Tuple (hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds)</returns>
 		public (double hour_angle_hours, double hour_angle_minutes, double hour_angle_seconds, double declination_degrees, double declination_minutes, double declinationseconds) HorizonCoordinatesToEquatorialCoordinates(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
 		{
 			var hourAngleInDecimalDegrees = PAMacros.HorizonCoordinatesToHourAngle(azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds, geographicalLatitude);
@@ -177,7 +187,7 @@ namespace PALib
 		/// <param name="greenwichDay"></param>
 		/// <param name="greenwichMonth"></param>
 		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (outRAHours, outRAMinutes, outRASeconds, outDecDegrees, outDecMinutes, outDecSeconds)</returns>
 		public (double outRAHours, double outRAMinutes, double outRASeconds, double outDecDegrees, double outDecMinutes, double outDecSeconds) EclipticCoordinateToEquatorialCoordinate(double eclipticLongitudeDegrees, double eclipticLongitudeMinutes, double eclipticLongitudeSeconds, double eclipticLatitudeDegrees, double eclipticLatitudeMinutes, double eclipticLatitudeSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var eclonDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(eclipticLongitudeDegrees, eclipticLongitudeMinutes, eclipticLongitudeSeconds);
@@ -218,7 +228,7 @@ namespace PALib
 		/// <param name="gwDay"></param>
 		/// <param name="gwMonth"></param>
 		/// <param name="gwYear"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (outEclLongDeg, outEclLongMin, outEclLongSec, outEclLatDeg, outEclLatMin, outEclLatSec)</returns>
 		public (double outEclLongDeg, double outEclLongMin, double outEclLongSec, double outEclLatDeg, double outEclLatMin, double outEclLatSec) EquatorialCoordinateToEclipticCoordinate(double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds, double gwDay, int gwMonth, int gwYear)
 		{
 			var raDeg = PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHours, raMinutes, raSeconds));
@@ -255,7 +265,7 @@ namespace PALib
 		/// <param name="decDegrees"></param>
 		/// <param name="decMinutes"></param>
 		/// <param name="decSeconds"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (galLongDeg, galLongMin, galLongSec, galLatDeg, galLatMin, galLatSec)</returns>
 		public (double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec) EquatorialCoordinateToGalacticCoordinate(double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds)
 		{
 			var raDeg = PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHours, raMinutes, raSeconds));
@@ -289,7 +299,7 @@ namespace PALib
 		/// <param name="galLatDeg"></param>
 		/// <param name="galLatMin"></param>
 		/// <param name="galLatSec"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (raHours, raMinutes, raSeconds, decDegrees, decMinutes, decSeconds)</returns>
 		public (double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds) GalacticCoordinateToEquatorialCoordinate(double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec)
 		{
 			var glongDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(galLongDeg, galLongMin, galLongSec);
@@ -332,7 +342,7 @@ namespace PALib
 		/// <param name="decLat2Min"></param>
 		/// <param name="decLat2Sec"></param>
 		/// <param name="hourOrDegree"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (angleDeg, angleMin, angleSec)</returns>
 		public (double angleDeg, double angleMin, double angleSec) AngleBetweenTwoObjects(double raLong1HourDeg, double raLong1Min, double raLong1Sec, double decLat1Deg, double decLat1Min, double decLat1Sec, double raLong2HourDeg, double raLong2Min, double raLong2Sec, double decLat2Deg, double decLat2Min, double decLat2Sec, string hourOrDegree)
 		{
 			var raLong1Decimal = (hourOrDegree.Equals("H")) ? PAMacros.HMStoDH(raLong1HourDeg, raLong1Min, raLong1Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong1HourDeg, raLong1Min, raLong1Sec);
@@ -375,7 +385,7 @@ namespace PALib
 		/// <param name="geogLongDeg"></param>
 		/// <param name="geogLatDeg"></param>
 		/// <param name="vertShiftDeg"></param>
-		/// <returns></returns>
+		/// <returns>Tuple (riseSetStatus, utRiseHour, utRiseMin, utSetHour, utSetMin, azRise, azSet)</returns>
 		public (string riseSetStatus, double utRiseHour, double utRiseMin, double utSetHour, double utSetMin, double azRise, double azSet) RisingAndSetting(double raHours, double raMinutes, double raSeconds, double decDeg, double decMin, double decSec, double gwDateDay, int gwDateMonth, int gwDateYear, double geogLongDeg, double geogLatDeg, double vertShiftDeg)
 		{
 			var raHours1 = PAMacros.HMStoDH(raHours, raMinutes, raSeconds);
@@ -410,6 +420,43 @@ namespace PALib
 			return (riseSetStatus, utRiseHour, utRiseMin, utSetHour, utSetMin, azRise, azSet);
 		}
 
+		/// <summary>
+		/// Calculate precession (corrected coordinates between two epochs)
+		/// </summary>
+		/// <param name="raHour"></param>
+		/// <param name="raMinutes"></param>
+		/// <param name="raSeconds"></param>
+		/// <param name="decDeg"></param>
+		/// <param name="decMinutes"></param>
+		/// <param name="decSeconds"></param>
+		/// <param name="epoch1Day"></param>
+		/// <param name="epoch1Month"></param>
+		/// <param name="epoch1Year"></param>
+		/// <param name="epoch2Day"></param>
+		/// <param name="epoch2Month"></param>
+		/// <param name="epoch2Year"></param>
+		/// <returns>Tuple (correctedRAHour, correctedRAMinutes, correctedRASeconds, correctedDecDeg, correctedDecMinutes, correctedDecSeconds)</returns>
+		public (double correctedRAHour, double correctedRAMinutes, double correctedRASeconds, double correctedDecDeg, double correctedDecMinutes, double correctedDecSeconds) CorrectForPrecession(double raHour, double raMinutes, double raSeconds, double decDeg, double decMinutes, double decSeconds, double epoch1Day, int epoch1Month, int epoch1Year, double epoch2Day, int epoch2Month, int epoch2Year)
+		{
+			var ra1Rad = (PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHour, raMinutes, raSeconds))).ToRadians();
+			var dec1Rad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMinutes, decSeconds)).ToRadians();
+			var tCenturies = (PAMacros.CivilDateToJulianDate(epoch1Day, epoch1Month, epoch1Year) - 2415020) / 36525;
+			var mSec = 3.07234 + (0.00186 * tCenturies);
+			var nArcsec = 20.0468 - (0.0085 * tCenturies);
+			var nYears = (PAMacros.CivilDateToJulianDate(epoch2Day, epoch2Month, epoch2Year) - PAMacros.CivilDateToJulianDate(epoch1Day, epoch1Month, epoch1Year)) / 365.25;
+			var s1Hours = ((mSec + (nArcsec * (ra1Rad).Sine() * (dec1Rad).Tangent() / 15)) * nYears) / 3600;
+			var ra2Hours = PAMacros.HMStoDH(raHour, raMinutes, raSeconds) + s1Hours;
+			var s2Deg = (nArcsec * (ra1Rad).Cosine() * nYears) / 3600;
+			var dec2Deg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMinutes, decSeconds) + s2Deg;
 
+			var correctedRAHour = PAMacros.DecimalHoursHour(ra2Hours);
+			var correctedRAMinutes = PAMacros.DecimalHoursMinute(ra2Hours);
+			var correctedRASeconds = PAMacros.DecimalHoursSecond(ra2Hours);
+			var correctedDecDeg = PAMacros.DecimalDegreesDegrees(dec2Deg);
+			var correctedDecMinutes = PAMacros.DecimalDegreesMinutes(dec2Deg);
+			var correctedDecSeconds = PAMacros.DecimalDegreesSeconds(dec2Deg);
+
+			return (correctedRAHour, correctedRAMinutes, correctedRASeconds, correctedDecDeg, correctedDecMinutes, correctedDecSeconds);
+		}
 	}
 }
