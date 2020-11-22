@@ -458,5 +458,34 @@ namespace PALib
 
 			return (correctedRAHour, correctedRAMinutes, correctedRASeconds, correctedDecDeg, correctedDecMinutes, correctedDecSeconds);
 		}
+
+		/// <summary>
+		/// Calculate nutation for two values: ecliptic longitude and obliquity, for a Greenwich date.
+		/// </summary>
+		/// <param name="greenwich_day"></param>
+		/// <param name="greenwich_month"></param>
+		/// <param name="greenwich_year"></param>
+		/// <returns>Tuple (nutation in ecliptic longitude (degrees), nutation in obliquity (degrees))</returns>
+		public (double nutInLongDeg, double nutInOblDeg) NutationInEclipticLongitudeAndObliquity(double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var jdDays = PAMacros.CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
+			var tCenturies = (jdDays - 2415020) / 36525;
+			var aDeg = 100.0021358 * tCenturies;
+			var l1Deg = 279.6967 + (0.000303 * tCenturies * tCenturies);
+			var lDeg1 = l1Deg + 360 * (aDeg - aDeg.Floor());
+			var lDeg2 = lDeg1 - 360 * (lDeg1 / 360).Floor();
+			var lRad = lDeg2.ToRadians();
+			var bDeg = 5.372617 * tCenturies;
+			var nDeg1 = 259.1833 - 360 * (bDeg - bDeg.Floor());
+			var nDeg2 = nDeg1 - 360 * ((nDeg1 / 360).Floor());
+			var nRad = nDeg2.ToRadians();
+			var nutInLongArcsec = -17.2 * nRad.Sine() - 1.3 * (2 * lRad).Sine();
+			var nutInOblArcsec = 9.2 * nRad.Cosine() + 0.5 * (2 * lRad).Cosine();
+
+			var nutInLongDeg = nutInLongArcsec / 3600;
+			var nutInOblDeg = nutInOblArcsec / 3600;
+
+			return (nutInLongDeg, nutInOblDeg);
+		}
 	}
 }
