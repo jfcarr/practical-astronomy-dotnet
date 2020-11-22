@@ -717,5 +717,52 @@ namespace PALib
 
 			return ddo / 3600;
 		}
+
+		/// <summary>
+		/// Convert Local Sidereal Time to Greenwich Sidereal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LSTGST
+		/// </remarks>
+		/// <param name="localHours"></param>
+		/// <param name="localMinutes"></param>
+		/// <param name="localSeconds"></param>
+		/// <param name="longitude"></param>
+		/// <returns></returns>
+		public static double LocalSiderealTimeToGreenwichSiderealTime(double localHours, double localMinutes, double localSeconds, double longitude)
+		{
+			var a = HMStoDH(localHours, localMinutes, localSeconds);
+			var b = longitude / 15;
+			var c = a - b;
+
+			return c - (24 * (c / 24).Floor());
+		}
+
+		/// <summary>
+		/// Convert Greenwich Sidereal Time to Universal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: GSTUT
+		/// </remarks>
+		/// <param name="greenwichSiderealHours"></param>
+		/// <param name="greenwichSiderealMinutes"></param>
+		/// <param name="greenwichSiderealSeconds"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double GreenwichSiderealTimeToUniversalTime(double greenwichSiderealHours, double greenwichSiderealMinutes, double greenwichSiderealSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
+			var b = a - 2451545;
+			var c = b / 36525;
+			var d = 6.697374558 + (2400.051336 * c) + (0.000025862 * c * c);
+			var e = d - (24 * (d / 24).Floor());
+			var f = HMStoDH(greenwichSiderealHours, greenwichSiderealMinutes, greenwichSiderealSeconds);
+			var g = f - e;
+			var h = g - (24 * (g / 24).Floor());
+
+			return h * 0.9972695663;
+		}
 	}
 }

@@ -358,5 +358,58 @@ namespace PALib
 
 			return (angleDeg, angleMin, angleSec);
 		}
+
+
+		/// <summary>
+		/// Calculate rising and setting times for an object.
+		/// </summary>
+		/// <param name="raHours"></param>
+		/// <param name="raMinutes"></param>
+		/// <param name="raSeconds"></param>
+		/// <param name="decDeg"></param>
+		/// <param name="decMin"></param>
+		/// <param name="decSec"></param>
+		/// <param name="gwDateDay"></param>
+		/// <param name="gwDateMonth"></param>
+		/// <param name="gwDateYear"></param>
+		/// <param name="geogLongDeg"></param>
+		/// <param name="geogLatDeg"></param>
+		/// <param name="vertShiftDeg"></param>
+		/// <returns></returns>
+		public (string riseSetStatus, double utRiseHour, double utRiseMin, double utSetHour, double utSetMin, double azRise, double azSet) RisingAndSetting(double raHours, double raMinutes, double raSeconds, double decDeg, double decMin, double decSec, double gwDateDay, int gwDateMonth, int gwDateYear, double geogLongDeg, double geogLatDeg, double vertShiftDeg)
+		{
+			var raHours1 = PAMacros.HMStoDH(raHours, raMinutes, raSeconds);
+			var decRad = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMin, decSec).ToRadians();
+			var verticalDisplRadians = vertShiftDeg.ToRadians();
+			var geoLatRadians = geogLatDeg.ToRadians();
+			var cosH = -(verticalDisplRadians.Sine() + geoLatRadians.Sine() * decRad.Sine()) / (geoLatRadians.Cosine() * decRad.Cosine());
+			var hHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.Degrees(cosH.ACosine()));
+			var lstRiseHours = (raHours1 - hHours) - 24 * ((raHours1 - hHours) / 24).Floor();
+			var lstSetHours = (raHours1 + hHours) - 24 * ((raHours1 + hHours) / 24).Floor();
+			var aDeg = PAMacros.Degrees((((decRad).Sine() + (verticalDisplRadians).Sine() * (geoLatRadians).Sine()) / ((verticalDisplRadians).Cosine() * (geoLatRadians).Cosine())).ACosine());
+			var azRiseDeg = aDeg - 360 * (aDeg / 360).Floor();
+			var azSetDeg = (360 - aDeg) - 360 * ((360 - aDeg) / 360).Floor();
+			var utRiseHours1 = PAMacros.GreenwichSiderealTimeToUniversalTime(PAMacros.LocalSiderealTimeToGreenwichSiderealTime(lstRiseHours, 0, 0, geogLongDeg), 0, 0, gwDateDay, gwDateMonth, gwDateYear);
+			var utSetHours1 = PAMacros.GreenwichSiderealTimeToUniversalTime(PAMacros.LocalSiderealTimeToGreenwichSiderealTime(lstSetHours, 0, 0, geogLongDeg), 0, 0, gwDateDay, gwDateMonth, gwDateYear);
+			var utRiseAdjustedHours = utRiseHours1 + 0.008333;
+			var utSetAdjustedHours = utSetHours1 + 0.008333;
+
+			var riseSetStatus = "OK";
+			if (cosH > 1)
+				riseSetStatus = "never rises";
+			if (cosH < -1)
+				riseSetStatus = "circumpolar";
+
+			var utRiseHour = (riseSetStatus == "OK") ? PAMacros.DecimalHoursHour(utRiseAdjustedHours) : 0;
+			var utRiseMin = (riseSetStatus == "OK") ? PAMacros.DecimalHoursMinute(utRiseAdjustedHours) : 0;
+			var utSetHour = (riseSetStatus == "OK") ? PAMacros.DecimalHoursHour(utSetAdjustedHours) : 0;
+			var utSetMin = (riseSetStatus == "OK") ? PAMacros.DecimalHoursMinute(utSetAdjustedHours) : 0;
+			var azRise = (riseSetStatus == "OK") ? Math.Round(azRiseDeg, 2) : 0;
+			var azSet = (riseSetStatus == "OK") ? Math.Round(azSetDeg, 2) : 0;
+
+			return (riseSetStatus, utRiseHour, utRiseMin, utSetHour, utSetMin, azRise, azSet);
+		}
+
+
 	}
 }
