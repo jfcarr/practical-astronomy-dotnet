@@ -28,7 +28,7 @@ If you're interested in this topic, please buy the book! It provides far more de
 - [x] Convert -> Equatorial Coordinates <-> Galactic Coordinates
 - [x] Calculate -> Angle between two objects
 - [x] Calculate -> Rising and Setting times for an object
-- [ ] Calculate -> Precession (corrected coordinates between two epochs)
+- [x] Calculate -> Precession (corrected coordinates between two epochs)
 - [ ] Calculate -> Nutation (in ecliptic longitude and obliquity) for a Greenwich date
 - [ ] Calculate -> Effects of aberration for ecliptic coordinates
 - [ ] Calculate -> RA and Declination values, corrected for atmospheric refraction
