@@ -526,5 +526,56 @@ namespace PALib
 
 			return (apparentEclLongDeg, apparentEclLongMin, apparentEclLongSec, apparentEclLatDeg, apparentEclLatMin, apparentEclLatSec);
 		}
+
+
+		/// <summary>
+		/// Calculate corrected RA/Dec, accounting for atmospheric refraction.
+		/// </summary>
+		/// <remarks>
+		/// NOTE: Valid values for coordinate_type are "TRUE" and "APPARENT".
+		/// </remarks>
+		/// <param name="trueRAHour"></param>
+		/// <param name="trueRAMin"></param>
+		/// <param name="trueRASec"></param>
+		/// <param name="trueDecDeg"></param>
+		/// <param name="trueDecMin"></param>
+		/// <param name="trueDecSec"></param>
+		/// <param name="coordinateType"></param>
+		/// <param name="geogLongDeg"></param>
+		/// <param name="geogLatDeg"></param>
+		/// <param name="daylightSavingHours"></param>
+		/// <param name="timezoneHours"></param>
+		/// <param name="lcdDay"></param>
+		/// <param name="lcdMonth"></param>
+		/// <param name="lcdYear"></param>
+		/// <param name="lctHour"></param>
+		/// <param name="lctMin"></param>
+		/// <param name="lctSec"></param>
+		/// <param name="atmosphericPressureMbar"></param>
+		/// <param name="atmosphericTemperatureCelsius"></param>
+		/// <returns>
+		/// corrected RA hours,minutes,seconds,
+		/// corrected Declination degrees,minutes,seconds
+		/// </returns>
+		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) AtmosphericRefraction(double trueRAHour, double trueRAMin, double trueRASec, double trueDecDeg, double trueDecMin, double trueDecSec, string coordinateType, double geogLongDeg, double geogLatDeg, int daylightSavingHours, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec, double atmosphericPressureMbar, double atmosphericTemperatureCelsius)
+		{
+			var haHour = PAMacros.RightAscensionToHourAngle(trueRAHour, trueRAMin, trueRASec, lctHour, lctMin, lctSec, daylightSavingHours, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
+			var azimuthDeg = PAMacros.EquatorialCoordinatesToAzimuth(haHour, 0, 0, trueDecDeg, trueDecMin, trueDecSec, geogLatDeg);
+			var altitudeDeg = PAMacros.EquatorialCoordinatesToAltitude(haHour, 0, 0, trueDecDeg, trueDecMin, trueDecSec, geogLatDeg);
+			var correctedAltitudeDeg = PAMacros.Refract(altitudeDeg, coordinateType, atmosphericPressureMbar, atmosphericTemperatureCelsius);
+
+			var correctedHAHour = PAMacros.HorizonCoordinatesToHourAngle(azimuthDeg, 0, 0, correctedAltitudeDeg, 0, 0, geogLatDeg);
+			var correctedRAHour1 = PAMacros.HourAngleToRightAscension(correctedHAHour, 0, 0, lctHour, lctMin, lctSec, daylightSavingHours, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
+			var correctedDecDeg1 = PAMacros.HorizonCoordinatesToDeclination(azimuthDeg, 0, 0, correctedAltitudeDeg, 0, 0, geogLatDeg);
+
+			var correctedRAHour = PAMacros.DecimalHoursHour(correctedRAHour1);
+			var correctedRAMin = PAMacros.DecimalHoursMinute(correctedRAHour1);
+			var correctedRASec = PAMacros.DecimalHoursSecond(correctedRAHour1);
+			var correctedDecDeg = PAMacros.DecimalDegreesDegrees(correctedDecDeg1);
+			var correctedDecMin = PAMacros.DecimalDegreesMinutes(correctedDecDeg1);
+			var correctedDecSec = PAMacros.DecimalDegreesSeconds(correctedDecDeg1);
+
+			return (correctedRAHour, correctedRAMin, correctedRASec, correctedDecDeg, correctedDecMin, correctedDecSec);
+		}
 	}
 }

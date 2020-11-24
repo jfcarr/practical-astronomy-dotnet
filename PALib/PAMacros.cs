@@ -897,5 +897,84 @@ namespace PALib
 
 			return ae;
 		}
+
+		/// <summary>
+		/// Calculate effects of refraction
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: Refract
+		/// </remarks>
+		/// <param name="y2"></param>
+		/// <param name="sw"></param>
+		/// <param name="pr"></param>
+		/// <param name="tr"></param>
+		/// <returns></returns>
+		public static double Refract(double y2, string sw, double pr, double tr)
+		{
+			var y = y2.ToRadians();
+
+			var d = (sw.Substring(0, 1).ToLower() == "t") ? -1.0 : 1.0;
+
+			if (d == -1)
+			{
+				var y3 = y;
+				var y1 = y;
+				var r1 = 0.0;
+
+				while (1 == 1)
+				{
+					var yNew = y1 + r1;
+					var rfNew = RefractL3035(pr, tr, yNew, d);
+
+					if (y < -0.087)
+						return 0;
+
+					var r2 = rfNew;
+
+					if ((r2 == 0) || (Math.Abs(r2 - r1) < 0.000001))
+					{
+						var qNew = y3;
+
+						return Degrees(qNew + rfNew);
+					}
+
+					r1 = r2;
+				}
+			}
+
+			var rf = RefractL3035(pr, tr, y, d);
+
+			if (y < -0.087)
+				return 0;
+
+			var q = y;
+
+			return Degrees(q + rf);
+		}
+
+		/// <summary>
+		/// Helper function for Refract
+		/// </summary>
+		/// <param name="pr"></param>
+		/// <param name="tr"></param>
+		/// <param name="y"></param>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double RefractL3035(double pr, double tr, double y, double d)
+		{
+			if (y < 0.2617994)
+			{
+				if (y < -0.087)
+					return 0;
+
+				var yd = Degrees(y);
+				var a = ((0.00002 * yd + 0.0196) * yd + 0.1594) * pr;
+				var b = (273.0 + tr) * ((0.0845 * yd + 0.505) * yd + 1);
+
+				return (-(a / b) * d).ToRadians();
+			}
+
+			return -d * 0.00007888888 * pr / ((273.0 + tr) * (y).Tangent());
+		}
 	}
 }
