@@ -201,7 +201,7 @@ namespace PALib
 			var decDeg = PAMacros.Degrees(decRad);
 			var y = eclonRad.Sine() * obliqRad.Cosine() - eclatRad.Tangent() * obliqRad.Sine();
 			var x = eclonRad.Cosine();
-			var raRad = y.AngleTangent(x);
+			var raRad = y.AngleTangent2(x);
 			var raDeg1 = PAMacros.Degrees(raRad);
 			var raDeg2 = raDeg1 - 360 * (raDeg1 / 360).Floor();
 			var raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg2);
@@ -242,7 +242,7 @@ namespace PALib
 			var eclLatDeg = PAMacros.Degrees(eclLatRad);
 			var y = raRad.Sine() * obliqRad.Cosine() + decRad.Tangent() * obliqRad.Sine();
 			var x = raRad.Cosine();
-			var eclLongRad = y.AngleTangent(x);
+			var eclLongRad = y.AngleTangent2(x);
 			var eclLongDeg1 = PAMacros.Degrees(eclLongRad);
 			var eclLongDeg2 = eclLongDeg1 - 360 * (eclLongDeg1 / 360).Floor();
 
@@ -277,7 +277,7 @@ namespace PALib
 			var bDeg = PAMacros.Degrees(bRadians);
 			var y = decRad.Sine() - sinB * (27.4).ToRadians().Sine();
 			var x = decRad.Cosine() * (raRad - (192.25).ToRadians()).Sine() * (27.4).ToRadians().Cosine();
-			var longDeg1 = PAMacros.Degrees(y.AngleTangent(x)) + 33;
+			var longDeg1 = PAMacros.Degrees(y.AngleTangent2(x)) + 33;
 			var longDeg2 = longDeg1 - 360 * (longDeg1 / 360).Floor();
 
 			var galLongDeg = PAMacros.DecimalDegreesDegrees(longDeg2);
@@ -312,7 +312,7 @@ namespace PALib
 			var y = glatRad.Cosine() * (glongRad - (33.0).ToRadians()).Cosine();
 			var x = glatRad.Sine() * ((27.4).ToRadians()).Cosine() - (glatRad).Cosine() * ((27.4).ToRadians()).Sine() * (glongRad - (33.0).ToRadians()).Sine();
 
-			var raDeg1 = PAMacros.Degrees(y.AngleTangent(x)) + 192.25;
+			var raDeg1 = PAMacros.Degrees(y.AngleTangent2(x)) + 192.25;
 			var raDeg2 = raDeg1 - 360 * (raDeg1 / 360).Floor();
 			var raHours1 = PAMacros.DecimalDegreesToDegreeHours(raDeg2);
 
@@ -486,6 +486,45 @@ namespace PALib
 			var nutInOblDeg = nutInOblArcsec / 3600;
 
 			return (nutInLongDeg, nutInOblDeg);
+		}
+
+		/// <summary>
+		/// Correct ecliptic coordinates for the effects of aberration.
+		/// </summary>
+		/// <param name="utHour"></param>
+		/// <param name="utMinutes"></param>
+		/// <param name="utSeconds"></param>
+		/// <param name="gwDay"></param>
+		/// <param name="gwMonth"></param>
+		/// <param name="gwYear"></param>
+		/// <param name="trueEclLongDeg"></param>
+		/// <param name="trueEclLongMin"></param>
+		/// <param name="trueEclLongSec"></param>
+		/// <param name="trueEclLatDeg"></param>
+		/// <param name="trueEclLatMin"></param>
+		/// <param name="trueEclLatSec"></param>
+		/// <returns>
+		/// apparent ecliptic longitude (degrees, minutes, seconds),
+		/// apparent ecliptic latitude (degrees, minutes, seconds)
+		/// </returns>
+		public (double apparentEclLongDeg, double apparentEclLongMin, double apparentEclLongSec, double apparentEclLatDeg, double apparentEclLatMin, double apparentEclLatSec) CorrectForAberration(double utHour, double utMinutes, double utSeconds, double gwDay, int gwMonth, int gwYear, double trueEclLongDeg, double trueEclLongMin, double trueEclLongSec, double trueEclLatDeg, double trueEclLatMin, double trueEclLatSec)
+		{
+			var trueLongDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(trueEclLongDeg, trueEclLongMin, trueEclLongSec);
+			var trueLatDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(trueEclLatDeg, trueEclLatMin, trueEclLatSec);
+			var sunTrueLongDeg = PAMacros.SunLong(utHour, utMinutes, utSeconds, 0, 0, gwDay, gwMonth, gwYear);
+			var dlongArcsec = -20.5 * ((sunTrueLongDeg - trueLongDeg).ToRadians()).Cosine() / ((trueLatDeg).ToRadians()).Cosine();
+			var dlatArcsec = -20.5 * ((sunTrueLongDeg - trueLongDeg).ToRadians()).Sine() * ((trueLatDeg).ToRadians()).Sine();
+			var apparentLongDeg = trueLongDeg + (dlongArcsec / 3600);
+			var apparentLatDeg = trueLatDeg + (dlatArcsec / 3600);
+
+			var apparentEclLongDeg = PAMacros.DecimalDegreesDegrees(apparentLongDeg);
+			var apparentEclLongMin = PAMacros.DecimalDegreesMinutes(apparentLongDeg);
+			var apparentEclLongSec = PAMacros.DecimalDegreesSeconds(apparentLongDeg);
+			var apparentEclLatDeg = PAMacros.DecimalDegreesDegrees(apparentLatDeg);
+			var apparentEclLatMin = PAMacros.DecimalDegreesMinutes(apparentLatDeg);
+			var apparentEclLatSec = PAMacros.DecimalDegreesSeconds(apparentLatDeg);
+
+			return (apparentEclLongDeg, apparentEclLongMin, apparentEclLongSec, apparentEclLatDeg, apparentEclLatMin, apparentEclLatSec);
 		}
 	}
 }

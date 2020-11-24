@@ -103,5 +103,11 @@ namespace PALib.Tests
 
 			Assert.Equal((0.001525808, 0.0025671), (Math.Round(result.nutInLongDeg, 9), Math.Round(result.nutInOblDeg, 7)));
 		}
+
+		[Fact]
+		public void CorrectForAberration()
+		{
+			Assert.Equal((352, 37, 30.45, -1, 32, 56.33), _paCoordinates.CorrectForAberration(0, 0, 0, 8, 9, 1988, 352, 37, 10.1, -1, 32, 56.4));
+		}
 	}
 }

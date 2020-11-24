@@ -444,7 +444,7 @@ namespace PALib
 			var g = e.Sine() * f.Sine() + e.Cosine() * f.Cosine() * c.Cosine();
 			var h = -e.Cosine() * f.Cosine() * c.Sine();
 			var i = e.Sine() - (f.Sine() * g);
-			var j = Degrees(h.AngleTangent(i));
+			var j = Degrees(h.AngleTangent2(i));
 
 			return j - 360.0 * (j / 360).Floor();
 		}
@@ -638,7 +638,7 @@ namespace PALib
 			var f = d.Sine() * e.Sine() + d.Cosine() * e.Cosine() * c.Cosine();
 			var g = -d.Cosine() * e.Cosine() * c.Sine();
 			var h = d.Sine() - e.Sine() * f;
-			var i = DecimalDegreesToDegreeHours(Degrees(g.AngleTangent(h)));
+			var i = DecimalDegreesToDegreeHours(Degrees(g.AngleTangent2(h)));
 
 			return i - 24 * (i / 24).Floor();
 		}
@@ -763,6 +763,139 @@ namespace PALib
 			var h = g - (24 * (g / 24).Floor());
 
 			return h * 0.9972695663;
+		}
+
+		/// <summary>
+		/// Calculate Sun's ecliptic longitude
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunLong
+		/// </remarks>
+		/// <param name="lch"></param>
+		/// <param name="lcm"></param>
+		/// <param name="lcs"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <returns></returns>
+		public static double SunLong(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
+		{
+			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var bb = LocalCivilTimeGreenwichMonth(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var cc = LocalCivilTimeGreenwichYear(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var ut = LocalCivilTimeToUniversalTime(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var dj = CivilDateToJulianDate(aa, bb, cc) - 2415020;
+			var t = (dj / 36525) + (ut / 876600);
+			var t2 = t * t;
+			var a = 100.0021359 * t;
+			var b = 360.0 * (a - a.Floor());
+
+			var l = 279.69668 + 0.0003025 * t2 + b;
+			a = 99.99736042 * t;
+			b = 360 * (a - a.Floor());
+
+			var m1 = 358.47583 - (0.00015 + 0.0000033 * t) * t2 + b;
+			var ec = 0.01675104 - 0.0000418 * t - 0.000000126 * t2;
+
+			var am = m1.ToRadians();
+			var at = TrueAnomaly(am, ec);
+
+			a = 62.55209472 * t;
+			b = 360 * (a - a.Floor());
+
+			var a1 = (153.23 + b).ToRadians();
+			a = 125.1041894 * t;
+			b = 360 * (a - a.Floor());
+
+			var b1 = (216.57 + b).ToRadians();
+			a = 91.56766028 * t;
+			b = 360.0 * (a - a.Floor());
+
+			var c1 = (312.69 + b).ToRadians();
+			a = 1236.853095 * t;
+			b = 360.0 * (a - a.Floor());
+
+			var d1 = (350.74 - 0.00144 * t2 + b).ToRadians();
+			var e1 = (231.19 + 20.2 * t).ToRadians();
+			a = 183.1353208 * t;
+			b = 360.0 * (a - a.Floor());
+			var h1 = (353.4 + b).ToRadians();
+
+			var d2 = 0.00134 * a1.Cosine() + 0.00154 * b1.Cosine() + 0.002 * c1.Cosine();
+			d2 = d2 + 0.00179 * d1.Sine() + 0.00178 * e1.Sine();
+			var d3 = 0.00000543 * a1.Sine() + 0.00001575 * b1.Sine();
+			d3 = d3 + 0.00001627 * c1.Sine() + 0.00003076 * d1.Cosine();
+
+			var sr = at + (l - m1 + d2).ToRadians();
+			var tp = 6.283185308;
+
+			sr = sr - tp * (sr / tp).Floor();
+
+			return Degrees(sr);
+		}
+
+		/// <summary>
+		/// Solve Kepler's equation, and return value of the true anomaly in radians
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: TrueAnomaly
+		/// </remarks>
+		/// <param name="am"></param>
+		/// <param name="ec"></param>
+		/// <returns></returns>
+		public static double TrueAnomaly(double am, double ec)
+		{
+			var tp = 6.283185308;
+			var m = am - tp * (am / tp).Floor();
+			var ae = m;
+
+			while (1 == 1)
+			{
+				var d = ae - (ec * (ae).Sine()) - m;
+				if (Math.Abs(d) < 0.000001)
+				{
+					break;
+				}
+				d = d / (1.0 - (ec * (ae).Cosine()));
+				ae = ae - d;
+			}
+			var a = ((1 + ec) / (1 - ec)).SquareRoot() * (ae / 2).Tangent();
+			var at = 2.0 * a.AngleTangent();
+
+			return at;
+		}
+
+		/// <summary>
+		/// Solve Kepler's equation, and return value of the eccentric anomaly in radians
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: EccentricAnomaly
+		/// </remarks>
+		/// <param name="am"></param>
+		/// <param name="ec"></param>
+		/// <returns></returns>
+		public static double EccentricAnomaly(double am, double ec)
+		{
+			var tp = 6.283185308;
+			var m = am - tp * (am / tp).Floor();
+			var ae = m;
+
+			while (1 == 1)
+			{
+				var d = ae - (ec * (ae).Sine()) - m;
+
+				if (Math.Abs(d) < 0.000001)
+				{
+					break;
+				}
+
+				d = d / (1 - (ec * ae.Cosine()));
+				ae = ae - d;
+			}
+
+			return ae;
 		}
 	}
 }

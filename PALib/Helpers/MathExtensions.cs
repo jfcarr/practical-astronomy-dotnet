@@ -15,12 +15,22 @@ namespace PALib.Helpers
 		}
 
 		/// <summary>
+		/// Returns the angle whose tangent is the specified number.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double AngleTangent(this double d)
+		{
+			return Math.Atan(d);
+		}
+
+		/// <summary>
 		/// Returns the angle whose tangent is the quotient of two specified numbers.
 		/// </summary>
 		/// <param name="y"></param>
 		/// <param name="x"></param>
 		/// <returns></returns>
-		public static double AngleTangent(this double y, double x)
+		public static double AngleTangent2(this double y, double x)
 		{
 			return Math.Atan2(y, x);
 		}
@@ -63,6 +73,16 @@ namespace PALib.Helpers
 		public static double Sine(this double a)
 		{
 			return Math.Sin(a);
+		}
+
+		/// <summary>
+		/// Returns the square root of a specified number. 
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double SquareRoot(this double d)
+		{
+			return Math.Sqrt(d);
 		}
 
 		/// <summary>
