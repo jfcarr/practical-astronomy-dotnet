@@ -976,5 +976,221 @@ namespace PALib
 
 			return -d * 0.00007888888 * pr / ((273.0 + tr) * (y).Tangent());
 		}
+
+		/// <summary>
+		/// Calculate corrected hour angle in decimal hours
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: ParallaxHA
+		/// </remarks>
+		/// <param name="hh"></param>
+		/// <param name="hm"></param>
+		/// <param name="hs"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="sw"></param>
+		/// <param name="gp"></param>
+		/// <param name="ht"></param>
+		/// <param name="hp"></param>
+		/// <returns></returns>
+		public static double ParallaxHA(double hh, double hm, double hs, double dd, double dm, double ds, string sw, double gp, double ht, double hp)
+		{
+			var a = gp.ToRadians();
+			var c1 = a.Cosine();
+			var s1 = a.Sine();
+
+			var u = (0.996647 * s1 / c1).AngleTangent();
+			var c2 = u.Cosine();
+			var s2 = u.Sine();
+			var b = ht / 6378160;
+
+			var rs = (0.996647 * s2) + (b * s1);
+
+			var rc = c2 + (b * c1);
+			var tp = 6.283185308;
+
+			var rp = 1.0 / hp.ToRadians().Sine();
+
+			var x = (DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs))).ToRadians();
+			var x1 = x;
+			var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var y1 = y;
+
+			var d = (sw.Substring(0, 1).ToLower().Equals("t")) ? 1.0 : -1.0;
+
+			if (d == 1)
+			{
+				var result = ParallaxHAL2870(x, y, rc, rp, rs, tp);
+				return DecimalDegreesToDegreeHours(Degrees(result.p));
+			}
+
+			var p1 = 0.0;
+			var q1 = 0.0;
+			var xLoop = x;
+			var yLoop = y;
+
+			while (1 == 1)
+			{
+				var result = ParallaxHAL2870(xLoop, yLoop, rc, rp, rs, tp);
+				var p2 = result.p - xLoop;
+				var q2 = result.q - yLoop;
+
+				var aa = Math.Abs(p2 - p1);
+				var bb = Math.Abs(q2 - q1);
+
+				if ((aa < 0.000001) && (bb < 0.000001))
+				{
+					var p = x1 - p2;
+
+					return DecimalDegreesToDegreeHours(Degrees(p));
+				}
+
+				xLoop = x1 - p2;
+				yLoop = y1 - q2;
+				p1 = p2;
+				q1 = q2;
+			}
+
+			// return DecimalDegreesToDegreeHours(Degrees(0));
+		}
+
+		/// <summary>
+		/// Helper function for parallax_ha
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="rc"></param>
+		/// <param name="rp"></param>
+		/// <param name="rs"></param>
+		/// <param name="tp"></param>
+		/// <returns></returns>
+		public static (double p, double q) ParallaxHAL2870(double x, double y, double rc, double rp, double rs, double tp)
+		{
+			var cx = x.Cosine();
+			var sy = y.Sine();
+			var cy = y.Cosine();
+
+			var aa = (rc * x.Sine()) / ((rp * cy) - (rc * cx));
+
+			var dx = aa.AngleTangent();
+			var p = x + dx;
+			var cp = p.Cosine();
+
+			p = p - tp * (p / tp).Floor();
+			var q = (cp * (rp * sy - rs) / (rp * cy * cx - rc)).AngleTangent();
+
+			return (p, q);
+		}
+
+		/// <summary>
+		/// Calculate corrected declination in decimal degrees
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Original macro name: ParallaxDec
+		/// </para>
+		/// <para>
+		/// HH,HM,HS,DD,DM,DS,SW,GP,HT,HP
+		/// </para>
+		/// </remarks>
+		/// <param name="hh"></param>
+		/// <param name="hm"></param>
+		/// <param name="hs"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="sw"></param>
+		/// <param name="gp"></param>
+		/// <param name="ht"></param>
+		/// <param name="hp"></param>
+		/// <returns></returns>
+		public static double ParallaxDec(double hh, double hm, double hs, double dd, double dm, double ds, string sw, double gp, double ht, double hp)
+		{
+			var a = gp.ToRadians();
+			var c1 = a.Cosine();
+			var s1 = a.Sine();
+
+			var u = (0.996647 * s1 / c1).AngleTangent();
+
+			var c2 = u.Cosine();
+			var s2 = u.Sine();
+			var b = ht / 6378160;
+			var rs = (0.996647 * s2) + (b * s1);
+
+			var rc = c2 + (b * c1);
+			var tp = 6.283185308;
+
+			var rp = 1.0 / hp.ToRadians().Sine();
+
+			var x = (DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs))).ToRadians();
+			var x1 = x;
+
+			var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var y1 = y;
+
+			var d = (sw.Substring(0, 1).ToLower().Equals("t")) ? 1.0 : -1.0;
+
+			if (d == 1)
+			{
+				var result = ParallaxDecL2870(x, y, rc, rp, rs, tp);
+
+				return Degrees(result.q);
+			}
+
+			var p1 = 0.0;
+			var q1 = 0.0;
+
+			var xLoop = x;
+			var yLoop = y;
+
+			while (1 == 1)
+			{
+				var result = ParallaxDecL2870(xLoop, yLoop, rc, rp, rs, tp);
+				var p2 = result.p - xLoop;
+				var q2 = result.q - yLoop;
+				var aa = Math.Abs(p2 - p1);
+
+				if ((aa < 0.000001) && (b < 0.000001))
+				{
+					var q = y1 - q2;
+
+					return Degrees(q);
+				}
+				xLoop = x1 - p2;
+				yLoop = y1 - q2;
+				p1 = p2;
+				q1 = q2;
+			}
+
+			// return Degrees(0.0);
+		}
+
+		/// <summary>
+		/// Helper function for parallax_dec
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="rc"></param>
+		/// <param name="rp"></param>
+		/// <param name="rs"></param>
+		/// <param name="tp"></param>
+		/// <returns></returns>
+		public static (double p, double q) ParallaxDecL2870(double x, double y, double rc, double rp, double rs, double tp)
+		{
+			var cx = x.Cosine();
+			var sy = y.Sine();
+			var cy = y.Cosine();
+
+			var aa = (rc * x.Sine()) / ((rp * cy) - (rc * cx));
+			var dx = aa.AngleTangent();
+			var p = x + dx;
+			var cp = p.Cosine();
+
+			p = p - tp * (p / tp).Floor();
+			var q = (cp * (rp * sy - rs) / (rp * cy * cx - rc)).AngleTangent();
+
+			return (p, q);
+		}
 	}
 }
