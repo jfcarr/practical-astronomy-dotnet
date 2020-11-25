@@ -577,5 +577,52 @@ namespace PALib
 
 			return (correctedRAHour, correctedRAMin, correctedRASec, correctedDecDeg, correctedDecMin, correctedDecSec);
 		}
+
+
+		/// <summary>
+		/// Calculate corrected RA/Dec, accounting for geocentric parallax.
+		/// </summary>
+		/// <remarks>
+		/// NOTE: Valid values for coordinate_type are "TRUE" and "APPARENT".
+		/// </remarks>
+		/// <param name="raHour"></param>
+		/// <param name="raMin"></param>
+		/// <param name="raSec"></param>
+		/// <param name="decDeg"></param>
+		/// <param name="decMin"></param>
+		/// <param name="decSec"></param>
+		/// <param name="coordinateType"></param>
+		/// <param name="equatorialHorParallaxDeg"></param>
+		/// <param name="geogLongDeg"></param>
+		/// <param name="geogLatDeg"></param>
+		/// <param name="heightM"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="timezoneHours"></param>
+		/// <param name="lcdDay"></param>
+		/// <param name="lcdMonth"></param>
+		/// <param name="lcdYear"></param>
+		/// <param name="lctHour"></param>
+		/// <param name="lctMin"></param>
+		/// <param name="lctSec"></param>
+		/// <returns>corrected RA hours,minutes,seconds and corrected Declination degrees,minutes,seconds</returns>
+		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) CorrectionsForGeocentricParallax(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, string coordinateType, double equatorialHorParallaxDeg, double geogLongDeg, double geogLatDeg, double heightM, int daylightSaving, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec)
+		{
+			var haHours = PAMacros.RightAscensionToHourAngle(raHour, raMin, raSec, lctHour, lctMin, lctSec, daylightSaving, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
+
+			var correctedHAHours = PAMacros.ParallaxHA(haHours, 0, 0, decDeg, decMin, decSec, coordinateType, geogLatDeg, heightM, equatorialHorParallaxDeg);
+
+			var correctedRAHours = PAMacros.HourAngleToRightAscension(correctedHAHours, 0, 0, lctHour, lctMin, lctSec, daylightSaving, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
+
+			var correctedDecDeg1 = PAMacros.ParallaxDec(haHours, 0, 0, decDeg, decMin, decSec, coordinateType, geogLatDeg, heightM, equatorialHorParallaxDeg);
+
+			var correctedRAHour = PAMacros.DecimalHoursHour(correctedRAHours);
+			var correctedRAMin = PAMacros.DecimalHoursMinute(correctedRAHours);
+			var correctedRASec = PAMacros.DecimalHoursSecond(correctedRAHours);
+			var correctedDecDeg = PAMacros.DecimalDegreesDegrees(correctedDecDeg1);
+			var correctedDecMin = PAMacros.DecimalDegreesMinutes(correctedDecDeg1);
+			var correctedDecSec = PAMacros.DecimalDegreesSeconds(correctedDecDeg1);
+
+			return (correctedRAHour, correctedRAMin, correctedRASec, correctedDecDeg, correctedDecMin, correctedDecSec);
+		}
 	}
 }

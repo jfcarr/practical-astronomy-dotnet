@@ -115,5 +115,13 @@ namespace PALib.Tests
 		{
 			Assert.Equal((23, 13, 44.74, 40, 19, 45.76), _paCoordinates.AtmosphericRefraction(23, 14, 0, 40, 10, 0, "TRUE", 0.17, 51.2036110, 0, 0, 23, 3, 1987, 1, 1, 24, 1012, 21.7));
 		}
+
+		[Fact]
+		public void CorrectionsForGeocentricParallax()
+		{
+			var result = _paCoordinates.CorrectionsForGeocentricParallax(22, 35, 19, -7, 41, 13, "TRUE", 1.019167, -100, 50, 60, 0, -6, 26, 2, 1979, 10, 45, 0);
+
+			Assert.Equal((22, 36, 43.22, -8, 32, 17.4), result);
+		}
 	}
 }
