@@ -135,5 +135,17 @@ namespace PALib.Tests
 		{
 			Assert.Equal(1624, _paCoordinates.CarringtonRotationNumber(27, 1, 1975));
 		}
+
+		[Fact]
+		public void SelenographicCoordinates1()
+		{
+			Assert.Equal((-4.88, 4.04, 19.78), _paCoordinates.SelenographicCoordinates1(1, 5, 1988));
+		}
+
+		[Fact]
+		public void SelenographicCoordinates2()
+		{
+			Assert.Equal((6.81, 83.19, 1.19), _paCoordinates.SelenographicCoordinates2(1, 5, 1988));
+		}
 	}
 }
