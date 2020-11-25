@@ -663,5 +663,21 @@ namespace PALib
 
 			return (helioLongDeg, helioLatDeg);
 		}
+
+		/// <summary>
+		/// Calculate carrington rotation number for a Greenwich date
+		/// </summary>
+		/// <param name="gwdateDay"></param>
+		/// <param name="gwdateMonth"></param>
+		/// <param name="gwdateYear"></param>
+		/// <returns>carrington rotation number</returns>
+		public int CarringtonRotationNumber(double gwdateDay, int gwdateMonth, int gwdateYear)
+		{
+			var julianDateDays = PAMacros.CivilDateToJulianDate(gwdateDay, gwdateMonth, gwdateYear);
+
+			var crn = 1690 + (int)Math.Round((julianDateDays - 2444235.34) / 27.2753, 0);
+
+			return crn;
+		}
 	}
 }

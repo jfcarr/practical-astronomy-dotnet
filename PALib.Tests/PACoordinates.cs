@@ -129,5 +129,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((142.59, -19.94), _paCoordinates.HeliographicCoordinates(220, 10.5, 1, 5, 1988));
 		}
+
+		[Fact]
+		public void CarringtonRotationNumber()
+		{
+			Assert.Equal(1624, _paCoordinates.CarringtonRotationNumber(27, 1, 1975));
+		}
 	}
 }
