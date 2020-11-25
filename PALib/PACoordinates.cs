@@ -624,5 +624,44 @@ namespace PALib
 
 			return (correctedRAHour, correctedRAMin, correctedRASec, correctedDecDeg, correctedDecMin, correctedDecSec);
 		}
+
+		/// <summary>
+		/// Calculate heliographic coordinates for a given Greenwich date, with a given heliographic position angle and heliographic displacement in arc minutes.
+		/// </summary>
+		/// <param name="helioPositionAngleDeg"></param>
+		/// <param name="helioDisplacementArcmin"></param>
+		/// <param name="gwdateDay"></param>
+		/// <param name="gwdateMonth"></param>
+		/// <param name="gwdateYear"></param>
+		/// <returns>heliographic longitude and heliographic latitude, in degrees</returns>
+		public (double helioLongDeg, double helioLatDeg) HeliographicCoordinates(double helioPositionAngleDeg, double helioDisplacementArcmin, double gwdateDay, int gwdateMonth, int gwdateYear)
+		{
+			var julianDateDays = PAMacros.CivilDateToJulianDate(gwdateDay, gwdateMonth, gwdateYear);
+			var tCenturies = (julianDateDays - 2415020) / 36525;
+			var longAscNodeDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(74, 22, 0) + (84 * tCenturies / 60);
+			var sunLongDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var y = ((longAscNodeDeg - sunLongDeg).ToRadians()).Sine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Cosine();
+			var x = -((longAscNodeDeg - sunLongDeg).ToRadians()).Cosine();
+			var aDeg = PAMacros.Degrees(y.AngleTangent2(x));
+			var mDeg1 = 360 - (360 * (julianDateDays - 2398220) / 25.38);
+			var mDeg2 = mDeg1 - 360 * (mDeg1 / 360).Floor();
+			var l0Deg1 = mDeg2 + aDeg;
+			// var _l0_deg2 = l0_deg1 - 360.0 * (l0_deg1 / 360.0).floor();
+			var b0Rad = (((sunLongDeg - longAscNodeDeg).ToRadians()).Sine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Sine()).ASine();
+			var theta1Rad = (-((sunLongDeg).ToRadians()).Cosine() * ((PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear)).ToRadians()).Tangent()).AngleTangent();
+			var theta2Rad = (-((longAscNodeDeg - sunLongDeg).ToRadians()).Cosine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Tangent()).AngleTangent();
+			var pDeg = PAMacros.Degrees(theta1Rad + theta2Rad);
+			var rho1Deg = helioDisplacementArcmin / 60;
+			var rhoRad = (2 * rho1Deg / PAMacros.SunDia(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ASine() - (rho1Deg).ToRadians();
+			var bRad = ((b0Rad).Sine() * (rhoRad).Cosine() + (b0Rad).Cosine() * (rhoRad).Sine() * ((pDeg - helioPositionAngleDeg).ToRadians()).Cosine()).ASine();
+			var bDeg = PAMacros.Degrees(bRad);
+			var lDeg1 = PAMacros.Degrees(((rhoRad).Sine() * ((pDeg - helioPositionAngleDeg).ToRadians()).Sine() / (bRad).Cosine()).ASine()) + l0Deg1;
+			var lDeg2 = lDeg1 - 360 * (lDeg1 / 360).Floor();
+
+			var helioLongDeg = Math.Round(lDeg2, 2);
+			var helioLatDeg = Math.Round(bDeg, 2);
+
+			return (helioLongDeg, helioLatDeg);
+		}
 	}
 }
