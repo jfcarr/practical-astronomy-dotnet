@@ -1272,5 +1272,314 @@ namespace PALib
 
 			return 1.0000002 * (1 - ec * ae.Cosine()) + d3;
 		}
+
+		/// <summary>
+		/// Calculate geocentric ecliptic longitude for the Moon
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonLong
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonLong(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var t = ((CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525) + (ut / 876600);
+			var t2 = t * t;
+
+			var m1 = 27.32158213;
+			var m2 = 365.2596407;
+			var m3 = 27.55455094;
+			var m4 = 29.53058868;
+			var m5 = 27.21222039;
+			var m6 = 6798.363307;
+			var q = CivilDateToJulianDate(gd, gm, gy) - 2415020 + (ut / 24);
+			m1 = q / m1;
+			m2 = q / m2;
+			m3 = q / m3;
+			m4 = q / m4;
+			m5 = q / m5;
+			m6 = q / m6;
+			m1 = 360 * (m1 - (m1).Floor());
+			m2 = 360 * (m2 - (m2).Floor());
+			m3 = 360 * (m3 - (m3).Floor());
+			m4 = 360 * (m4 - (m4).Floor());
+			m5 = 360 * (m5 - (m5).Floor());
+			m6 = 360 * (m6 - (m6).Floor());
+
+			var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
+			var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
+			var md = 296.104608 + m3 + (0.009192 + 0.0000144 * t) * t2;
+			var me1 = 350.737486 + m4 - (0.001436 - 0.0000019 * t) * t2;
+			var mf = 11.250889 + m5 - (0.003211 + 0.0000003 * t) * t2;
+			var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
+			var a = (51.2 + 20.2 * t).ToRadians();
+			var s1 = a.Sine();
+			var s2 = ((na).ToRadians()).Sine();
+			var b = 346.56 + (132.87 - 0.0091731 * t) * t;
+			var s3 = 0.003964 * ((b).ToRadians()).Sine();
+			var c = (na + 275.05 - 2.3 * t).ToRadians();
+			var s4 = c.Sine();
+			ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
+			ms = ms - 0.001778 * s1;
+			md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
+			mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
+			me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
+			var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
+			var e2 = e * e;
+			ml = (ml).ToRadians();
+			ms = ms.ToRadians();
+			// var _na = na.ToRadians();
+			me1 = me1.ToRadians();
+			mf = mf.ToRadians();
+			md = md.ToRadians();
+
+			var l = 6.28875 * (md).Sine() + 1.274018 * (2.0 * me1 - md).Sine();
+			l = l + 0.658309 * (2.0 * me1).Sine() + 0.213616 * (2.0 * md).Sine();
+			l = l - e * 0.185596 * (ms).Sine() - 0.114336 * (2.0 * mf).Sine();
+			l = l + 0.058793 * (2.0 * (me1 - md)).Sine();
+			l = l + 0.057212 * e * (2.0 * me1 - ms - md).Sine() + 0.05332 * (2.0 * me1 + md).Sine();
+			l = l + 0.045874 * e * (2.0 * me1 - ms).Sine() + 0.041024 * e * (md - ms).Sine();
+			l = l - 0.034718 * (me1).Sine() - e * 0.030465 * (ms + md).Sine();
+			l = l + 0.015326 * (2.0 * (me1 - mf)).Sine() - 0.012528 * (2.0 * mf + md).Sine();
+			l = l - 0.01098 * (2.0 * mf - md).Sine() + 0.010674 * (4.0 * me1 - md).Sine();
+			l = l + 0.010034 * (3.0 * md).Sine() + 0.008548 * (4.0 * me1 - 2.0 * md).Sine();
+			l = l - e * 0.00791 * (ms - md + 2.0 * me1).Sine() - e * 0.006783 * (2.0 * me1 + ms).Sine();
+			l = l + 0.005162 * (md - me1).Sine() + e * 0.005 * (ms + me1).Sine();
+			l = l + 0.003862 * (4.0 * me1).Sine() + e * 0.004049 * (md - ms + 2.0 * me1).Sine();
+			l = l + 0.003996 * (2.0 * (md + me1)).Sine() + 0.003665 * (2.0 * me1 - 3.0 * md).Sine();
+			l = l + e * 0.002695 * (2.0 * md - ms).Sine() + 0.002602 * (md - 2.0 * (mf + me1)).Sine();
+			l = l + e * 0.002396 * (2.0 * (me1 - md) - ms).Sine() - 0.002349 * (md + me1).Sine();
+			l = l + e2 * 0.002249 * (2.0 * (me1 - ms)).Sine() - e * 0.002125 * (2.0 * md + ms).Sine();
+			l = l - e2 * 0.002079 * (2.0 * ms).Sine() + e2 * 0.002059 * (2.0 * (me1 - ms) - md).Sine();
+			l = l - 0.001773 * (md + 2.0 * (me1 - mf)).Sine() - 0.001595 * (2.0 * (mf + me1)).Sine();
+			l = l + e * 0.00122 * (4.0 * me1 - ms - md).Sine() - 0.00111 * (2.0 * (md + mf)).Sine();
+			l = l + 0.000892 * (md - 3.0 * me1).Sine() - e * 0.000811 * (ms + md + 2.0 * me1).Sine();
+			l = l + e * 0.000761 * (4.0 * me1 - ms - 2.0 * md).Sine();
+			l = l + e2 * 0.000704 * (md - 2.0 * (ms + me1)).Sine();
+			l = l + e * 0.000693 * (ms - 2.0 * (md - me1)).Sine();
+			l = l + e * 0.000598 * (2.0 * (me1 - mf) - ms).Sine();
+			l = l + 0.00055 * (md + 4.0 * me1).Sine() + 0.000538 * (4.0 * md).Sine();
+			l = l + e * 0.000521 * (4.0 * me1 - ms).Sine() + 0.000486 * (2.0 * md - me1).Sine();
+			l = l + e2 * 0.000717 * (md - 2.0 * ms).Sine();
+			var mm = Unwind(ml + l.ToRadians());
+
+			return Degrees(mm);
+		}
+
+		/// <summary>
+		/// Calculate geocentric ecliptic latitude for the Moon
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonLat
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonLat(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var t = ((CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525) + (ut / 876600);
+			var t2 = t * t;
+
+			var m1 = 27.32158213;
+			var m2 = 365.2596407;
+			var m3 = 27.55455094;
+			var m4 = 29.53058868;
+			var m5 = 27.21222039;
+			var m6 = 6798.363307;
+			var q = CivilDateToJulianDate(gd, gm, gy) - 2415020 + (ut / 24);
+			m1 = q / m1;
+			m2 = q / m2;
+			m3 = q / m3;
+			m4 = q / m4;
+			m5 = q / m5;
+			m6 = q / m6;
+			m1 = 360 * (m1 - (m1).Floor());
+			m2 = 360 * (m2 - (m2).Floor());
+			m3 = 360 * (m3 - (m3).Floor());
+			m4 = 360 * (m4 - (m4).Floor());
+			m5 = 360 * (m5 - (m5).Floor());
+			m6 = 360 * (m6 - (m6).Floor());
+
+			var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
+			var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
+			var md = 296.104608 + m3 + (0.009192 + 0.0000144 * t) * t2;
+			var me1 = 350.737486 + m4 - (0.001436 - 0.0000019 * t) * t2;
+			var mf = 11.250889 + m5 - (0.003211 + 0.0000003 * t) * t2;
+			var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
+			var a = (51.2 + 20.2 * t).ToRadians();
+			var s1 = (a).Sine();
+			var s2 = na.ToRadians().Sine();
+			var b = 346.56 + (132.87 - 0.0091731 * t) * t;
+			var s3 = 0.003964 * b.ToRadians().Sine();
+			var c = (na + 275.05 - 2.3 * t).ToRadians();
+			var s4 = (c).Sine();
+			ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
+			ms = ms - 0.001778 * s1;
+			md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
+			mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
+			me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
+			var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
+			var e2 = e * e;
+			var _ml = (ml).ToRadians();
+			ms = (ms).ToRadians();
+			na = (na).ToRadians();
+			me1 = (me1).ToRadians();
+			mf = (mf).ToRadians();
+			md = (md).ToRadians();
+
+			var g = 5.128189 * (mf).Sine() + 0.280606 * (md + mf).Sine();
+			g = g + 0.277693 * (md - mf).Sine() + 0.173238 * (2.0 * me1 - mf).Sine();
+			g = g + 0.055413 * (2.0 * me1 + mf - md).Sine() + 0.046272 * (2.0 * me1 - mf - md).Sine();
+			g = g + 0.032573 * (2.0 * me1 + mf).Sine() + 0.017198 * (2.0 * md + mf).Sine();
+			g = g + 0.009267 * (2.0 * me1 + md - mf).Sine() + 0.008823 * (2.0 * md - mf).Sine();
+			g = g + e * 0.008247 * (2.0 * me1 - ms - mf).Sine() + 0.004323 * (2.0 * (me1 - md) - mf).Sine();
+			g = g + 0.0042 * (2.0 * me1 + mf + md).Sine() + e * 0.003372 * (mf - ms - 2.0 * me1).Sine();
+			g = g + e * 0.002472 * (2.0 * me1 + mf - ms - md).Sine();
+			g = g + e * 0.002222 * (2.0 * me1 + mf - ms).Sine();
+			g = g + e * 0.002072 * (2.0 * me1 - mf - ms - md).Sine();
+			g = g + e * 0.001877 * (mf - ms + md).Sine() + 0.001828 * (4.0 * me1 - mf - md).Sine();
+			g = g - e * 0.001803 * (mf + ms).Sine() - 0.00175 * (3.0 * mf).Sine();
+			g = g + e * 0.00157 * (md - ms - mf).Sine() - 0.001487 * (mf + me1).Sine();
+			g = g - e * 0.001481 * (mf + ms + md).Sine() + e * 0.001417 * (mf - ms - md).Sine();
+			g = g + e * 0.00135 * (mf - ms).Sine() + 0.00133 * (mf - me1).Sine();
+			g = g + 0.001106 * (mf + 3.0 * md).Sine() + 0.00102 * (4.0 * me1 - mf).Sine();
+			g = g + 0.000833 * (mf + 4.0 * me1 - md).Sine() + 0.000781 * (md - 3.0 * mf).Sine();
+			g = g + 0.00067 * (mf + 4.0 * me1 - 2.0 * md).Sine() + 0.000606 * (2.0 * me1 - 3.0 * mf).Sine();
+			g = g + 0.000597 * (2.0 * (me1 + md) - mf).Sine();
+			g = g + e * 0.000492 * (2.0 * me1 + md - ms - mf).Sine() + 0.00045 * (2.0 * (md - me1) - mf).Sine();
+			g = g + 0.000439 * (3.0 * md - mf).Sine() + 0.000423 * (mf + 2.0 * (me1 + md)).Sine();
+			g = g + 0.000422 * (2.0 * me1 - mf - 3.0 * md).Sine() - e * 0.000367 * (ms + mf + 2.0 * me1 - md).Sine();
+			g = g - e * 0.000353 * (ms + mf + 2.0 * me1).Sine() + 0.000331 * (mf + 4.0 * me1).Sine();
+			g = g + e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
+			g = g + e2 * 0.000306 * (2.0 * (me1 - ms) - mf).Sine() - 0.000283 * (md + 3.0 * mf).Sine();
+			var w1 = 0.0004664 * (na).Cosine();
+			var w2 = 0.0000754 * (c).Cosine();
+			var bm = (g).ToRadians() * (1.0 - w1 - w2);
+
+			return Degrees(bm);
+		}
+
+		/// <summary>
+		/// Calculate horizontal parallax for the Moon
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonHP
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonHP(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var t = ((CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525) + (ut / 876600);
+			var t2 = t * t;
+
+			var m1 = 27.32158213;
+			var m2 = 365.2596407;
+			var m3 = 27.55455094;
+			var m4 = 29.53058868;
+			var m5 = 27.21222039;
+			var m6 = 6798.363307;
+			var q = CivilDateToJulianDate(gd, gm, gy) - 2415020 + (ut / 24);
+			m1 = q / m1;
+			m2 = q / m2;
+			m3 = q / m3;
+			m4 = q / m4;
+			m5 = q / m5;
+			m6 = q / m6;
+			m1 = 360 * (m1 - (m1).Floor());
+			m2 = 360 * (m2 - (m2).Floor());
+			m3 = 360 * (m3 - (m3).Floor());
+			m4 = 360 * (m4 - (m4).Floor());
+			m5 = 360 * (m5 - (m5).Floor());
+			m6 = 360 * (m6 - (m6).Floor());
+
+			var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
+			var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
+			var md = 296.104608 + m3 + (0.009192 + 0.0000144 * t) * t2;
+			var me1 = 350.737486 + m4 - (0.001436 - 0.0000019 * t) * t2;
+			var mf = 11.250889 + m5 - (0.003211 + 0.0000003 * t) * t2;
+			var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
+			var a = (51.2 + 20.2 * t).ToRadians();
+			var s1 = a.Sine();
+			var s2 = na.ToRadians().Sine();
+			var b = 346.56 + (132.87 - 0.0091731 * t) * t;
+			var s3 = 0.003964 * b.ToRadians().Sine();
+			var c = (na + 275.05 - 2.3 * t).ToRadians();
+			var s4 = c.Sine();
+			ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
+			ms = ms - 0.001778 * s1;
+			md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
+			mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
+			me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
+			var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
+			var e2 = e * e;
+			ms = (ms).ToRadians();
+			me1 = (me1).ToRadians();
+			mf = (mf).ToRadians();
+			md = (md).ToRadians();
+
+			var pm = 0.950724 + 0.051818 * (md).Cosine() + 0.009531 * (2.0 * me1 - md).Cosine();
+			pm = pm + 0.007843 * (2.0 * me1).Cosine() + 0.002824 * (2.0 * md).Cosine();
+			pm = pm + 0.000857 * (2.0 * me1 + md).Cosine() + e * 0.000533 * (2.0 * me1 - ms).Cosine();
+			pm = pm + e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
+			pm = pm + e * 0.00032 * (md - ms).Cosine() - 0.000271 * (me1).Cosine();
+			pm = pm - e * 0.000264 * (ms + md).Cosine() - 0.000198 * (2.0 * mf - md).Cosine();
+			pm = pm + 0.000173 * (3.0 * md).Cosine() + 0.000167 * (4.0 * me1 - md).Cosine();
+			pm = pm - e * 0.000111 * (ms).Cosine() + 0.000103 * (4.0 * me1 - 2.0 * md).Cosine();
+			pm = pm - 0.000084 * (2.0 * md - 2.0 * me1).Cosine() - e * 0.000083 * (2.0 * me1 + ms).Cosine();
+			pm = pm + 0.000079 * (2.0 * me1 + 2.0 * md).Cosine() + 0.000072 * (4.0 * me1).Cosine();
+			pm = pm + e * 0.000064 * (2.0 * me1 - ms + md).Cosine() - e * 0.000063 * (2.0 * me1 + ms - md).Cosine();
+			pm = pm + e * 0.000041 * (ms + me1).Cosine() + e * 0.000035 * (2.0 * md - ms).Cosine();
+			pm = pm - 0.000033 * (3.0 * md - 2.0 * me1).Cosine() - 0.00003 * (md + me1).Cosine();
+			pm = pm - 0.000029 * (2.0 * (mf - me1)).Cosine() - e * 0.000029 * (2.0 * md + ms).Cosine();
+			pm = pm + e2 * 0.000026 * (2.0 * (me1 - ms)).Cosine() - 0.000023 * (2.0 * (mf - me1) + md).Cosine();
+			pm = pm + e * 0.000019 * (4.0 * me1 - ms - md).Cosine();
+
+			return pm;
+		}
+
+		/// <summary>
+		/// Convert angle in radians to equivalent angle in degrees.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: Unwind
+		/// </remarks>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double Unwind(double w)
+		{
+			return w - 6.283185308 * (w / 6.283185308).Floor();
+		}
 	}
 }

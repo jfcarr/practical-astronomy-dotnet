@@ -646,7 +646,6 @@ namespace PALib
 			var mDeg1 = 360 - (360 * (julianDateDays - 2398220) / 25.38);
 			var mDeg2 = mDeg1 - 360 * (mDeg1 / 360).Floor();
 			var l0Deg1 = mDeg2 + aDeg;
-			// var _l0_deg2 = l0_deg1 - 360.0 * (l0_deg1 / 360.0).floor();
 			var b0Rad = (((sunLongDeg - longAscNodeDeg).ToRadians()).Sine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Sine()).ASine();
 			var theta1Rad = (-((sunLongDeg).ToRadians()).Cosine() * ((PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear)).ToRadians()).Tangent()).AngleTangent();
 			var theta2Rad = (-((longAscNodeDeg - sunLongDeg).ToRadians()).Cosine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Tangent()).AngleTangent();
@@ -678,6 +677,82 @@ namespace PALib
 			var crn = 1690 + (int)Math.Round((julianDateDays - 2444235.34) / 27.2753, 0);
 
 			return crn;
+		}
+
+		/// <summary>
+		/// Calculate selenographic (lunar) coordinates (sub-Earth)
+		/// </summary>
+		/// <param name="gwdateDay"></param>
+		/// <param name="gwdateMonth"></param>
+		/// <param name="gwdateYear"></param>
+		/// <returns>sub-earth longitude, sub-earth latitude, and position angle of pole</returns>
+		public (double subEarthLongitude, double subEarthLatitude, double positionAngleOfPole) SelenographicCoordinates1(double gwdateDay, int gwdateMonth, int gwdateYear)
+		{
+			var julianDateDays = PAMacros.CivilDateToJulianDate(gwdateDay, gwdateMonth, gwdateYear);
+			var tCenturies = (julianDateDays - 2451545) / 36525;
+			var longAscNodeDeg = 125.044522 - 1934.136261 * tCenturies;
+			var f1 = 93.27191 + 483202.0175 * tCenturies;
+			var f2 = f1 - 360 * (f1 / 360).Floor();
+			var geocentricMoonLongDeg = PAMacros.MoonLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var geocentricMoonLatRad = (PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
+			var inclinationRad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7)).ToRadians();
+			var nodeLongRad = (longAscNodeDeg - geocentricMoonLongDeg).ToRadians();
+			var sinBe = -(inclinationRad).Cosine() * (geocentricMoonLatRad).Sine() + (inclinationRad).Sine() * (geocentricMoonLatRad).Cosine() * (nodeLongRad).Sine();
+			var subEarthLatDeg = PAMacros.Degrees((sinBe).ASine());
+			var aRad = (-(geocentricMoonLatRad).Sine() * (inclinationRad).Sine() - (geocentricMoonLatRad).Cosine() * (inclinationRad).Cosine() * (nodeLongRad).Sine()).AngleTangent2((geocentricMoonLatRad).Cosine() * (nodeLongRad).Cosine());
+			var aDeg = PAMacros.Degrees(aRad);
+			var subEarthLongDeg1 = aDeg - f2;
+			var subEarthLongDeg2 = subEarthLongDeg1 - 360 * (subEarthLongDeg1 / 360).Floor();
+			var subEarthLongDeg3 = (subEarthLongDeg2 > 180) ? subEarthLongDeg2 - 360 : subEarthLongDeg2;
+			var c1Rad = ((nodeLongRad).Cosine() * (inclinationRad).Sine() / ((geocentricMoonLatRad).Cosine() * (inclinationRad).Cosine() + (geocentricMoonLatRad).Sine() * (inclinationRad).Sine() * (nodeLongRad).Sine())).AngleTangent();
+			var obliquityRad = (PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
+			var c2Rad = ((obliquityRad).Sine() * ((geocentricMoonLongDeg).ToRadians()).Cosine() / ((obliquityRad).Sine() * (geocentricMoonLatRad).Sine() * ((geocentricMoonLongDeg).ToRadians()).Sine() - (obliquityRad).Cosine() * (geocentricMoonLatRad).Cosine())).AngleTangent();
+			var cDeg = PAMacros.Degrees(c1Rad + c2Rad);
+
+			var subEarthLongitude = Math.Round(subEarthLongDeg3, 2);
+			var subEarthLatitude = Math.Round(subEarthLatDeg, 2);
+			var positionAngleOfPole = Math.Round(cDeg, 2);
+
+			return (subEarthLongitude, subEarthLatitude, positionAngleOfPole);
+		}
+
+		/// <summary>
+		/// Calculate selenographic (lunar) coordinates (sub-Solar)
+		/// </summary>
+		/// <param name="gwdateDay"></param>
+		/// <param name="gwdateMonth"></param>
+		/// <param name="gwdateYear"></param>
+		/// <returns>sub-solar longitude, sub-solar colongitude, and sub-solar latitude</returns>
+		public (double subSolarLongitude, double subSolarColongitude, double subSolarLatitude) SelenographicCoordinates2(double gwdateDay, int gwdateMonth, int gwdateYear)
+		{
+			var julianDateDays = PAMacros.CivilDateToJulianDate(gwdateDay, gwdateMonth, gwdateYear);
+			var tCenturies = (julianDateDays - 2451545) / 36525;
+			var longAscNodeDeg = 125.044522 - 1934.136261 * tCenturies;
+			var f1 = 93.27191 + 483202.0175 * tCenturies;
+			var f2 = f1 - 360 * (f1 / 360).Floor();
+			var sunGeocentricLongDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var moonEquHorParallaxArcMin = PAMacros.MoonHP(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear) * 60;
+			var sunEarthDistAU = PAMacros.SunDist(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var geocentricMoonLatRad = (PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
+			var geocentricMoonLongDeg = PAMacros.MoonLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var adjustedMoonLongDeg = sunGeocentricLongDeg + 180 + (26.4 * (geocentricMoonLatRad).Cosine() * ((sunGeocentricLongDeg - geocentricMoonLongDeg).ToRadians()).Sine() / (moonEquHorParallaxArcMin * sunEarthDistAU));
+			var adjustedMoonLatRad = 0.14666 * geocentricMoonLatRad / (moonEquHorParallaxArcMin * sunEarthDistAU);
+			var inclinationRad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7)).ToRadians();
+			var nodeLongRad = (longAscNodeDeg - adjustedMoonLongDeg).ToRadians();
+			var sinBs = -(inclinationRad).Cosine() * (adjustedMoonLatRad).Sine() + (inclinationRad).Sine() * (adjustedMoonLatRad).Cosine() * (nodeLongRad).Sine();
+			var subSolarLatDeg = PAMacros.Degrees((sinBs).ASine());
+			var aRad = (-(adjustedMoonLatRad).Sine() * (inclinationRad).Sine() - (adjustedMoonLatRad).Cosine() * (inclinationRad).Cosine() * (nodeLongRad).Sine()).AngleTangent2((adjustedMoonLatRad).Cosine() * (nodeLongRad).Cosine());
+			var aDeg = PAMacros.Degrees(aRad);
+			var subSolarLongDeg1 = aDeg - f2;
+			var subSolarLongDeg2 = subSolarLongDeg1 - 360 * (subSolarLongDeg1 / 360).Floor();
+			var subSolarLongDeg3 = (subSolarLongDeg2 > 180) ? subSolarLongDeg2 - 360 : subSolarLongDeg2;
+			var subSolarColongDeg = 90 - subSolarLongDeg3;
+
+			var subSolarLongitude = Math.Round(subSolarLongDeg3, 2);
+			var subSolarColongitude = Math.Round(subSolarColongDeg, 2);
+			var subSolarLatitude = Math.Round(subSolarLatDeg, 2);
+
+			return (subSolarLongitude, subSolarColongitude, subSolarLatitude);
 		}
 	}
 }
