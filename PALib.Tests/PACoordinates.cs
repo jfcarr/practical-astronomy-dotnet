@@ -123,5 +123,11 @@ namespace PALib.Tests
 
 			Assert.Equal((22, 36, 43.22, -8, 32, 17.4), result);
 		}
+
+		[Fact]
+		public void HeliographicCoordinates()
+		{
+			Assert.Equal((142.59, -19.94), _paCoordinates.HeliographicCoordinates(220, 10.5, 1, 5, 1988));
+		}
 	}
 }

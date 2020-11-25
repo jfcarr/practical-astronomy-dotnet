@@ -1192,5 +1192,85 @@ namespace PALib
 
 			return (p, q);
 		}
+
+		/// <summary>
+		/// Calculate Sun's angular diameter in decimal degrees
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunDia
+		/// </remarks>
+		/// <param name="lch"></param>
+		/// <param name="lcm"></param>
+		/// <param name="lcs"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <returns></returns>
+		public static double SunDia(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
+		{
+			var a = SunDist(lch, lcm, lcs, ds, zc, ld, lm, ly);
+
+			return 0.533128 / a;
+		}
+
+		/// <summary>
+		/// Calculate Sun's distance from the Earth in astronomical units
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunDist
+		/// </remarks>
+		/// <param name="lch"></param>
+		/// <param name="lcm"></param>
+		/// <param name="lcs"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <returns></returns>
+		public static double SunDist(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
+		{
+			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var bb = LocalCivilTimeGreenwichMonth(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var cc = LocalCivilTimeGreenwichYear(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var ut = LocalCivilTimeToUniversalTime(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var dj = CivilDateToJulianDate(aa, bb, cc) - 2415020;
+
+			var t = (dj / 36525) + (ut / 876600);
+			var t2 = t * t;
+
+			var a = 100.0021359 * t;
+			var b = 360 * (a - a.Floor());
+			a = 99.99736042 * t;
+			b = 360 * (a - a.Floor());
+			var m1 = 358.47583 - (0.00015 + 0.0000033 * t) * t2 + b;
+			var ec = 0.01675104 - 0.0000418 * t - 0.000000126 * t2;
+
+			var am = m1.ToRadians();
+			var ae = EccentricAnomaly(am, ec);
+
+			a = 62.55209472 * t;
+			b = 360 * (a - a.Floor());
+			var a1 = (153.23 + b).ToRadians();
+			a = 125.1041894 * t;
+			b = 360 * (a - a.Floor());
+			var b1 = (216.57 + b).ToRadians();
+			a = 91.56766028 * t;
+			b = 360 * (a - a.Floor());
+			var c1 = (312.69 + b).ToRadians();
+			a = 1236.853095 * t;
+			b = 360 * (a - a.Floor());
+			var d1 = (350.74 - 0.00144 * t2 + b).ToRadians();
+			var e1 = (231.19 + 20.2 * t).ToRadians();
+			a = 183.1353208 * t;
+			b = 360 * (a - a.Floor());
+			var h1 = (353.4 + b).ToRadians();
+
+			var d3 = (0.00000543 * a1.Sine() + 0.00001575 * b1.Sine()) + (0.00001627 * c1.Sine() + 0.00003076 * d1.Cosine()) + (0.00000927 * h1.Sine());
+
+			return 1.0000002 * (1 - ec * ae.Cosine()) + d3;
+		}
 	}
 }
