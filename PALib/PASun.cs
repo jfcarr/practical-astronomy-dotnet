@@ -88,5 +88,44 @@ namespace PALib
 
 			return (sunRAHour, sunRAMin, sunRASec, sunDecDeg, sunDecMin, sunDecSec);
 		}
+
+		/// <summary>
+		/// Calculate distance to the Sun (in km), and angular size.
+		/// </summary>
+		/// <param name="lctHours"></param>
+		/// <param name="lctMinutes"></param>
+		/// <param name="lctSeconds"></param>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <returns>
+		/// <para>sunDistKm -- Sun's distance, in kilometers</para>
+		/// <para>sunAngSizeDeg -- Sun's angular size (degrees part)</para>
+		/// <para>sunAngSizeMin -- Sun's angular size (minutes part)</para>
+		/// <para>sunAngSizeSec -- Sun's angular size (seconds part)</para>
+		/// </returns>
+		public (double sunDistKm, double sunAngSizeDeg, double sunAngSizeMin, double sunAngSizeSec) SunDistanceAndAngularSize(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var gYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var trueAnomalyDeg = PAMacros.SunTrueAnomaly(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+			var trueAnomalyRad = trueAnomalyDeg.ToRadians();
+			var eccentricity = PAMacros.SunEcc(gDay, gMonth, gYear);
+			var f = (1 + eccentricity * trueAnomalyRad.Cosine()) / (1 - eccentricity * eccentricity);
+			var rKm = 149598500 / f;
+			var thetaDeg = f * 0.533128;
+
+			var sunDistKm = Math.Round(rKm, 0);
+			var sunAngSizeDeg = PAMacros.DecimalDegreesDegrees(thetaDeg);
+			var sunAngSizeMin = PAMacros.DecimalDegreesMinutes(thetaDeg);
+			var sunAngSizeSec = PAMacros.DecimalDegreesSeconds(thetaDeg);
+
+			return (sunDistKm, sunAngSizeDeg, sunAngSizeMin, sunAngSizeSec);
+		}
 	}
 }

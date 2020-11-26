@@ -23,5 +23,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((8, 26, 3.83, 19, 12, 49.72), _paSun.PrecisePositionOfSun(0, 0, 0, 27, 7, 1988, false, 0));
 		}
+
+		[Fact]
+		public void SunDistanceAndAngularSize()
+		{
+			Assert.Equal((151920130, 0, 31, 29.93), _paSun.SunDistanceAndAngularSize(0, 0, 0, 27, 7, 1988, false, 0));
+		}
 	}
 }
