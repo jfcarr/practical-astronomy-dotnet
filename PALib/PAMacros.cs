@@ -1581,5 +1581,115 @@ namespace PALib
 		{
 			return w - 6.283185308 * (w / 6.283185308).Floor();
 		}
+
+		/// <summary>
+		/// Mean ecliptic longitude of the Sun at the epoch
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunElong
+		/// </remarks>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double SunELong(double gd, int gm, int gy)
+		{
+			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
+			var t2 = t * t;
+			var x = 279.6966778 + 36000.76892 * t + 0.0003025 * t2;
+
+			return x - 360 * (x / 360).Floor();
+		}
+
+		/// <summary>
+		/// Longitude of the Sun at perigee
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunPeri
+		/// </remarks>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double SunPeri(double gd, int gm, int gy)
+		{
+			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
+			var t2 = t * t;
+			var x = 281.2208444 + 1.719175 * t + 0.000452778 * t2;
+
+			return x - 360 * (x / 360).Floor();
+		}
+
+		/// <summary>
+		/// Eccentricity of the Sun-Earth orbit
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunEcc
+		/// </remarks>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double SunEcc(double gd, int gm, int gy)
+		{
+			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
+			var t2 = t * t;
+
+			return 0.01675104 - 0.0000418 * t - 0.000000126 * t2;
+		}
+
+		/// <summary>
+		/// Ecliptic - Declination (degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: ECDec
+		/// </remarks>
+		/// <param name="eld"></param>
+		/// <param name="elm"></param>
+		/// <param name="els"></param>
+		/// <param name="bd"></param>
+		/// <param name="bm"></param>
+		/// <param name="bs"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double EcDec(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
+		{
+			var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
+			var b = (DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs)).ToRadians();
+			var c = (Obliq(gd, gm, gy)).ToRadians();
+			var d = b.Sine() * c.Cosine() + b.Cosine() * c.Sine() * a.Sine();
+
+			return Degrees(d.ASine());
+		}
+
+		/// <summary>
+		/// Ecliptic - Right Ascension (degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: ECRA
+		/// </remarks>
+		/// <param name="eld"></param>
+		/// <param name="elm"></param>
+		/// <param name="els"></param>
+		/// <param name="bd"></param>
+		/// <param name="bm"></param>
+		/// <param name="bs"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double EcRA(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
+		{
+			var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
+			var b = (DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs)).ToRadians();
+			var c = (Obliq(gd, gm, gy)).ToRadians();
+			var d = a.Sine() * c.Cosine() - b.Tangent() * c.Sine();
+			var e = a.Cosine();
+			var f = Degrees(d.AngleTangent2(e));
+
+			return f - 360 * (f / 360).Floor();
+		}
 	}
 }
