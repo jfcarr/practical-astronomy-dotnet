@@ -40,7 +40,7 @@ If you're interested in this topic, please buy the book! It provides far more de
 ### The Sun
 
 - [x] Calculate -> Approximate and precise positions of the Sun
-- [ ] Calculate -> Sun's distance and angular size
+- [x] Calculate -> Sun's distance and angular size
 - [ ] Calculate -> Local sunrise and sunset
 - [ ] Calculate -> Morning and evening twilight
 - [ ] Calculate -> Equation of time

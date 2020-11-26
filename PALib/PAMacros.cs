@@ -1691,5 +1691,74 @@ namespace PALib
 
 			return f - 360 * (f / 360).Floor();
 		}
+
+		/// <summary>
+		/// Calculate Sun's true anomaly, i.e., how much its orbit deviates from a true circle to an ellipse.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunTrueAnomaly
+		/// </remarks>
+		/// <param name="lch"></param>
+		/// <param name="lcm"></param>
+		/// <param name="lcs"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <returns></returns>
+		public static double SunTrueAnomaly(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
+		{
+			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var bb = LocalCivilTimeGreenwichMonth(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var cc = LocalCivilTimeGreenwichYear(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var ut = LocalCivilTimeToUniversalTime(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var dj = CivilDateToJulianDate(aa, bb, cc) - 2415020;
+
+			var t = (dj / 36525) + (ut / 876600);
+			var t2 = t * t;
+
+			var a = 99.99736042 * t;
+			var b = 360 * (a - a.Floor());
+
+			var m1 = 358.47583 - (0.00015 + 0.0000033 * t) * t2 + b;
+			var ec = 0.01675104 - 0.0000418 * t - 0.000000126 * t2;
+
+			var am = m1.ToRadians();
+
+			return Degrees(TrueAnomaly(am, ec));
+		}
+
+		/// <summary>
+		/// Calculate the Sun's mean anomaly.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunMeanAnomaly
+		/// </remarks>
+		/// <param name="lch"></param>
+		/// <param name="lcm"></param>
+		/// <param name="lcs"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <returns></returns>
+		public static double SunMeanAnomaly(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
+		{
+			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var bb = LocalCivilTimeGreenwichMonth(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var cc = LocalCivilTimeGreenwichYear(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var ut = LocalCivilTimeToUniversalTime(lch, lcm, lcs, ds, zc, ld, lm, ly);
+			var dj = CivilDateToJulianDate(aa, bb, cc) - 2415020;
+			var t = (dj / 36525) + (ut / 876600);
+			var t2 = t * t;
+			var a = 100.0021359 * t;
+			var b = 360 * (a - a.Floor());
+			var m1 = 358.47583 - (0.00015 + 0.0000033 * t) * t2 + b;
+			var am = Unwind((m1).ToRadians());
+
+			return am;
+		}
 	}
 }
