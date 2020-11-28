@@ -127,5 +127,53 @@ namespace PALib
 
 			return (sunDistKm, sunAngSizeDeg, sunAngSizeMin, sunAngSizeSec);
 		}
+
+		/// <summary>
+		/// Calculate local sunrise and sunset.
+		/// </summary>
+		/// <param name="localDay"></param>
+		/// <param name="localMonth"></param>
+		/// <param name="localYear"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="geographicalLongDeg"></param>
+		/// <param name="geographicalLatDeg"></param>
+		/// <returns>
+		/// <para>localSunriseHour -- Local sunrise, hour part</para>
+		/// <para>localSunriseMinute -- Local sunrise, minutes part</para>
+		/// <para>localSunsetHour -- Local sunset, hour part</para>
+		/// <para>localSunsetMinute -- Local sunset, minutes part</para>
+		/// <para>azimuthOfSunriseDeg -- Azimuth (horizon direction) of sunrise, in degrees</para>
+		/// <para>azimuthOfSunsetDeg -- Azimuth (horizon direction) of sunset, in degrees</para>
+		/// <para>status -- Calculation status</para>
+		/// </returns>
+		public (double localSunriseHour, double localSunriseMinute, double localSunsetHour, double localSunsetMinute, double azimuthOfSunriseDeg, double azimuthOfSunsetDeg, string status) SunriseAndSunset(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var localSunriseHours = PAMacros.SunriseLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+			var localSunsetHours = PAMacros.SunsetLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+
+			var sunRiseSetStatus = PAMacros.ESunRS(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+
+			var adjustedSunriseHours = localSunriseHours + 0.008333;
+			var adjustedSunsetHours = localSunsetHours + 0.008333;
+
+			var azimuthOfSunriseDeg1 = PAMacros.SunriseAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+			var azimuthOfSunsetDeg1 = PAMacros.SunsetAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+
+			var localSunriseHour = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedSunriseHours) : 0;
+			var localSunriseMinute = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedSunriseHours) : 0;
+
+			var localSunsetHour = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedSunsetHours) : 0;
+			var localSunsetMinute = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedSunsetHours) : 0;
+
+			var azimuthOfSunriseDeg = (sunRiseSetStatus.Equals("OK")) ? Math.Round(azimuthOfSunriseDeg1, 2) : 0;
+			var azimuthOfSunsetDeg = (sunRiseSetStatus.Equals("OK")) ? Math.Round(azimuthOfSunsetDeg1, 2) : 0;
+
+			var status = sunRiseSetStatus;
+
+			return (localSunriseHour, localSunriseMinute, localSunsetHour, localSunsetMinute, azimuthOfSunriseDeg, azimuthOfSunsetDeg, status);
+		}
 	}
 }

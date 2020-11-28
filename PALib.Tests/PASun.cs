@@ -29,5 +29,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((151920130, 0, 31, 29.93), _paSun.SunDistanceAndAngularSize(0, 0, 0, 27, 7, 1988, false, 0));
 		}
+
+		[Fact]
+		public void SunriseAndSunset()
+		{
+			Assert.Equal((6, 5, 17, 45, 94.83, 265.43, "OK"), _paSun.SunriseAndSunset(10, 3, 1986, false, -5, -71.05, 42.37));
+		}
 	}
 }
