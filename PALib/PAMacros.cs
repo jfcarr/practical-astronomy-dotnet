@@ -297,6 +297,33 @@ namespace PALib
 		}
 
 		/// <summary>
+		/// Convert Universal Time to Local Civil Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTLct
+		/// </remarks>
+		/// <param name="uHours"></param>
+		/// <param name="uMinutes"></param>
+		/// <param name="uSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double UniversalTimeToLocalCivilTime(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = HMStoDH(uHours, uMinutes, uSeconds);
+			var b = a + zoneCorrection;
+			var c = b + daylightSaving;
+			var d = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) + (c / 24);
+			var e = JulianDateDay(d);
+			var e1 = e.Floor();
+
+			return 24 * (e - e1);
+		}
+
+		/// <summary>
 		/// Determine Greenwich Day for Local Time
 		/// </summary>
 		/// <remarks>
@@ -665,6 +692,65 @@ namespace PALib
 		}
 
 		/// <summary>
+		/// Nutation amount to be added in ecliptic longitude, in degrees.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: NutatLong
+		/// </remarks>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static double NutatLong(double gd, int gm, int gy)
+		{
+			var dj = CivilDateToJulianDate(gd, gm, gy) - 2415020;
+			var t = dj / 36525;
+			var t2 = t * t;
+
+			var a = 100.0021358 * t;
+			var b = 360 * (a - a.Floor());
+
+			var l1 = 279.6967 + 0.000303 * t2 + b;
+			var l2 = 2 * l1.ToRadians();
+
+			a = 1336.855231 * t;
+			b = 360 * (a - a.Floor());
+
+			var d1 = 270.4342 - 0.001133 * t2 + b;
+			var d2 = 2 * d1.ToRadians();
+
+			a = 99.99736056 * t;
+			b = 360 * (a - a.Floor());
+
+			var m1 = 358.4758 - 0.00015 * t2 + b;
+			m1 = m1.ToRadians();
+
+			a = 1325.552359 * t;
+			b = 360 * (a - a.Floor());
+
+			var m2 = 296.1046 + 0.009192 * t2 + b;
+			m2 = m2.ToRadians();
+
+			a = 5.372616667 * t;
+			b = 360 * (a - a.Floor());
+
+			var n1 = 259.1833 + 0.002078 * t2 - b;
+			n1 = n1.ToRadians();
+
+			var n2 = 2.0 * n1;
+
+			var dp = (-17.2327 - 0.01737 * t) * n1.Sine();
+			dp = dp + (-1.2729 - 0.00013 * t) * (l2).Sine() + 0.2088 * (n2).Sine();
+			dp = dp - 0.2037 * (d2).Sine() + (0.1261 - 0.00031 * t) * (m1).Sine();
+			dp = dp + 0.0675 * (m2).Sine() - (0.0497 - 0.00012 * t) * (l2 + m1).Sine();
+			dp = dp - 0.0342 * (d2 - n1).Sine() - 0.0261 * (d2 + m2).Sine();
+			dp = dp + 0.0214 * (l2 - m1).Sine() - 0.0149 * (l2 - d2 + m2).Sine();
+			dp = dp + 0.0124 * (l2 - n1).Sine() + 0.0114 * (d2 - m2).Sine();
+
+			return dp / 3600;
+		}
+
+		/// <summary>
 		/// Nutation of Obliquity
 		/// </summary>
 		/// <remarks>
@@ -763,6 +849,33 @@ namespace PALib
 			var h = g - (24 * (g / 24).Floor());
 
 			return h * 0.9972695663;
+		}
+
+		/// <summary>
+		/// Status of conversion of Greenwich Sidereal Time to Universal Time.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: eGSTUT
+		/// </remarks>
+		/// <param name="gsh"></param>
+		/// <param name="gsm"></param>
+		/// <param name="gss"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <returns></returns>
+		public static string EGstUt(double gsh, double gsm, double gss, double gd, int gm, int gy)
+		{
+			var a = CivilDateToJulianDate(gd, gm, gy);
+			var b = a - 2451545;
+			var c = b / 36525;
+			var d = 6.697374558 + (2400.051336 * c) + (0.000025862 * c * c);
+			var e = d - (24 * (d / 24).Floor());
+			var f = HMStoDH(gsh, gsm, gss);
+			var g = f - e;
+			var h = g - (24 * (g / 24).Floor());
+
+			return ((h * 0.9972695663) < (4.0 / 60.0)) ? "Warning" : "OK";
 		}
 
 		/// <summary>
@@ -1759,6 +1872,507 @@ namespace PALib
 			var am = Unwind((m1).ToRadians());
 
 			return am;
+		}
+
+		/// <summary>
+		/// Calculate local civil time of sunrise.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunriseLCT
+		/// </remarks>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="gl"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static double SunriseLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
+		{
+			var di = 0.8333333;
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = SunriseLCTL3710(gd, gm, gy, sr, di, gp);
+
+			double xx;
+			if (!result1.s.Equals("OK"))
+			{
+				xx = -99.0;
+			}
+			else
+			{
+				var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+				var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				{
+					xx = -99.0;
+				}
+				else
+				{
+					sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+					var result2 = SunriseLCTL3710(gd, gm, gy, sr, di, gp);
+
+					if (!result2.s.Equals("OK"))
+					{
+						xx = -99.0;
+					}
+					else
+					{
+						x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+						ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+						xx = UniversalTimeToLocalCivilTime(ut, 0, 0, ds, zc, gd, gm, gy);
+					}
+				}
+			}
+
+			return xx;
+		}
+
+		/// <summary>
+		/// Helper function for sunrise_lct()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) SunriseLCTL3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeRise(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0.0, 0.0, y, 0.0, 0.0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// Calculate local civil time of sunset.
+		///
+		/// Original macro name: SunsetLCT
+		public static double SunsetLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
+		{
+			var di = 0.8333333;
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = SunsetLCTL3710(gd, gm, gy, sr, di, gp);
+
+			double xx;
+			if (!result1.s.Equals("OK"))
+			{
+				xx = -99.0;
+			}
+			else
+			{
+				var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+				var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				{
+					xx = -99.0;
+				}
+				else
+				{
+					sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+					var result2 = SunsetLCTL3710(gd, gm, gy, sr, di, gp);
+
+					if (!result2.s.Equals("OK"))
+					{
+						xx = -99;
+					}
+					else
+					{
+						x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+						ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+						xx = UniversalTimeToLocalCivilTime(ut, 0, 0, ds, zc, gd, gm, gy);
+					}
+				}
+			}
+			return xx;
+		}
+
+		/// <summary>
+		/// Helper function for sunset_lct().
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) SunsetLCTL3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0.0, 0.0, 0.0, 0.0, 0.0, gd, gm, gy);
+			var y = EcDec(a, 0.0, 0.0, 0.0, 0.0, 0.0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeSet(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// <summary>
+		/// Local sidereal time of rise, in hours.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: RSLSTR
+		/// </remarks>
+		/// <param name="rah"></param>
+		/// <param name="ram"></param>
+		/// <param name="ras"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="vd"></param>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static double RiseSetLocalSiderealTimeRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
+		{
+			var a = HMStoDH(rah, ram, ras);
+			var b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
+			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var d = (vd).ToRadians();
+			var e = (g).ToRadians();
+			var f = -((d).Sine() + (e).Sine() * (c).Sine()) / ((e).Cosine() * (c).Cosine());
+			var h = (Math.Abs(f) < 1) ? f.ACosine() : 0;
+			var i = DecimalDegreesToDegreeHours(Degrees(b - h));
+
+			return i - 24 * (i / 24).Floor();
+		}
+
+		/// <summary>
+		/// Local sidereal time of setting, in hours.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: RSLSTS
+		/// </remarks>
+		/// <param name="rah"></param>
+		/// <param name="ram"></param>
+		/// <param name="ras"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="vd"></param>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static double RiseSetLocalSiderealTimeSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
+		{
+			var a = HMStoDH(rah, ram, ras);
+			var b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
+			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var d = vd.ToRadians();
+			var e = g.ToRadians();
+			var f = -(d.Sine() + e.Sine() * c.Sine()) / (e.Cosine() * c.Cosine());
+			var h = (Math.Abs(f) < 1) ? f.ACosine() : 0;
+			var i = DecimalDegreesToDegreeHours(Degrees(b + h));
+
+			return i - 24 * (i / 24).Floor();
+		}
+
+		/// <summary>
+		/// Azimuth of rising, in degrees.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: RSAZR
+		/// </remarks>
+		/// <param name="rah"></param>
+		/// <param name="ram"></param>
+		/// <param name="ras"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="vd"></param>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static double RiseSetAzimuthRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
+		{
+			var a = HMStoDH(rah, ram, ras);
+			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var d = vd.ToRadians();
+			var e = g.ToRadians();
+			var f = (c.Sine() + d.Sine() * e.Sine()) / (d.Cosine() * e.Cosine());
+			var h = (ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK")) ? f.ACosine() : 0;
+			var i = Degrees(h);
+
+			return i - 360 * (i / 360).Floor();
+		}
+
+		/// <summary>
+		/// Azimuth of setting, in degrees.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: RSAZS
+		/// </remarks>
+		/// <param name="rah"></param>
+		/// <param name="ram"></param>
+		/// <param name="ras"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="vd"></param>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static double RiseSetAzimuthSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
+		{
+			var a = HMStoDH(rah, ram, ras);
+			var _b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
+			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var d = vd.ToRadians();
+			var e = g.ToRadians();
+			var f = (c.Sine() + d.Sine() * e.Sine()) / (d.Cosine() * e.Cosine());
+			var h = (ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK")) ? f.ACosine() : 0;
+			var i = 360 - Degrees(h);
+
+			return i - 360 * (i / 360).Floor();
+		}
+
+		/// <summary>
+		/// Rise/Set status
+		/// </summary>
+		/// <remarks>
+		/// <para>Possible values: "OK", "** never rises", "** circumpolar"</para>
+		/// <para>Original macro name: eRS</para>
+		/// </remarks>
+		/// <param name="rah"></param>
+		/// <param name="ram"></param>
+		/// <param name="ras"></param>
+		/// <param name="dd"></param>
+		/// <param name="dm"></param>
+		/// <param name="ds"></param>
+		/// <param name="vd"></param>
+		/// <param name="g"></param>
+		/// <returns></returns>
+		public static string ERS(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
+		{
+			var a = HMStoDH(rah, ram, ras);
+			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+			var d = vd.ToRadians();
+			var e = g.ToRadians();
+			var f = -(d.Sine() + e.Sine() * c.Sine()) / (e.Cosine() * c.Cosine());
+
+			var returnValue = "OK";
+			if (f >= 1)
+				returnValue = "** never rises";
+			if (f <= -1)
+				returnValue = "** circumpolar";
+
+			return returnValue;
+		}
+
+
+		/// Sunrise/Sunset calculation status.
+		///
+		/// Original macro name: eSunRS
+		public static string ESunRS(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
+		{
+			var di = 0.8333333;
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = ESunRS_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+			{
+				return result1.s;
+			}
+			else
+			{
+				var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+				var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+				sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+				var result2 = ESunRS_L3710(gd, gm, gy, sr, di, gp);
+				if (!result2.s.Equals("OK"))
+				{
+					return result2.s;
+				}
+				else
+				{
+					x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+					// var _ut = gst_ut(x, 0.0, 0.0, gd, gm, gy);
+
+					if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+					{
+						var s = result2.s + " GST to UT conversion warning";
+
+						return s;
+					}
+
+					return result2.s;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Helper function for e_sun_rs()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) ESunRS_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeRise(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// Calculate azimuth of sunrise.
+		///
+		/// Original macro name: SunriseAz
+		public static double SunriseAZ(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
+		{
+			var di = 0.8333333;
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = SunriseAZ_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+			{
+				return -99.0;
+			}
+
+			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			{
+				return -99.0;
+			}
+
+			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+			// var(_a, x, y, _la, s) = sunrise_az_l3710(gd, gm, gy, sr, di, gp);
+			var result2 = SunriseAZ_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result2.s.Equals("OK"))
+			{
+				return -99.0;
+			}
+
+			return RiseSetAzimuthRise(DecimalDegreesToDegreeHours(x), 0, 0, result2.y, 0.0, 0.0, di, gp);
+		}
+
+		/// <summary>
+		/// Helper function for sunrise_az()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) SunriseAZ_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeRise(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// <summary>
+		/// Calculate azimuth of sunset.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SunsetAz
+		/// </remarks>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="gl"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static double SunsetAZ(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
+		{
+			var di = 0.8333333;
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = SunsetAZ_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+			{
+				return -99.0;
+			}
+
+			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			{
+				return -99.0;
+			}
+
+			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+
+			var result2 = SunsetAZ_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result2.s.Equals("OK"))
+			{
+				return -99.0;
+			}
+			return RiseSetAzimuthSet(DecimalDegreesToDegreeHours(x), 0, 0, result2.y, 0, 0, di, gp);
+		}
+
+		/// <summary>
+		/// Helper function for sunset_az()
+		/// </summary>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) SunsetAZ_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeSet(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
 		}
 	}
 }
