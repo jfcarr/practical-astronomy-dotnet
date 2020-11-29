@@ -44,7 +44,7 @@ If you're interested in this topic, please buy the book! It provides far more de
 - [x] Calculate -> Local sunrise and sunset
 - [x] Calculate -> Morning and evening twilight
 - [x] Calculate -> Equation of time
-- [ ] Calculate -> Solar elongation
+- [x] Calculate -> Solar elongation
 
 ### Planets
 

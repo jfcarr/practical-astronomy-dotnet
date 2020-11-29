@@ -13,4 +13,10 @@ namespace PALib
 		Nautical = 12,
 		Astronomical = 18
 	}
+
+	public enum PAAngleMeasure
+	{
+		Degrees,
+		Hours
+	}
 }

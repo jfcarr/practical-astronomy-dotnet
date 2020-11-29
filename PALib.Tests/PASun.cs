@@ -47,5 +47,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((6, 31.52), _paSun.EquationOfTime(27, 7, 2010));
 		}
+
+		[Fact]
+		public void SolarElongation()
+		{
+			Assert.Equal(24.78, _paSun.SolarElongation(10, 6, 45, 11, 57, 27, 27.8333333, 7, 2010));
+		}
 	}
 }
