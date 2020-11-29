@@ -39,9 +39,13 @@ namespace PALib.Tests
 		[Fact]
 		public void MorningAndEveningTwilight()
 		{
-			var result = _paSun.MorningAndEveningTwilight(7, 9, 1979, false, 0, 0, 52, PATwilightType.Astronomical);
+			Assert.Equal((3, 17, 20, 37, "OK"), _paSun.MorningAndEveningTwilight(7, 9, 1979, false, 0, 0, 52, PATwilightType.Astronomical));
+		}
 
-			Assert.Equal((3, 17, 20, 37, "OK"), result);
+		[Fact]
+		public void EquationOfTime()
+		{
+			Assert.Equal((6, 31.52), _paSun.EquationOfTime(27, 7, 2010));
 		}
 	}
 }
