@@ -240,5 +240,31 @@ namespace PALib
 
 			return (equationOfTimeMin, equationOfTimeSec);
 		}
+
+		/// <summary>
+		/// Calculate solar elongation for a celestial body.
+		/// </summary>
+		/// <remarks>
+		/// Solar elongation is the angle between the lines of sight from the Earth to the Sun and from the Earth to the celestial body.
+		/// </remarks>
+		/// <param name="raHour"></param>
+		/// <param name="raMin"></param>
+		/// <param name="raSec"></param>
+		/// <param name="decDeg"></param>
+		/// <param name="decMin"></param>
+		/// <param name="decSec"></param>
+		/// <param name="gwdateDay"></param>
+		/// <param name="gwdateMonth"></param>
+		/// <param name="gwdateYear"></param>
+		/// <returns>solarElongationDeg -- Solar elongation, in degrees</returns>
+		public double SolarElongation(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, double gwdateDay, int gwdateMonth, int gwdateYear)
+		{
+			var sunLongitudeDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var sunRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear));
+			var sunDecDeg = PAMacros.EcDec(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+			var solarElongationDeg = PAMacros.Angle(sunRAHours, 0, 0, sunDecDeg, 0, 0, raHour, raMin, raSec, decDeg, decMin, decSec, PAAngleMeasure.Hours);
+
+			return Math.Round(solarElongationDeg, 2);
+		}
 	}
 }

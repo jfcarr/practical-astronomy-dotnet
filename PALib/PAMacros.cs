@@ -2607,5 +2607,41 @@ namespace PALib
 
 			return (a, x, y, la, s);
 		}
+
+		/// <summary>
+		/// Calculate the angle between two celestial objects
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: Angle
+		/// </remarks>
+		/// <param name="xx1"></param>
+		/// <param name="xm1"></param>
+		/// <param name="xs1"></param>
+		/// <param name="dd1"></param>
+		/// <param name="dm1"></param>
+		/// <param name="ds1"></param>
+		/// <param name="xx2"></param>
+		/// <param name="xm2"></param>
+		/// <param name="xs2"></param>
+		/// <param name="dd2"></param>
+		/// <param name="dm2"></param>
+		/// <param name="ds2"></param>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static double Angle(double xx1, double xm1, double xs1, double dd1, double dm1, double ds1, double xx2, double xm2, double xs2, double dd2, double dm2, double ds2, PAAngleMeasure s
+		)
+		{
+			var a = (s.Equals(PAAngleMeasure.Hours)) ? DegreeHoursToDecimalDegrees(HMStoDH(xx1, xm1, xs1)) : DegreesMinutesSecondsToDecimalDegrees(xx1, xm1, xs1);
+			var b = a.ToRadians();
+			var c = DegreesMinutesSecondsToDecimalDegrees(dd1, dm1, ds1);
+			var d = c.ToRadians();
+			var e = (s.Equals(PAAngleMeasure.Hours)) ? DegreeHoursToDecimalDegrees(HMStoDH(xx2, xm2, xs2)) : DegreesMinutesSecondsToDecimalDegrees(xx2, xm2, xs2);
+			var f = e.ToRadians();
+			var g = DegreesMinutesSecondsToDecimalDegrees(dd2, dm2, ds2);
+			var h = g.ToRadians();
+			var i = (d.Sine() * h.Sine() + d.Cosine() * h.Cosine() * (b - f).Cosine()).ACosine();
+
+			return Degrees(i);
+		}
 	}
 }
