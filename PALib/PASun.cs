@@ -175,5 +175,47 @@ namespace PALib
 
 			return (localSunriseHour, localSunriseMinute, localSunsetHour, localSunsetMinute, azimuthOfSunriseDeg, azimuthOfSunsetDeg, status);
 		}
+
+		/// <summary>
+		/// Calculate times of morning and evening twilight.
+		/// </summary>
+		/// <param name="localDay">Local date, day part.</param>
+		/// <param name="localMonth">Local date, month part.</param>
+		/// <param name="localYear">Local date, year part.</param>
+		/// <param name="isDaylightSaving">Is daylight savings in effect?</param>
+		/// <param name="zoneCorrection">Time zone correction, in hours.</param>
+		/// <param name="geographicalLongDeg">Geographical longitude, in degrees.</param>
+		/// <param name="geographicalLatDeg">Geographical latitude, in degrees.</param>
+		/// <param name="twilightType">"C" (civil), "N" (nautical), or "A" (astronomical)</param>
+		/// <returns>
+		/// <para>amTwilightBeginsHour -- Beginning of AM twilight (hour part)</para>
+		/// <para>amTwilightBeginsMin -- Beginning of AM twilight (minutes part)</para>
+		/// <para>pmTwilightEndsHour -- Ending of PM twilight (hour part)</para>
+		/// <para>pmTwilightEndsMin -- Ending of PM twilight (minutes part)</para>
+		/// <para>status -- Calculation status</para>
+		/// </returns>
+		public (double amTwilightBeginsHour, double amTwilightBeginsMin, double pmTwilightEndsHour, double pmTwilightEndsMin, string status) MorningAndEveningTwilight(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg, PATwilightType twilightType)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var startOfAMTwilightHours = PAMacros.TwilightAMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+
+			var endOfPMTwilightHours = PAMacros.TwilightPMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+
+			var twilightStatus = PAMacros.ETwilight(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+
+			var adjustedAMStartTime = startOfAMTwilightHours + 0.008333;
+			var adjustedPMStartTime = endOfPMTwilightHours + 0.008333;
+
+			double amTwilightBeginsHour = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedAMStartTime) : -99;
+			double amTwilightBeginsMin = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedAMStartTime) : -99;
+
+			double pmTwilightEndsHour = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedPMStartTime) : -99;
+			double pmTwilightEndsMin = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedPMStartTime) : -99;
+
+			var status = twilightStatus;
+
+			return (amTwilightBeginsHour, amTwilightBeginsMin, pmTwilightEndsHour, pmTwilightEndsMin, status);
+		}
 	}
 }

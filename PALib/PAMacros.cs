@@ -2374,5 +2374,238 @@ namespace PALib
 
 			return (a, x, y, la, s);
 		}
+
+		/// <summary>
+		/// Calculate morning twilight start, in local time.
+		/// </summary>
+		/// <remarks>
+		/// <para>Twilight type (TT) can be one of "C" (civil), "N" (nautical), or "A" (astronomical)</para>
+		/// <para>Original macro name: TwilightAMLCT</para>
+		/// </remarks>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="gl"></param>
+		/// <param name="gp"></param>
+		/// <param name="tt"></param>
+		/// <returns></returns>
+		public static double TwilightAMLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp, PATwilightType tt)
+		{
+			var di = (double)tt;
+
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = TwilightAMLCT_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+				return -99.0;
+
+			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				return -99.0;
+
+			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+
+			var result2 = TwilightAMLCT_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result2.s.Equals("OK"))
+				return -99.0;
+
+			x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+			ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			var xx = UniversalTimeToLocalCivilTime(ut, 0, 0, ds, zc, gd, gm, gy);
+
+			return xx;
+		}
+
+		/// <summary>
+		/// Helper function for twilight_am_lct()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) TwilightAMLCT_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeRise(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// <summary>
+		/// Calculate evening twilight end, in local time.
+		/// </summary>
+		/// <remarks>
+		/// <para>Twilight type can be one of "C" (civil), "N" (nautical), or "A" (astronomical)</para>
+		/// <para>Original macro name: TwilightPMLCT</para>
+		/// </remarks>
+		/// <param name="ld"></param>
+		/// <param name="lm"></param>
+		/// <param name="ly"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="gl"></param>
+		/// <param name="gp"></param>
+		/// <param name="tt"></param>
+		/// <returns></returns>
+		public static double TwilightPMLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp, PATwilightType tt)
+		{
+			var di = (double)tt;
+
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = TwilightPMLCT_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+				return 0.0;
+
+			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				return 0.0;
+
+			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+
+			var result2 = TwilightPMLCT_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result2.s.Equals("OK"))
+				return 0.0;
+
+			x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+			ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+
+			return UniversalTimeToLocalCivilTime(ut, 0, 0, ds, zc, gd, gm, gy);
+		}
+
+		/// <summary>
+		/// Helper function for twilight_pm_lct()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		/// <param name="la"></param>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) TwilightPMLCT_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeSet(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			return (a, x, y, la, s);
+		}
+
+		/// Twilight calculation status.
+		///
+		/// Twilight type can be one of "C" (civil), "N" (nautical), or "A" (astronomical)
+		///
+		/// Original macro name: eTwilight
+		///
+		/// ## Returns
+		/// One of: "OK", "** lasts all night", or "** Sun too far below horizon"
+		public static string ETwilight(double ld, int lm, int ly, int ds, int zc, double gl, double gp, PATwilightType tt)
+		{
+			var di = (double)tt;
+
+			var gd = LocalCivilTimeGreenwichDay(12, 0, 0, ds, zc, ld, lm, ly);
+			var gm = LocalCivilTimeGreenwichMonth(12, 0, 0, ds, zc, ld, lm, ly);
+			var gy = LocalCivilTimeGreenwichYear(12, 0, 0, ds, zc, ld, lm, ly);
+			var sr = SunLong(12, 0, 0, ds, zc, ld, lm, ly);
+
+			var result1 = ETwilight_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result1.s.Equals("OK"))
+			{
+				return result1.s;
+			}
+
+			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
+			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
+			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
+
+			var result2 = ETwilight_L3710(gd, gm, gy, sr, di, gp);
+
+			if (!result2.s.Equals("OK"))
+			{
+				return result2.s;
+			}
+
+			x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
+
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			{
+				result2.s = $"{result2.s} GST to UT conversion warning";
+
+				return result2.s;
+			}
+
+			return result2.s;
+		}
+
+		/// <summary>
+		/// Helper function for e_twilight()
+		/// </summary>
+		/// <param name="gd"></param>
+		/// <param name="gm"></param>
+		/// <param name="gy"></param>
+		/// <param name="sr"></param>
+		/// <param name="di"></param>
+		/// <param name="gp"></param>
+		/// <returns></returns>
+		public static (double a, double x, double y, double la, string s) ETwilight_L3710(double gd, int gm, int gy, double sr, double di, double gp)
+		{
+			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
+			var x = EcRA(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var y = EcDec(a, 0, 0, 0, 0, 0, gd, gm, gy);
+			var la = RiseSetLocalSiderealTimeRise(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+			var s = ERS(DecimalDegreesToDegreeHours(x), 0, 0, y, 0, 0, di, gp);
+
+			if (s.Length > 2)
+			{
+				if (s.Substring(0, 3).Equals("** c"))
+				{
+					s = "** lasts all night";
+				}
+				else
+				{
+					if (s.Substring(0, 3).Equals("** n"))
+					{
+						s = "** Sun too far below horizon";
+					}
+				}
+			}
+
+			return (a, x, y, la, s);
+		}
 	}
 }
