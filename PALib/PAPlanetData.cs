@@ -89,6 +89,21 @@ namespace PALib
 		public double v0_VisualMagnitude { get; set; }
 	}
 
+	public class PAPlanetDataPrecise
+	{
+		public string Name { get; set; }
+		public double Value1 { get; set; }
+		public double Value2 { get; set; }
+		public double Value3 { get; set; }
+		public double Value4 { get; set; }
+		public double Value5 { get; set; }
+		public double Value6 { get; set; }
+		public double Value7 { get; set; }
+		public double Value8 { get; set; }
+		public double Value9 { get; set; }
+		public double APValue { get; set; }
+	}
+
 	public static class PAPlanetInfo
 	{
 		static List<PAPlanetData> _planetData;

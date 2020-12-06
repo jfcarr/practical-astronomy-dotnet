@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using PALib.Helpers;
 
 namespace PALib
@@ -2642,6 +2644,1014 @@ namespace PALib
 			var i = (d.Sine() * h.Sine() + d.Cosine() * h.Cosine() * (b - f).Cosine()).ACosine();
 
 			return Degrees(i);
+		}
+
+		/// <summary>
+		/// Calculate several planetary properties.
+		/// </summary>
+		/// <remarks>
+		/// Original macro names: PlanetLong, PlanetLat, PlanetDist, PlanetHLong1, PlanetHLong2, PlanetHLat, PlanetRVect
+		/// </remarks>
+		/// <param name="lh">Local civil time, hour part.</param>
+		/// <param name="lm">Local civil time, minutes part.</param>
+		/// <param name="ls">Local civil time, seconds part.</param>
+		/// <param name="ds">Daylight Savings offset.</param>
+		/// <param name="zc">Time zone correction, in hours.</param>
+		/// <param name="dy">Local date, day part.</param>
+		/// <param name="mn">Local date, month part.</param>
+		/// <param name="yr">Local date, year part.</param>
+		/// <param name="s">Planet name.</param>
+		/// <returns>
+		/// <para>planetLongitude -- Ecliptic longitude, in degrees.</para>
+		/// <para>planetLatitude -- Ecliptic latitude, in degrees.</para>
+		/// <para>planetDistanceAU -- Earth-planet distance, in AU.</para>
+		/// <para>planetHLong1 -- Heliocentric orbital longitude, in degrees.</para>
+		/// <para>planetHLong2 -- NOT USED</para>
+		/// <para>planetHLat -- NOT USED</para>
+		/// <para>planetRVect -- Sun-planet distance (length of radius vector), in AU.</para>
+		/// </returns>
+		public static (double planetLongitude, double planetLatitude, double planetDistanceAU, double planetHLong1, double planetHLong2, double planetHLat, double planetRVect) PlanetCoordinates(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr, string s)
+		{
+			var a11 = 178.179078;
+			var a12 = 415.2057519;
+			var a13 = 0.0003011;
+			var a14 = 0.0;
+			var a21 = 75.899697;
+			var a22 = 1.5554889;
+			var a23 = 0.0002947;
+			var a24 = 0.0;
+			var a31 = 0.20561421;
+			var a32 = 0.00002046;
+			var a33 = -0.00000003;
+			var a34 = 0.0;
+			var a41 = 7.002881;
+			var a42 = 0.0018608;
+			var a43 = -0.0000183;
+			var a44 = 0.0;
+			var a51 = 47.145944;
+			var a52 = 1.1852083;
+			var a53 = 0.0001739;
+			var a54 = 0.0;
+			var a61 = 0.3870986;
+			var a62 = 6.74;
+			var a63 = -0.42;
+
+			var b11 = 342.767053;
+			var b12 = 162.5533664;
+			var b13 = 0.0003097;
+			var b14 = 0.0;
+			var b21 = 130.163833;
+			var b22 = 1.4080361;
+			var b23 = -0.0009764;
+			var b24 = 0.0;
+			var b31 = 0.00682069;
+			var b32 = -0.00004774;
+			var b33 = 0.000000091;
+			var b34 = 0.0;
+			var b41 = 3.393631;
+			var b42 = 0.0010058;
+			var b43 = -0.000001;
+			var b44 = 0.0;
+			var b51 = 75.779647;
+			var b52 = 0.89985;
+			var b53 = 0.00041;
+			var b54 = 0.0;
+			var b61 = 0.7233316;
+			var b62 = 16.92;
+			var b63 = -4.4;
+
+			var c11 = 293.737334;
+			var c12 = 53.17137642;
+			var c13 = 0.0003107;
+			var c14 = 0.0;
+			var c21 = 334.218203;
+			var c22 = 1.8407584;
+			var c23 = 0.0001299;
+			var c24 = -0.00000119;
+			var c31 = 0.0933129;
+			var c32 = 0.000092064;
+			var c33 = -0.000000077;
+			var c34 = 0.0;
+			var c41 = 1.850333;
+			var c42 = -0.000675;
+			var c43 = 0.0000126;
+			var c44 = 0.0;
+			var c51 = 48.786442;
+			var c52 = 0.7709917;
+			var c53 = -0.0000014;
+			var c54 = -0.00000533;
+			var c61 = 1.5236883;
+			var c62 = 9.36;
+			var c63 = -1.52;
+
+			var d11 = 238.049257;
+			var d12 = 8.434172183;
+			var d13 = 0.0003347;
+			var d14 = -0.00000165;
+			var d21 = 12.720972;
+			var d22 = 1.6099617;
+			var d23 = 0.00105627;
+			var d24 = -0.00000343;
+			var d31 = 0.04833475;
+			var d32 = 0.00016418;
+			var d33 = -0.0000004676;
+			var d34 = -0.0000000017;
+			var d41 = 1.308736;
+			var d42 = -0.0056961;
+			var d43 = 0.0000039;
+			var d44 = 0.0;
+			var d51 = 99.443414;
+			var d52 = 1.01053;
+			var d53 = 0.00035222;
+			var d54 = -0.00000851;
+			var d61 = 5.202561;
+			var d62 = 196.74;
+			var d63 = -9.4;
+
+			var e11 = 266.564377;
+			var e12 = 3.398638567;
+			var e13 = 0.0003245;
+			var e14 = -0.0000058;
+			var e21 = 91.098214;
+			var e22 = 1.9584158;
+			var e23 = 0.00082636;
+			var e24 = 0.00000461;
+			var e31 = 0.05589232;
+			var e32 = -0.0003455;
+			var e33 = -0.000000728;
+			var e34 = 0.00000000074;
+			var e41 = 2.492519;
+			var e42 = -0.0039189;
+			var e43 = -0.00001549;
+			var e44 = 0.00000004;
+			var e51 = 112.790414;
+			var e52 = 0.8731951;
+			var e53 = -0.00015218;
+			var e54 = -0.00000531;
+			var e61 = 9.554747;
+			var e62 = 165.6;
+			var e63 = -8.88;
+
+			var f11 = 244.19747;
+			var f12 = 1.194065406;
+			var f13 = 0.000316;
+			var f14 = -0.0000006;
+			var f21 = 171.548692;
+			var f22 = 1.4844328;
+			var f23 = 0.0002372;
+			var f24 = -0.00000061;
+			var f31 = 0.0463444;
+			var f32a = -0.00002658;
+			var f33 = 0.000000077;
+			var f34 = 0.0;
+			var f41 = 0.772464;
+			var f42 = 0.0006253;
+			var f43 = 0.0000395;
+			var f44 = 0.0;
+			var f51 = 73.477111;
+			var f52 = 0.4986678;
+			var f53 = 0.0013117;
+			var f54 = 0.0;
+			var f61 = 19.21814;
+			var f62 = 65.8;
+			var f63 = -7.19;
+
+			var g11 = 84.457994;
+			var g12 = 0.6107942056;
+			var g13 = 0.0003205;
+			var g14 = -0.0000006;
+			var g21 = 46.727364;
+			var g22 = 1.4245744;
+			var g23 = 0.00039082;
+			var g24 = -0.000000605;
+			var g31 = 0.00899704;
+			var g32 = 0.00000633;
+			var g33 = -0.000000002;
+			var g34 = 0.0;
+			var g41 = 1.779242;
+			var g42 = -0.0095436;
+			var g43 = -0.0000091;
+			var g44 = 0.0;
+			var g51 = 130.681389;
+			var g52 = 1.098935;
+			var g53 = 0.00024987;
+			var g54 = -0.000004718;
+			var g61 = 30.10957;
+			var g62 = 62.2;
+			var g63 = -6.87;
+
+			var pl = new List<PAPlanetDataPrecise>();
+
+			pl.Add(new PAPlanetDataPrecise() { Name = "", Value1 = 0, Value2 = 0, Value3 = 0, Value4 = 0, Value5 = 0, Value6 = 0, Value7 = 0, Value8 = 0, Value9 = 0 });
+
+			var ip = 0;
+			var b = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var a = CivilDateToJulianDate(gd, gm, gy);
+			var t = ((a - 2415020.0) / 36525.0) + (b / 876600.0);
+
+			var a0 = a11;
+			var a1 = a12;
+			var a2 = a13;
+			var a3 = a14;
+			var b0 = a21;
+			var b1 = a22;
+			var b2 = a23;
+			var b3 = a24;
+			var c0 = a31;
+			var c1 = a32;
+			var c2 = a33;
+			var c3 = a34;
+			var d0 = a41;
+			var d1 = a42;
+			var d2 = a43;
+			var d3 = a44;
+			var e0 = a51;
+			var e1 = a52;
+			var e2 = a53;
+			var e3 = a54;
+			var f = a61;
+			var g = a62;
+			var h = a63;
+			var aa = a1 * t;
+			b = 360.0 * (aa - aa.Floor());
+			var c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Mercury",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = b11;
+			a1 = b12;
+			a2 = b13;
+			a3 = b14;
+			b0 = b21;
+			b1 = b22;
+			b2 = b23;
+			b3 = b24;
+			c0 = b31;
+			c1 = b32;
+			c2 = b33;
+			c3 = b34;
+			d0 = b41;
+			d1 = b42;
+			d2 = b43;
+			d3 = b44;
+			e0 = b51;
+			e1 = b52;
+			e2 = b53;
+			e3 = b54;
+			f = b61;
+			g = b62;
+			h = b63;
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Venus",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = c11;
+			a1 = c12;
+			a2 = c13;
+			a3 = c14;
+			b0 = c21;
+			b1 = c22;
+			b2 = c23;
+			b3 = c24;
+			c0 = c31;
+			c1 = c32;
+			c2 = c33;
+			c3 = c34;
+			d0 = c41;
+			d1 = c42;
+			d2 = c43;
+			d3 = c44;
+			e0 = c51;
+			e1 = c52;
+			e2 = c53;
+			e3 = c54;
+			f = c61;
+			g = c62;
+			h = c63;
+
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Mars",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = d11;
+			a1 = d12;
+			a2 = d13;
+			a3 = d14;
+			b0 = d21;
+			b1 = d22;
+			b2 = d23;
+			b3 = d24;
+			c0 = d31;
+			c1 = d32;
+			c2 = d33;
+			c3 = d34;
+			d0 = d41;
+			d1 = d42;
+			d2 = d43;
+			d3 = d44;
+			e0 = d51;
+			e1 = d52;
+			e2 = d53;
+			e3 = d54;
+			f = d61;
+			g = d62;
+			h = d63;
+
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Jupiter",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = e11;
+			a1 = e12;
+			a2 = e13;
+			a3 = e14;
+			b0 = e21;
+			b1 = e22;
+			b2 = e23;
+			b3 = e24;
+			c0 = e31;
+			c1 = e32;
+			c2 = e33;
+			c3 = e34;
+			d0 = e41;
+			d1 = e42;
+			d2 = e43;
+			d3 = e44;
+			e0 = e51;
+			e1 = e52;
+			e2 = e53;
+			e3 = e54;
+			f = e61;
+			g = e62;
+			h = e63;
+
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Saturn",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = f11;
+			a1 = f12;
+			a2 = f13;
+			a3 = f14;
+			b0 = f21;
+			b1 = f22;
+			b2 = f23;
+			b3 = f24;
+			c0 = f31;
+			c1 = f32a;
+			c2 = f33;
+			c3 = f34;
+			d0 = f41;
+			d1 = f42;
+			d2 = f43;
+			d3 = f44;
+			e0 = f51;
+			e1 = f52;
+			e2 = f53;
+			e3 = f54;
+			f = f61;
+			g = f62;
+			h = f63;
+
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Uranus",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			a0 = g11;
+			a1 = g12;
+			a2 = g13;
+			a3 = g14;
+			b0 = g21;
+			b1 = g22;
+			b2 = g23;
+			b3 = g24;
+			c0 = g31;
+			c1 = g32;
+			c2 = g33;
+			c3 = g34;
+			d0 = g41;
+			d1 = g42;
+			d2 = g43;
+			d3 = g44;
+			e0 = g51;
+			e1 = g52;
+			e2 = g53;
+			e3 = g54;
+			f = g61;
+			g = g62;
+			h = g63;
+
+			aa = a1 * t;
+			b = 360.0 * (aa - (aa).Floor());
+			c = a0 + b + (a3 * t + a2) * t * t;
+
+			pl.Add(new PAPlanetDataPrecise()
+			{
+				Name = "Neptune",
+				Value1 = c - 360.0 * (c / 360.0).Floor(),
+				Value2 = (a1 * 0.009856263) + (a2 + a3) / 36525.0,
+				Value3 = ((b3 * t + b2) * t + b1) * t + b0,
+				Value4 = ((c3 * t + c2) * t + c1) * t + c0,
+				Value5 = ((d3 * t + d2) * t + d1) * t + d0,
+				Value6 = ((e3 * t + e2) * t + e1) * t + e0,
+				Value7 = f,
+				Value8 = g,
+				Value9 = h
+			});
+
+			var checkPlanet = pl.Where(x => x.Name.ToLower() == s.ToLower()).Select(x => x).FirstOrDefault();
+			if (checkPlanet == null)
+				return (Degrees(Unwind(0)), Degrees(Unwind(0)), Degrees(Unwind(0)), Degrees(Unwind(0)), Degrees(Unwind(0)), Degrees(Unwind(0)), Degrees(Unwind(0)));
+
+			var li = 0.0;
+			var ms = SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr);
+			var sr = (SunLong(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+			var re = SunDist(lh, lm, ls, ds, zc, dy, mn, yr);
+			var lg = sr + Math.PI;
+
+			var l0 = 0.0;
+			var s0 = 0.0;
+			var p0 = 0.0;
+			var vo = 0.0;
+			var lp1 = 0.0;
+			var ll = 0.0;
+			var rd = 0.0;
+			var pd = 0.0;
+			var sp = 0.0;
+			var ci = 0.0;
+
+			for (int k = 1; k <= 3; k++)
+			{
+				foreach (var planet in pl)
+					planet.APValue = (planet.Value1 - planet.Value3 - li * planet.Value2).ToRadians();
+
+				var qa = 0.0;
+				var qb = 0.0;
+				var qc = 0.0;
+				var qd = 0.0;
+				var qe = 0.0;
+				var qf = 0.0;
+				var qg = 0.0;
+
+				if (s == "Mercury")
+					(qa, qb) = PlanetLong_L4685(pl);
+
+				if (s == "Venus")
+					(qa, qb, qc, qe) = PlanetLong_L4735(pl, ms, t);
+
+				if (s == "Mars")
+				{
+					var returnValue = PlanetLong_L4810(pl, ms);
+
+					qc = returnValue.qc;
+					qe = returnValue.qe;
+					qa = returnValue.qa;
+					qb = returnValue.qb;
+				}
+
+				var matchPlanet = pl.Where(x => x.Name.ToLower() == s.ToLower()).Select(x => x).FirstOrDefault();
+
+				if (new string[] { "Jupiter", "Saturn", "Uranus", "Neptune" }.Contains(s))
+					(qa, qb, qc, qd, qe, qf, qg) = PlanetLong_L4945(t, matchPlanet);
+
+				var ec = matchPlanet.Value4 + qd;
+				var am = matchPlanet.APValue + qe;
+				var at = TrueAnomaly(am, ec);
+				var pvv = (matchPlanet.Value7 + qf) * (1.0 - ec * ec) / (1.0 + ec * (at).Cosine());
+				var lp = Degrees(at) + matchPlanet.Value3 + Degrees(qc - qe);
+				lp = lp.ToRadians();
+				var om = matchPlanet.Value6.ToRadians();
+				var lo = lp - om;
+				var so = lo.Sine();
+				var co = lo.Cosine();
+				var inn = matchPlanet.Value5.ToRadians();
+				pvv = pvv + qb;
+				sp = so * inn.Sine();
+				var y = so * inn.Cosine();
+				var ps = sp.ASine() + qg;
+				sp = ps.Sine();
+				pd = y.AngleTangent2(co) + om + (qa).ToRadians();
+				pd = Unwind(pd);
+				ci = ps.Cosine();
+				rd = pvv * ci;
+				ll = pd - lg;
+				var rh = re * re + pvv * pvv - 2.0 * re * pvv * ci * ll.Cosine();
+				rh = rh.SquareRoot();
+				li = rh * 0.005775518;
+
+				if (k == 1)
+				{
+					l0 = pd;
+					s0 = ps;
+					p0 = pvv;
+					vo = rh;
+					lp1 = lp;
+				}
+			}
+
+			var l1 = ll.Sine();
+			var l2 = ll.Cosine();
+
+			var ep = (ip < 3) ? (-1.0 * rd * l1 / (re - rd * l2)).AngleTangent() + lg + Math.PI : (re * l1 / (rd - re * l2)).AngleTangent() + pd;
+			ep = Unwind(ep);
+
+			var bp = (rd * sp * (ep - pd).Sine() / (ci * re * l1)).AngleTangent();
+
+			var planetLongitude = Degrees(Unwind(ep));
+			var planetLatitude = Degrees(Unwind(bp));
+			var planetDistanceAU = vo;
+			var planetHLong1 = Degrees(lp1);
+			var planetHLong2 = Degrees(l0);
+			var planetHLat = Degrees(s0);
+			var planetRVect = p0;
+
+			return (planetLongitude, planetLatitude, planetDistanceAU, planetHLong1, planetHLong2, planetHLat, planetRVect);
+		}
+
+		/// <summary>
+		/// Helper function for planet_long_lat()
+		/// </summary>
+		/// <param name="qa"></param>
+		/// <param name="pl"></param>
+		/// <returns></returns>
+		public static (double qa, double qb) PlanetLong_L4685(List<PAPlanetDataPrecise> pl)
+		{
+			var qa = 0.00204 * (5.0 * pl[2].APValue - 2.0 * pl[1].APValue + 0.21328).Cosine();
+			qa = qa + 0.00103 * (2.0 * pl[2].APValue - pl[1].APValue - 2.8046).Cosine();
+			qa = qa + 0.00091 * (2.0 * pl[4].APValue - pl[1].APValue - 0.64582).Cosine();
+			qa = qa + 0.00078 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue + 0.17692).Cosine();
+
+			var qb = 0.000007525 * (2.0 * pl[4].APValue - pl[1].APValue + 0.925251).Cosine();
+			qb = qb + 0.000006802 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue - 4.53642).Cosine();
+			qb = qb + 0.000005457 * (2.0 * pl[2].APValue - 2.0 * pl[1].APValue - 1.24246).Cosine();
+			qb = qb + 0.000003569 * (5.0 * pl[2].APValue - pl[1].APValue - 1.35699).Cosine();
+
+			return (qa, qb);
+		}
+
+		/// <summary>
+		/// Helper function for planet_long_lat()
+		/// </summary>
+		/// <param name="qa"></param>
+		/// <param name="qb"></param>
+		/// <param name="qc"></param>
+		/// <param name="pl"></param>
+		/// <param name="ms"></param>
+		/// <param name="t"></param>
+		/// <returns></returns>
+		public static (double qa, double qb, double qc, double qe) PlanetLong_L4735(List<PAPlanetDataPrecise> pl, double ms, double t)
+		{
+			var qc = 0.00077 * (4.1406 + t * 2.6227).Sine();
+			qc = qc.ToRadians();
+			var qe = qc;
+
+			var qa = 0.00313 * (2.0 * ms - 2.0 * pl[2].APValue - 2.587).Cosine();
+			qa = qa + 0.00198 * (3.0 * ms - 3.0 * pl[2].APValue + 0.044768).Cosine();
+			qa = qa + 0.00136 * (ms - pl[2].APValue - 2.0788).Cosine();
+			qa = qa + 0.00096 * (3.0 * ms - 2.0 * pl[2].APValue - 2.3721).Cosine();
+			qa = qa + 0.00082 * (pl[4].APValue - pl[2].APValue - 3.6318).Cosine();
+
+			var qb = 0.000022501 * (2.0 * ms - 2.0 * pl[2].APValue - 1.01592).Cosine();
+			qb = qb + 0.000019045 * (3.0 * ms - 3.0 * pl[2].APValue + 1.61577).Cosine();
+			qb = qb + 0.000006887 * (pl[4].APValue - pl[2].APValue - 2.06106).Cosine();
+			qb = qb + 0.000005172 * (ms - pl[2].APValue - 0.508065).Cosine();
+			qb = qb + 0.00000362 * (5.0 * ms - 4.0 * pl[2].APValue - 1.81877).Cosine();
+			qb = qb + 0.000003283 * (4.0 * ms - 4.0 * pl[2].APValue + 1.10851).Cosine();
+			qb = qb + 0.000003074 * (2.0 * pl[4].APValue - 2.0 * pl[2].APValue - 0.962846).Cosine();
+
+			return (qa, qb, qc, qe);
+		}
+
+		/// <summary>
+		/// Helper function for planet_long_lat()
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="sa"></param>
+		/// <param name="ca"></param>
+		/// <param name="qc"></param>
+		/// <param name="qe"></param>
+		/// <param name="qa"></param>
+		/// <param name="pl"></param>
+		/// <param name="ms"></param>
+		/// <returns></returns>
+		public static (double a, double sa, double ca, double qc, double qe, double qa, double qb) PlanetLong_L4810(List<PAPlanetDataPrecise> pl, double ms)
+		{
+			var a = 3.0 * pl[4].APValue - 8.0 * pl[3].APValue + 4.0 * ms;
+			var sa = a.Sine();
+			var ca = a.Cosine();
+			var qc = -(0.01133 * sa + 0.00933 * ca);
+			qc = qc.ToRadians();
+			var qe = qc;
+
+			var qa = 0.00705 * (pl[4].APValue - pl[3].APValue - 0.85448).Cosine();
+			qa = qa + 0.00607 * (2.0 * pl[4].APValue - pl[3].APValue - 3.2873).Cosine();
+			qa = qa + 0.00445 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 3.3492).Cosine();
+			qa = qa + 0.00388 * (ms - 2.0 * pl[3].APValue + 0.35771).Cosine();
+			qa = qa + 0.00238 * (ms - pl[3].APValue + 0.61256).Cosine();
+			qa = qa + 0.00204 * (2.0 * ms - 3.0 * pl[3].APValue + 2.7688).Cosine();
+			qa = qa + 0.00177 * (3.0 * pl[3].APValue - pl[2].APValue - 1.0053).Cosine();
+			qa = qa + 0.00136 * (2.0 * ms - 4.0 * pl[3].APValue + 2.6894).Cosine();
+			qa = qa + 0.00104 * (pl[4].APValue + 0.30749).Cosine();
+
+			var qb = 0.000053227 * (pl[4].APValue - pl[3].APValue + 0.717864).Cosine();
+			qb = qb + 0.000050989 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 1.77997).Cosine();
+			qb = qb + 0.000038278 * (2.0 * pl[4].APValue - pl[3].APValue - 1.71617).Cosine();
+			qb = qb + 0.000015996 * (ms - pl[3].APValue - 0.969618).Cosine();
+			qb = qb + 0.000014764 * (2.0 * ms - 3.0 * pl[3].APValue + 1.19768).Cosine();
+			qb = qb + 0.000008966 * (pl[4].APValue - 2.0 * pl[3].APValue + 0.761225).Cosine();
+			qb = qb + 0.000007914 * (3.0 * pl[4].APValue - 2.0 * pl[3].APValue - 2.43887).Cosine();
+			qb = qb + 0.000007004 * (2.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.79573).Cosine();
+			qb = qb + 0.00000662 * (ms - 2.0 * pl[3].APValue + 1.97575).Cosine();
+			qb = qb + 0.00000493 * (3.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.33069).Cosine();
+			qb = qb + 0.000004693 * (3.0 * ms - 5.0 * pl[3].APValue + 3.32665).Cosine();
+			qb = qb + 0.000004571 * (2.0 * ms - 4.0 * pl[3].APValue + 4.27086).Cosine();
+			qb = qb + 0.000004409 * (3.0 * pl[4].APValue - pl[3].APValue - 2.02158).Cosine();
+
+			return (a, sa, ca, qc, qe, qa, qb);
+		}
+
+		/// <summary>
+		/// Helper function for planet_long_lat()
+		/// </summary>
+		/// <param name="qa"></param>
+		/// <param name="qb"></param>
+		/// <param name="qc"></param>
+		/// <param name="qd"></param>
+		/// <param name="qe"></param>
+		/// <param name="qf"></param>
+		/// <param name="t"></param>
+		/// <param name="planet"></param>
+		/// <returns></returns>
+		public static (double qa, double qb, double qc, double qd, double qe, double qf, double qg) PlanetLong_L4945(double t, PAPlanetDataPrecise planet)
+		{
+			var qa = 0.0;
+			var qb = 0.0;
+			var qc = 0.0;
+			var qd = 0.0;
+			var qe = 0.0;
+			var qf = 0.0;
+			var qg = 0.0;
+			var vk = 0.0;
+			var ja = 0.0;
+			var jb = 0.0;
+			var jc = 0.0;
+
+			var j1 = t / 5.0 + 0.1;
+			var j2 = Unwind(4.14473 + 52.9691 * t);
+			var j3 = Unwind(4.641118 + 21.32991 * t);
+			var j4 = Unwind(4.250177 + 7.478172 * t);
+			var j5 = 5.0 * j3 - 2.0 * j2;
+			var j6 = 2.0 * j2 - 6.0 * j3 + 3.0 * j4;
+
+			if (new string[] { "Mercury", "Venus", "Mars" }.Contains(planet.Name))
+				return (qa, qb, qc, qd, qe, qf, qg);
+
+			if (new string[] { "Jupiter", "Saturn" }.Contains(planet.Name))
+			{
+				var j7 = j3 - j2;
+				var u1 = (j3).Sine();
+				var u2 = (j3).Cosine();
+				var u3 = (2.0 * j3).Sine();
+				var u4 = (2.0 * j3).Cosine();
+				var u5 = (j5).Sine();
+				var u6 = (j5).Cosine();
+				var u7 = (2.0 * j5).Sine();
+				var u8a = (j6).Sine();
+				var u9 = (j7).Sine();
+				var ua = (j7).Cosine();
+				var ub = (2.0 * j7).Sine();
+				var uc = (2.0 * j7).Cosine();
+				var ud = (3.0 * j7).Sine();
+				var ue = (3.0 * j7).Cosine();
+				var uf = (4.0 * j7).Sine();
+				var ug = (4.0 * j7).Cosine();
+				var vh = (5.0 * j7).Cosine();
+
+				if (planet.Name == "Saturn")
+				{
+					var ui = (3.0 * j3).Sine();
+					var uj = (3.0 * j3).Cosine();
+					var uk = (4.0 * j3).Sine();
+					var ul = (4.0 * j3).Cosine();
+					var vi = (2.0 * j5).Cosine();
+					var un = (5.0 * j7).Sine();
+					var j8 = j4 - j3;
+					var uo = (2.0 * j8).Sine();
+					var up = (2.0 * j8).Cosine();
+					var uq = (3.0 * j8).Sine();
+					var ur = (3.0 * j8).Cosine();
+
+					qc = 0.007581 * u7 - 0.007986 * u8a - 0.148811 * u9;
+					qc = qc - (0.814181 - (0.01815 - 0.016714 * j1) * j1) * u5;
+					qc = qc - (0.010497 - (0.160906 - 0.0041 * j1) * j1) * u6;
+					qc = qc - 0.015208 * ud - 0.006339 * uf - 0.006244 * u1;
+					qc = qc - 0.0165 * ub * u1 - 0.040786 * ub;
+					qc = qc + (0.008931 + 0.002728 * j1) * u9 * u1 - 0.005775 * ud * u1;
+					qc = qc + (0.081344 + 0.003206 * j1) * ua * u1 + 0.015019 * uc * u1;
+					qc = qc + (0.085581 + 0.002494 * j1) * u9 * u2 + 0.014394 * uc * u2;
+					qc = qc + (0.025328 - 0.003117 * j1) * ua * u2 + 0.006319 * ue * u2;
+					qc = qc + 0.006369 * u9 * u3 + 0.009156 * ub * u3 + 0.007525 * uq * u3;
+					qc = qc - 0.005236 * ua * u4 - 0.007736 * uc * u4 - 0.007528 * ur * u4;
+					qc = qc.ToRadians();
+
+					qd = (-7927.0 + (2548.0 + 91.0 * j1) * j1) * u5;
+					qd = qd + (13381.0 + (1226.0 - 253.0 * j1) * j1) * u6 + (248.0 - 121.0 * j1) * u7;
+					qd = qd - (305.0 + 91.0 * j1) * vi + 412.0 * ub + 12415.0 * u1;
+					qd = qd + (390.0 - 617.0 * j1) * u9 * u1 + (165.0 - 204.0 * j1) * ub * u1;
+					qd = qd + 26599.0 * ua * u1 - 4687.0 * uc * u1 - 1870.0 * ue * u1 - 821.0 * ug * u1;
+					qd = qd - 377.0 * vh * u1 + 497.0 * up * u1 + (163.0 - 611.0 * j1) * u2;
+					qd = qd - 12696.0 * u9 * u2 - 4200.0 * ub * u2 - 1503.0 * ud * u2 - 619.0 * uf * u2;
+					qd = qd - 268.0 * un * u2 - (282.0 + 1306.0 * j1) * ua * u2;
+					qd = qd + (-86.0 + 230.0 * j1) * uc * u2 + 461.0 * uo * u2 - 350.0 * u3;
+					qd = qd + (2211.0 - 286.0 * j1) * u9 * u3 - 2208.0 * ub * u3 - 568.0 * ud * u3;
+					qd = qd - 346.0 * uf * u3 - (2780.0 + 222.0 * j1) * ua * u3;
+					qd = qd + (2022.0 + 263.0 * j1) * uc * u3 + 248.0 * ue * u3 + 242.0 * uq * u3;
+					qd = qd + 467.0 * ur * u3 - 490.0 * u4 - (2842.0 + 279.0 * j1) * u9 * u4;
+					qd = qd + (128.0 + 226.0 * j1) * ub * u4 + 224.0 * ud * u4;
+					qd = qd + (-1594.0 + 282.0 * j1) * ua * u4 + (2162.0 - 207.0 * j1) * uc * u4;
+					qd = qd + 561.0 * ue * u4 + 343.0 * ug * u4 + 469.0 * uq * u4 - 242.0 * ur * u4;
+					qd = qd - 205.0 * u9 * ui + 262.0 * ud * ui + 208.0 * ua * uj - 271.0 * ue * uj;
+					qd = qd - 382.0 * ue * uk - 376.0 * ud * ul;
+					qd = qd * 0.0000001;
+
+					vk = (0.077108 + (0.007186 - 0.001533 * j1) * j1) * u5;
+					vk = vk - 0.007075 * u9;
+					vk = vk + (0.045803 - (0.014766 + 0.000536 * j1) * j1) * u6;
+					vk = vk - 0.072586 * u2 - 0.075825 * u9 * u1 - 0.024839 * ub * u1;
+					vk = vk - 0.008631 * ud * u1 - 0.150383 * ua * u2;
+					vk = vk + 0.026897 * uc * u2 + 0.010053 * ue * u2;
+					vk = vk - (0.013597 + 0.001719 * j1) * u9 * u3 + 0.011981 * ub * u4;
+					vk = vk - (0.007742 - 0.001517 * j1) * ua * u3;
+					vk = vk + (0.013586 - 0.001375 * j1) * uc * u3;
+					vk = vk - (0.013667 - 0.001239 * j1) * u9 * u4;
+					vk = vk + (0.014861 + 0.001136 * j1) * ua * u4;
+					vk = vk - (0.013064 + 0.001628 * j1) * uc * u4;
+					qe = qc - (vk.ToRadians() / planet.Value4);
+
+					qf = 572.0 * u5 - 1590.0 * ub * u2 + 2933.0 * u6 - 647.0 * ud * u2;
+					qf = qf + 33629.0 * ua - 344.0 * uf * u2 - 3081.0 * uc + 2885.0 * ua * u2;
+					qf = qf - 1423.0 * ue + (2172.0 + 102.0 * j1) * uc * u2 - 671.0 * ug;
+					qf = qf + 296.0 * ue * u2 - 320.0 * vh - 267.0 * ub * u3 + 1098.0 * u1;
+					qf = qf - 778.0 * ua * u3 - 2812.0 * u9 * u1 + 495.0 * uc * u3 + 688.0 * ub * u1;
+					qf = qf + 250.0 * ue * u3 - 393.0 * ud * u1 - 856.0 * u9 * u4 - 228.0 * uf * u1;
+					qf = qf + 441.0 * ub * u4 + 2138.0 * ua * u1 + 296.0 * uc * u4 - 999.0 * uc * u1;
+					qf = qf + 211.0 * ue * u4 - 642.0 * ue * u1 - 427.0 * u9 * ui - 325.0 * ug * u1;
+					qf = qf + 398.0 * ud * ui - 890.0 * u2 + 344.0 * ua * uj + 2206.0 * u9 * u2;
+					qf = qf - 427.0 * ue * uj;
+					qf = qf * 0.000001;
+
+					qg = 0.000747 * ua * u1 + 0.001069 * ua * u2 + 0.002108 * ub * u3;
+					qg = qg + 0.001261 * uc * u3 + 0.001236 * ub * u4 - 0.002075 * uc * u4;
+					qg = qg.ToRadians();
+
+					return (qa, qb, qc, qd, qe, qf, qg);
+				}
+
+				qc = (0.331364 - (0.010281 + 0.004692 * j1) * j1) * u5;
+				qc = qc + (0.003228 - (0.064436 - 0.002075 * j1) * j1) * u6;
+				qc = qc - (0.003083 + (0.000275 - 0.000489 * j1) * j1) * u7;
+				qc = qc + 0.002472 * u8a + 0.013619 * u9 + 0.018472 * ub;
+				qc = qc + 0.006717 * ud + 0.002775 * uf + 0.006417 * ub * u1;
+				qc = qc + (0.007275 - 0.001253 * j1) * u9 * u1 + 0.002439 * ud * u1;
+				qc = qc - (0.035681 + 0.001208 * j1) * u9 * u2 - 0.003767 * uc * u1;
+				qc = qc - (0.033839 + 0.001125 * j1) * ua * u1 - 0.004261 * ub * u2;
+				qc = qc + (0.001161 * j1 - 0.006333) * ua * u2 + 0.002178 * u2;
+				qc = qc - 0.006675 * uc * u2 - 0.002664 * ue * u2 - 0.002572 * u9 * u3;
+				qc = qc - 0.003567 * ub * u3 + 0.002094 * ua * u4 + 0.003342 * uc * u4;
+				qc = qc.ToRadians();
+
+				qd = (3606.0 + (130.0 - 43.0 * j1) * j1) * u5 + (1289.0 - 580.0 * j1) * u6;
+				qd = qd - 6764.0 * u9 * u1 - 1110.0 * ub * u1 - 224.0 * ud * u1 - 204.0 * u1;
+				qd = qd + (1284.0 + 116.0 * j1) * ua * u1 + 188.0 * uc * u1;
+				qd = qd + (1460.0 + 130.0 * j1) * u9 * u2 + 224.0 * ub * u2 - 817.0 * u2;
+				qd = qd + 6074.0 * u2 * ua + 992.0 * uc * u2 + 508.0 * ue * u2 + 230.0 * ug * u2;
+				qd = qd + 108.0 * vh * u2 - (956.0 + 73.0 * j1) * u9 * u3 + 448.0 * ub * u3;
+				qd = qd + 137.0 * ud * u3 + (108.0 * j1 - 997.0) * ua * u3 + 480.0 * uc * u3;
+				qd = qd + 148.0 * ue * u3 + (99.0 * j1 - 956.0) * u9 * u4 + 490.0 * ub * u4;
+				qd = qd + 158.0 * ud * u4 + 179.0 * u4 + (1024.0 + 75.0 * j1) * ua * u4;
+				qd = qd - 437.0 * uc * u4 - 132.0 * ue * u4;
+				qd = qd * 0.0000001;
+
+				vk = (0.007192 - 0.003147 * j1) * u5 - 0.004344 * u1;
+				vk = vk + (j1 * (0.000197 * j1 - 0.000675) - 0.020428) * u6;
+				vk = vk + 0.034036 * ua * u1 + (0.007269 + 0.000672 * j1) * u9 * u1;
+				vk = vk + 0.005614 * uc * u1 + 0.002964 * ue * u1 + 0.037761 * u9 * u2;
+				vk = vk + 0.006158 * ub * u2 - 0.006603 * ua * u2 - 0.005356 * u9 * u3;
+				vk = vk + 0.002722 * ub * u3 + 0.004483 * ua * u3;
+				vk = vk - 0.002642 * uc * u3 + 0.004403 * u9 * u4;
+				vk = vk - 0.002536 * ub * u4 + 0.005547 * ua * u4 - 0.002689 * uc * u4;
+				qe = qc - (vk.ToRadians() / planet.Value4);
+
+				qf = 205.0 * ua - 263.0 * u6 + 693.0 * uc + 312.0 * ue + 147.0 * ug + 299.0 * u9 * u1;
+				qf = qf + 181.0 * uc * u1 + 204.0 * ub * u2 + 111.0 * ud * u2 - 337.0 * ua * u2;
+				qf = qf - 111.0 * uc * u2;
+				qf = qf * 0.000001;
+
+				return (qa, qb, qc, qd, qe, qf, qg);
+			}
+
+			if (new string[] { "Uranus", "Neptune" }.Contains(planet.Name))
+			{
+				var j8 = Unwind(1.46205 + 3.81337 * t);
+				var j9 = 2.0 * j8 - j4;
+				var vj = (j9).Sine();
+				var uu = (j9).Cosine();
+				var uv = (2.0 * j9).Sine();
+				var uw = (2.0 * j9).Cosine();
+
+				if (planet.Name == "Neptune")
+				{
+					ja = j8 - j2;
+					jb = j8 - j3;
+					jc = j8 - j4;
+					qc = (0.001089 * j1 - 0.589833) * vj;
+					qc = qc + (0.004658 * j1 - 0.056094) * uu - 0.024286 * uv;
+					qc = qc.ToRadians();
+
+					vk = 0.024039 * vj - 0.025303 * uu + 0.006206 * uv;
+					vk = vk - 0.005992 * uw;
+					qe = qc - (vk.ToRadians() / planet.Value4);
+
+					qd = 4389.0 * vj + 1129.0 * uv + 4262.0 * uu + 1089.0 * uw;
+					qd = qd * 0.0000001;
+
+					qf = 8189.0 * uu - 817.0 * vj + 781.0 * uw;
+					qf = qf * 0.000001;
+
+					var vd = (2.0 * jc).Sine();
+					var ve = (2.0 * jc).Cosine();
+					var vf = (j8).Sine();
+					var vg = (j8).Cosine();
+					qa = -0.009556 * (ja).Sine() - 0.005178 * (jb).Sine();
+					qa = qa + 0.002572 * vd - 0.002972 * ve * vf - 0.002833 * vd * vg;
+
+					qg = 0.000336 * ve * vf + 0.000364 * vd * vg;
+					qg = qg.ToRadians();
+
+					qb = -40596.0 + 4992.0 * (ja).Cosine() + 2744.0 * (jb).Cosine();
+					qb = qb + 2044.0 * (jc).Cosine() + 1051.0 * ve;
+					qb = qb * 0.000001;
+
+					return (qa, qb, qc, qd, qe, qf, qg);
+				}
+
+				ja = j4 - j2;
+				jb = j4 - j3;
+				jc = j8 - j4;
+				qc = (0.864319 - 0.001583 * j1) * vj;
+				qc = qc + (0.082222 - 0.006833 * j1) * uu + 0.036017 * uv;
+				qc = qc - 0.003019 * uw + 0.008122 * (j6).Sine();
+				qc = qc.ToRadians();
+
+				vk = 0.120303 * vj + 0.006197 * uv;
+				vk = vk + (0.019472 - 0.000947 * j1) * uu;
+				qe = qc - (vk.ToRadians() / planet.Value4);
+
+				qd = (163.0 * j1 - 3349.0) * vj + 20981.0 * uu + 1311.0 * uw;
+				qd = qd * 0.0000001;
+
+				qf = -0.003825 * uu;
+
+				qa = (-0.038581 + (0.002031 - 0.00191 * j1) * j1) * (j4 + jb).Cosine();
+				qa = qa + (0.010122 - 0.000988 * j1) * (j4 + jb).Sine();
+				var a = (0.034964 - (0.001038 - 0.000868 * j1) * j1) * (2.0 * j4 + jb).Cosine();
+				qa = a + qa + 0.005594 * (j4 + 3.0 * jc).Sine() - 0.014808 * (ja).Sine();
+				qa = qa - 0.005794 * (jb).Sine() + 0.002347 * (jb).Cosine();
+				qa = qa + 0.009872 * (jc).Sine() + 0.008803 * (2.0 * jc).Sine();
+				qa = qa - 0.004308 * (3.0 * jc).Sine();
+
+				var ux = jb.Sine();
+				var uy = jb.Cosine();
+				var uz = j4.Sine();
+				var va = j4.Cosine();
+				var vb = (2.0 * j4).Sine();
+				var vc = (2.0 * j4).Cosine();
+				qg = (0.000458 * ux - 0.000642 * uy - 0.000517 * (4.0 * jc).Cosine()) * uz;
+				qg = qg - (0.000347 * ux + 0.000853 * uy + 0.000517 * (4.0 * jb).Sine()) * va;
+				qg = qg + 0.000403 * ((2.0 * jc).Cosine() * vb + (2.0 * jc).Sine() * vc);
+				qg = qg.ToRadians();
+
+				qb = -25948.0 + 4985.0 * (ja).Cosine() - 1230.0 * va + 3354.0 * uy;
+				qb = qb + 904.0 * (2.0 * jc).Cosine() + 894.0 * ((jc).Cosine() - (3.0 * jc).Cosine());
+				qb = qb + (5795.0 * va - 1165.0 * uz + 1388.0 * vc) * ux;
+				qb = qb + (1351.0 * va + 5702.0 * uz + 1388.0 * vb) * uy;
+				qb = qb * 0.000001;
+
+				return (qa, qb, qc, qd, qe, qf, qg);
+			}
+
+			return (qa, qb, qc, qd, qe, qf, qg);
+		}
+
+		/// <summary>
+		/// For W, in radians, return S, also in radians.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: SolveCubic
+		/// </remarks>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double SolveCubic(double w)
+		{
+			var s = w / 3.0;
+
+			while (1 == 1)
+			{
+				var s2 = s * s;
+				var d = (s2 + 3.0) * s - w;
+
+				if (Math.Abs(d) < 0.000001)
+				{
+					return s;
+				}
+
+				s = ((2.0 * s * s2) + w) / (3.0 * (s2 + 1.0));
+			}
 		}
 	}
 }

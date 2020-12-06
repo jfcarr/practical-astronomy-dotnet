@@ -72,5 +72,37 @@ namespace PALib
 
 			return (planetRAHour, planetRAMin, planetRASec, planetDecDeg, planetDecMin, planetDecSec);
 		}
+
+		/// <summary>
+		/// Calculate precise position of a planet.
+		/// </summary>
+		/// <param name="lctHour"></param>
+		/// <param name="lctMin"></param>
+		/// <param name="lctSec"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrectionHours"></param>
+		/// <param name="localDateDay"></param>
+		/// <param name="localDateMonth"></param>
+		/// <param name="localDateYear"></param>
+		/// <param name="planetName"></param>
+		/// <returns></returns>
+		public (double planetRAHour, double planetRAMin, double planetRASec, double planetDecDeg, double planetDecMin, double planetDecSec) PrecisePositionOfPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var coordinateResults = PAMacros.PlanetCoordinates(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear, planetName);
+
+			var planetRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(coordinateResults.planetLongitude, 0, 0, coordinateResults.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear));
+			var planetDecDeg1 = PAMacros.EcDec(coordinateResults.planetLongitude, 0, 0, coordinateResults.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear);
+
+			var planetRAHour = PAMacros.DecimalHoursHour(planetRAHours);
+			var planetRAMin = PAMacros.DecimalHoursMinute(planetRAHours);
+			var planetRASec = PAMacros.DecimalHoursSecond(planetRAHours);
+			var planetDecDeg = PAMacros.DecimalDegreesDegrees(planetDecDeg1);
+			var planetDecMin = PAMacros.DecimalDegreesMinutes(planetDecDeg1);
+			var planetDecSec = PAMacros.DecimalDegreesSeconds(planetDecDeg1);
+
+			return (planetRAHour, planetRAMin, planetRASec, planetDecDeg, planetDecMin, planetDecSec);
+		}
 	}
 }
