@@ -66,6 +66,17 @@ namespace PALib.Helpers
 		}
 
 		/// <summary>
+		/// Returns the base 10 logarithm of a specified number.
+		/// </summary>
+		/// <param name="d"></param>
+		/// <returns></returns>
+		public static double Log10(this double d)
+		{
+			return Math.Log10(d);
+
+		}
+
+		/// <summary>
 		/// Returns the sine of the specified angle.
 		/// </summary>
 		/// <param name="value"></param>

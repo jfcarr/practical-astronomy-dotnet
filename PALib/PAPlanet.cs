@@ -104,5 +104,68 @@ namespace PALib
 
 			return (planetRAHour, planetRAMin, planetRASec, planetDecDeg, planetDecMin, planetDecSec);
 		}
+
+		/// <summary>
+		/// Calculate several visual aspects of a planet.
+		/// </summary>
+		/// <param name="lctHour"></param>
+		/// <param name="lctMin"></param>
+		/// <param name="lctSec"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrectionHours"></param>
+		/// <param name="localDateDay"></param>
+		/// <param name="localDateMonth"></param>
+		/// <param name="localDateYear"></param>
+		/// <param name="planetName"></param>
+		/// <returns>
+		/// <para>distance_au -- Planet's distance from Earth, in AU.</para>
+		/// <para>ang_dia_arcsec -- Angular diameter of the planet.</para>
+		/// <para>phase -- Illuminated fraction of the planet.</para>
+		/// <para>light_time_hour -- Light travel time from planet to Earth, hour part.</para>
+		/// <para>light_time_minutes -- Light travel time from planet to Earth, minutes part.</para>
+		/// <para>light_time_seconds -- Light travel time from planet to Earth, seconds part.</para>
+		/// <para>pos_angle_bright_limb_deg -- Position-angle of the bright limb.</para>
+		/// <para>approximate_magnitude -- Apparent brightness of the planet.</para>
+		/// </returns>
+		public (double distanceAU, double angDiaArcsec, double phase, double lightTimeHour, double lightTimeMinutes, double lightTimeSeconds, double posAngleBrightLimbDeg, double approximateMagnitude) VisualAspectsOfAPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var greenwichDateYear = PAMacros.LocalCivilTimeGreenwichYear(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+
+			var planetCoordInfo = PAMacros.PlanetCoordinates(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear, planetName);
+
+			var planetRARad = (PAMacros.EcRA(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear)).ToRadians();
+			var planetDecRad = (PAMacros.EcDec(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear)).ToRadians();
+
+			var lightTravelTimeHours = planetCoordInfo.planetDistanceAU * 0.1386;
+			var planetInfo = PAPlanetInfo.GetPlanetInfo(planetName);
+			var angularDiameterArcsec = planetInfo.theta0_AngularDiameter / planetCoordInfo.planetDistanceAU;
+			var phase1 = 0.5 * (1.0 + ((planetCoordInfo.planetLongitude - planetCoordInfo.planetHLong1).ToRadians()).Cosine());
+
+			var sunEclLongDeg = PAMacros.SunLong(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var sunRARad = (PAMacros.EcRA(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear)).ToRadians();
+			var sunDecRad = (PAMacros.EcDec(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear)).ToRadians();
+
+			var y = (sunDecRad).Cosine() * (sunRARad - planetRARad).Sine();
+			var x = (planetDecRad).Cosine() * (sunDecRad).Sine() - (planetDecRad).Sine() * (sunDecRad).Cosine() * (sunRARad - planetRARad).Cosine();
+
+			var chiDeg = PAMacros.Degrees(y.AngleTangent2(x));
+			var radiusVectorAU = planetCoordInfo.planetRVect;
+			var approximateMagnitude1 = 5.0 * (radiusVectorAU * planetCoordInfo.planetDistanceAU / (phase1).SquareRoot()).Log10() + planetInfo.v0_VisualMagnitude;
+
+			var distanceAU = Math.Round(planetCoordInfo.planetDistanceAU, 5);
+			var angDiaArcsec = Math.Round(angularDiameterArcsec, 1);
+			var phase = Math.Round(phase1, 2);
+			var lightTimeHour = PAMacros.DecimalHoursHour(lightTravelTimeHours);
+			var lightTimeMinutes = PAMacros.DecimalHoursMinute(lightTravelTimeHours);
+			var lightTimeSeconds = PAMacros.DecimalHoursSecond(lightTravelTimeHours);
+			var posAngleBrightLimbDeg = Math.Round(chiDeg, 1);
+			var approximateMagnitude = Math.Round(approximateMagnitude1, 1);
+
+			return (distanceAU, angDiaArcsec, phase, lightTimeHour, lightTimeMinutes, lightTimeSeconds, posAngleBrightLimbDeg, approximateMagnitude);
+		}
 	}
 }

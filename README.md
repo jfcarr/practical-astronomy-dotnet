@@ -50,7 +50,7 @@ If you're interested in this topic, please buy the book! It provides far more de
 
 - [x] Calculate -> Approximate position of planet
 - [x] Calculate -> Precise position of planet
-- [ ] Calculate -> Visual aspects of planet (distance, angular diameter, phase, light time, position angle of bright limb, and apparent magnitude)
+- [x] Calculate -> Visual aspects of planet (distance, angular diameter, phase, light time, position angle of bright limb, and apparent magnitude)
 - [ ] Calculate -> Position of comet (elliptical and parabolic)
 - [ ] Calculate -> Binary star orbit data
 

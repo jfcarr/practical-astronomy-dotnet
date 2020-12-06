@@ -22,5 +22,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((11, 10, 30.99, 6, 25, 49.46), _paPlanet.PrecisePositionOfPlanet(0, 0, 0, false, 0, 22, 11, 2003, "Jupiter"));
 		}
+
+		[Fact]
+		public void VisualAspectsOfAPlanet()
+		{
+			Assert.Equal((5.59829, 35.1, 0.99, 0, 46, 33.32, 113.2, -2.0), _paPlanet.VisualAspectsOfAPlanet(0, 0, 0, false, 0, 22, 11, 2003, "Jupiter"));
+		}
 	}
 }
