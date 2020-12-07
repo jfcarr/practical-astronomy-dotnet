@@ -1,4 +1,5 @@
 using System;
+using PALib.Data;
 using PALib.Helpers;
 
 namespace PALib
@@ -22,7 +23,7 @@ namespace PALib
 		{
 			var daylightSaving = (isDaylightSaving) ? 1 : 0;
 
-			var planetInfo = PAPlanetInfo.GetPlanetInfo(planetName);
+			var planetInfo = PlanetInfo.GetPlanetInfo(planetName);
 
 			var gdateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 			var gdateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -38,7 +39,7 @@ namespace PALib
 			var planetTrueAnomalyDeg = lpDeg2 - planetInfo.peri_LongitudePerihelion;
 			var rAU = planetInfo.axis_AxisOrbit * (1 - Math.Pow(planetInfo.ecc_EccentricityOrbit, 2)) / (1 + planetInfo.ecc_EccentricityOrbit * planetTrueAnomalyDeg.ToRadians().Cosine());
 
-			var earthInfo = PAPlanetInfo.GetPlanetInfo("Earth");
+			var earthInfo = PlanetInfo.GetPlanetInfo("Earth");
 
 			var neDeg1 = 360 * dDays / (365.242191 * earthInfo.tp_PeriodOrbit);
 			var neDeg2 = neDeg1 - 360 * (neDeg1 / 360).Floor();
@@ -141,7 +142,7 @@ namespace PALib
 			var planetDecRad = (PAMacros.EcDec(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear)).ToRadians();
 
 			var lightTravelTimeHours = planetCoordInfo.planetDistanceAU * 0.1386;
-			var planetInfo = PAPlanetInfo.GetPlanetInfo(planetName);
+			var planetInfo = PlanetInfo.GetPlanetInfo(planetName);
 			var angularDiameterArcsec = planetInfo.theta0_AngularDiameter / planetCoordInfo.planetDistanceAU;
 			var phase1 = 0.5 * (1.0 + ((planetCoordInfo.planetLongitude - planetCoordInfo.planetHLong1).ToRadians()).Cosine());
 

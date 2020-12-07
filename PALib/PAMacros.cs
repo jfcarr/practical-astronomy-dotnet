@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PALib.Data;
 using PALib.Helpers;
 
 namespace PALib
@@ -2840,9 +2841,9 @@ namespace PALib
 			var g62 = 62.2;
 			var g63 = -6.87;
 
-			var pl = new List<PAPlanetDataPrecise>();
+			var pl = new List<PlanetDataPrecise>();
 
-			pl.Add(new PAPlanetDataPrecise() { Name = "", Value1 = 0, Value2 = 0, Value3 = 0, Value4 = 0, Value5 = 0, Value6 = 0, Value7 = 0, Value8 = 0, Value9 = 0 });
+			pl.Add(new PlanetDataPrecise() { Name = "", Value1 = 0, Value2 = 0, Value3 = 0, Value4 = 0, Value5 = 0, Value6 = 0, Value7 = 0, Value8 = 0, Value9 = 0 });
 
 			var ip = 0;
 			var b = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -2879,7 +2880,7 @@ namespace PALib
 			b = 360.0 * (aa - aa.Floor());
 			var c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Mercury",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -2920,7 +2921,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Venus",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -2962,7 +2963,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Mars",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -3004,7 +3005,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Jupiter",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -3046,7 +3047,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Saturn",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -3088,7 +3089,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Uranus",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -3130,7 +3131,7 @@ namespace PALib
 			b = 360.0 * (aa - (aa).Floor());
 			c = a0 + b + (a3 * t + a2) * t * t;
 
-			pl.Add(new PAPlanetDataPrecise()
+			pl.Add(new PlanetDataPrecise()
 			{
 				Name = "Neptune",
 				Value1 = c - 360.0 * (c / 360.0).Floor(),
@@ -3259,7 +3260,7 @@ namespace PALib
 		/// <param name="qa"></param>
 		/// <param name="pl"></param>
 		/// <returns></returns>
-		public static (double qa, double qb) PlanetLong_L4685(List<PAPlanetDataPrecise> pl)
+		public static (double qa, double qb) PlanetLong_L4685(List<PlanetDataPrecise> pl)
 		{
 			var qa = 0.00204 * (5.0 * pl[2].APValue - 2.0 * pl[1].APValue + 0.21328).Cosine();
 			qa = qa + 0.00103 * (2.0 * pl[2].APValue - pl[1].APValue - 2.8046).Cosine();
@@ -3284,7 +3285,7 @@ namespace PALib
 		/// <param name="ms"></param>
 		/// <param name="t"></param>
 		/// <returns></returns>
-		public static (double qa, double qb, double qc, double qe) PlanetLong_L4735(List<PAPlanetDataPrecise> pl, double ms, double t)
+		public static (double qa, double qb, double qc, double qe) PlanetLong_L4735(List<PlanetDataPrecise> pl, double ms, double t)
 		{
 			var qc = 0.00077 * (4.1406 + t * 2.6227).Sine();
 			qc = qc.ToRadians();
@@ -3319,7 +3320,7 @@ namespace PALib
 		/// <param name="pl"></param>
 		/// <param name="ms"></param>
 		/// <returns></returns>
-		public static (double a, double sa, double ca, double qc, double qe, double qa, double qb) PlanetLong_L4810(List<PAPlanetDataPrecise> pl, double ms)
+		public static (double a, double sa, double ca, double qc, double qe, double qa, double qb) PlanetLong_L4810(List<PlanetDataPrecise> pl, double ms)
 		{
 			var a = 3.0 * pl[4].APValue - 8.0 * pl[3].APValue + 4.0 * ms;
 			var sa = a.Sine();
@@ -3367,7 +3368,7 @@ namespace PALib
 		/// <param name="t"></param>
 		/// <param name="planet"></param>
 		/// <returns></returns>
-		public static (double qa, double qb, double qc, double qd, double qe, double qf, double qg) PlanetLong_L4945(double t, PAPlanetDataPrecise planet)
+		public static (double qa, double qb, double qc, double qd, double qe, double qf, double qg) PlanetLong_L4945(double t, PlanetDataPrecise planet)
 		{
 			var qa = 0.0;
 			var qb = 0.0;
@@ -3652,6 +3653,93 @@ namespace PALib
 
 				s = ((2.0 * s * s2) + w) / (3.0 * (s2 + 1.0));
 			}
+		}
+
+		/// <summary>
+		/// Calculate longitude, latitude, and distance of parabolic-orbit comet.
+		/// </summary>
+		/// <remarks>
+		/// Original macro names: PcometLong, PcometLat, PcometDist
+		/// </remarks>
+		/// <param name="lh">Local civil time, hour part.</param>
+		/// <param name="lm">Local civil time, minutes part.</param>
+		/// <param name="ls">Local civil time, seconds part.</param>
+		/// <param name="ds">Daylight Savings offset.</param>
+		/// <param name="zc">Time zone correction, in hours.</param>
+		/// <param name="dy">Local date, day part.</param>
+		/// <param name="mn">Local date, month part.</param>
+		/// <param name="yr">Local date, year part.</param>
+		/// <param name="td">Perihelion epoch (day)</param>
+		/// <param name="tm">Perihelion epoch (month)</param>
+		/// <param name="ty">Perihelion epoch (year)</param>
+		/// <param name="q">a (AU)</param>
+		/// <param name="i">Inclination (degrees)</param>
+		/// <param name="p">Perihelion (degrees)</param>
+		/// <param name="n">Node (degrees)</param>
+		/// <returns>
+		/// <para>comet_long_deg -- Comet longitude (degrees)</para>
+		/// <para>comet_lat_deg -- Comet lat (degrees)</para>
+		/// <para>comet_dist_au -- Comet distance from Earth (AU)</para>
+		/// </returns>
+		public static (double cometLongDeg, double cometLatDeg, double cometDistAU) PCometLongLatDist(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr, double td, int tm, int ty, double q, double i, double p, double n)
+		{
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var tpe = (ut / 365.242191) + CivilDateToJulianDate(gd, gm, gy) - CivilDateToJulianDate(td, tm, ty);
+			var lg = (SunLong(lh, lm, ls, ds, zc, dy, mn, yr) + 180.0).ToRadians();
+			var re = SunDist(lh, lm, ls, ds, zc, dy, mn, yr);
+
+			// var _li = 0.0;
+			var rh2 = 0.0;
+			var rd = 0.0;
+			var s3 = 0.0;
+			var c3 = 0.0;
+			var lc = 0.0;
+			var s2 = 0.0;
+			var c2 = 0.0;
+
+			for (int k = 1; k < 3; k++)
+			{
+				var s = SolveCubic(0.0364911624 * tpe / (q * (q).SquareRoot()));
+				var nu = 2.0 * s.AngleTangent();
+				var r = q * (1.0 + s * s);
+				var l = nu + p.ToRadians();
+				var s1 = l.Sine();
+				var c1 = l.Cosine();
+				var i1 = i.ToRadians();
+				s2 = s1 * i1.Sine();
+				var ps = s2.ASine();
+				var y = s1 * i1.Cosine();
+				lc = y.AngleTangent2(c1) + n.ToRadians();
+				c2 = ps.Cosine();
+				rd = r * c2;
+				var ll = lc - lg;
+				c3 = ll.Cosine();
+				s3 = ll.Sine();
+				var rh = ((re * re) + (r * r) - (2.0 * re * rd * c3 * (ps).Cosine())).SquareRoot();
+				if (k == 1)
+				{
+					rh2 = ((re * re) + (r * r) - (2.0 * re * r * (ps).Cosine() * (l + (n).ToRadians() - lg).Cosine())).SquareRoot();
+				}
+
+				// _li = rh * 0.005775518;
+			}
+
+			double ep;
+
+			ep = (rd < re) ? ((-rd * s3) / (re - (rd * c3))).AngleTangent() + lg + 3.141592654 : ((re * s3) / (rd - (re * c3))).AngleTangent() + lc;
+			ep = Unwind(ep);
+
+			var tb = (rd * s2 * (ep - lc).Sine()) / (c2 * re * s3);
+			var bp = tb.AngleTangent();
+
+			var cometLongDeg = Degrees(ep);
+			var cometLatDeg = Degrees(bp);
+			var cometDistAU = rh2;
+
+			return (cometLongDeg, cometLatDeg, cometDistAU);
 		}
 	}
 }

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PALib
+namespace PALib.Data
 {
-	public class PAPlanetData
+	public class PlanetData
 	{
 		public string Name { get; set; }
 
@@ -89,7 +89,7 @@ namespace PALib
 		public double v0_VisualMagnitude { get; set; }
 	}
 
-	public class PAPlanetDataPrecise
+	public class PlanetDataPrecise
 	{
 		public string Name { get; set; }
 		public double Value1 { get; set; }
@@ -104,14 +104,14 @@ namespace PALib
 		public double APValue { get; set; }
 	}
 
-	public static class PAPlanetInfo
+	public static class PlanetInfo
 	{
-		static List<PAPlanetData> _planetData;
+		static List<PlanetData> _planetData;
 
-		static PAPlanetInfo()
+		static PlanetInfo()
 		{
-			_planetData = new List<PAPlanetData>() {
-				new PAPlanetData() {
+			_planetData = new List<PlanetData>() {
+				new PlanetData() {
 					Name = "Mercury",
 					tp_PeriodOrbit = 0.24085,
 					long_LongitudeEpoch = 75.5671,
@@ -123,7 +123,7 @@ namespace PALib
 					theta0_AngularDiameter = 6.74,
 					v0_VisualMagnitude = -0.42
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Venus",
 					tp_PeriodOrbit = 0.615207,
 					long_LongitudeEpoch = 272.30044,
@@ -135,7 +135,7 @@ namespace PALib
 					theta0_AngularDiameter = 16.92,
 					v0_VisualMagnitude = -4.4
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Earth",
 					tp_PeriodOrbit = 0.999996,
 					long_LongitudeEpoch = 99.556772,
@@ -147,7 +147,7 @@ namespace PALib
 					theta0_AngularDiameter = -99.0,
 					v0_VisualMagnitude = -99.0
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Mars",
 					tp_PeriodOrbit = 1.880765,
 					long_LongitudeEpoch = 109.09646,
@@ -159,7 +159,7 @@ namespace PALib
 					theta0_AngularDiameter = 9.36,
 					v0_VisualMagnitude = -1.52
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Jupiter",
 					tp_PeriodOrbit = 11.857911,
 					long_LongitudeEpoch = 337.917132,
@@ -171,7 +171,7 @@ namespace PALib
 					theta0_AngularDiameter = 196.74,
 					v0_VisualMagnitude = -9.4
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Saturn",
 					tp_PeriodOrbit = 29.310579,
 					long_LongitudeEpoch = 172.398316,
@@ -183,7 +183,7 @@ namespace PALib
 					theta0_AngularDiameter = 165.6,
 					v0_VisualMagnitude = -8.88
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Uranus",
 					tp_PeriodOrbit = 84.039492,
 					long_LongitudeEpoch = 356.135400,
@@ -195,7 +195,7 @@ namespace PALib
 					theta0_AngularDiameter = 65.8,
 					v0_VisualMagnitude = -7.19
 				},
-				new PAPlanetData() {
+				new PlanetData() {
 					Name = "Neptune",
 					tp_PeriodOrbit = 165.845392,
 					long_LongitudeEpoch = 326.895127,
@@ -210,14 +210,14 @@ namespace PALib
 			};
 		}
 
-		public static PAPlanetData GetPlanetInfo(string name)
+		public static PlanetData GetPlanetInfo(string name)
 		{
 			var returnValue = _planetData
 				.Where(x => x.Name == name)
 				.Select(x => x)
 				.FirstOrDefault();
 
-			return (returnValue == null) ? new PAPlanetData() { Name = "NotFound" } : returnValue;
+			return (returnValue == null) ? new PlanetData() { Name = "NotFound" } : returnValue;
 		}
 	}
 }
