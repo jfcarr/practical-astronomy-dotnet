@@ -3916,5 +3916,94 @@ namespace PALib
 
 			return (moonLongDeg, moonLatDeg, moonHorPara);
 		}
+
+		/// <summary>
+		/// Calculate current phase of Moon.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonPhase
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonPhase(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var moonResult = MoonLongLatHP(lh, lm, ls, ds, zc, dy, mn, yr);
+
+			var cd = ((moonResult.moonLongDeg - SunLong(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians()).Cosine() * ((moonResult.moonLatDeg).ToRadians()).Cosine();
+			var d = cd.ACosine();
+			var sd = d.Sine();
+			var i = 0.1468 * sd * (1.0 - 0.0549 * (MoonMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr)).Sine());
+			i = i / (1.0 - 0.0167 * (SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr)).Sine());
+			i = 3.141592654 - d - i.ToRadians();
+			var k = (1.0 + (i).Cosine()) / 2.0;
+
+			return Math.Round(k, 2);
+		}
+
+		/// <summary>
+		/// Calculate the Moon's mean anomaly.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonMeanAnomaly
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonMeanAnomaly(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gd = LocalCivilTimeGreenwichDay(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gm = LocalCivilTimeGreenwichMonth(lh, lm, ls, ds, zc, dy, mn, yr);
+			var gy = LocalCivilTimeGreenwichYear(lh, lm, ls, ds, zc, dy, mn, yr);
+			var t = ((CivilDateToJulianDate(gd, gm, gy) - 2415020.0) / 36525.0) + (ut / 876600.0);
+			var t2 = t * t;
+
+			var m1 = 27.32158213;
+			var m2 = 365.2596407;
+			var m3 = 27.55455094;
+			var m4 = 29.53058868;
+			var m5 = 27.21222039;
+			var m6 = 6798.363307;
+			var q = CivilDateToJulianDate(gd, gm, gy) - 2415020.0 + (ut / 24.0);
+			m1 = q / m1;
+			m2 = q / m2;
+			m3 = q / m3;
+			m4 = q / m4;
+			m5 = q / m5;
+			m6 = q / m6;
+			m1 = 360.0 * (m1 - m1.Floor());
+			m2 = 360.0 * (m2 - m2.Floor());
+			m3 = 360.0 * (m3 - m3.Floor());
+			m4 = 360.0 * (m4 - m4.Floor());
+			m5 = 360.0 * (m5 - m5.Floor());
+			m6 = 360.0 * (m6 - m6.Floor());
+
+			var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
+			var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
+			var md = 296.104608 + m3 + (0.009192 + 0.0000144 * t) * t2;
+			var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
+			var a = (51.2 + 20.2 * t).ToRadians();
+			var s1 = a.Sine();
+			var s2 = na.ToRadians().Sine();
+			var b = 346.56 + (132.87 - 0.0091731 * t) * t;
+			var s3 = 0.003964 * b.ToRadians().Sine();
+			var c = (na + 275.05 - 2.3 * t).ToRadians();
+			md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
+
+			return md.ToRadians();
+		}
 	}
 }

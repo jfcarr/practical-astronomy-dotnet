@@ -19,4 +19,13 @@ namespace PALib
 		Degrees,
 		Hours
 	}
+
+	/// <summary>
+	/// Accuracy level of calculation.
+	/// </summary>
+	public enum PAAccuracyLevel
+	{
+		Approximate,
+		Precise
+	}
 }
