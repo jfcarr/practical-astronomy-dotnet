@@ -22,5 +22,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((14, 12, 10.21, -11, 34, 57.83, 367964, 0.993191), _paMoon.PrecisePositionOfMoon(0, 0, 0, false, 0, 1, 9, 2003));
 		}
+
+		[Fact]
+		public void MoonPhase()
+		{
+			Assert.Equal((0.22, -71.58), _paMoon.MoonPhase(0, 0, 0, false, 0, 1, 9, 2003, PAAccuracyLevel.Approximate));
+		}
 	}
 }
