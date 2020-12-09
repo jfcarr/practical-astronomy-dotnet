@@ -180,5 +180,61 @@ namespace PALib
 
 			return (moonPhase, paBrightLimbDeg);
 		}
+
+		/// <summary>
+		/// Calculate new moon and full moon instances.
+		/// </summary>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrectionHours"></param>
+		/// <param name="localDateDay"></param>
+		/// <param name="localDateMonth"></param>
+		/// <param name="localDateYear"></param>
+		/// <returns>
+		/// <para>nmLocalTimeHour -- new Moon instant - local time (hour)</para>
+		/// <para>nmLocalTimeMin -- new Moon instant - local time (minutes)</para>
+		/// <para>nmLocalDateDay -- new Moon instance - local date (day)</para>
+		/// <para>nmLocalDateMonth -- new Moon instance - local date (month)</para>
+		/// <para>nmLocalDateYear -- new Moon instance - local date (year)</para>
+		/// <para>fmLocalTimeHour -- full Moon instant - local time (hour)</para>
+		/// <para>fmLocalTimeMin -- full Moon instant - local time (minutes)</para>
+		/// <para>fmLocalDateDay -- full Moon instance - local date (day)</para>
+		/// <para>fmLocalDateMonth -- full Moon instance - local date (month)</para>
+		/// <para>fmLocalDateYear -- full Moon instance - local date (year)</para>
+		/// </returns>
+		public (double nmLocalTimeHour, double nmLocalTimeMin, double nmLocalDateDay, int nmLocalDateMonth, int nmLocalDateYear, double fmLocalTimeHour, double fmLocalTimeMin, double fmLocalDateDay, int fmLocalDateMonth, int fmLocalDateYear) TimesOfNewMoonAndFullMoon(bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var jdOfNewMoonDays = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var jdOfFullMoonDays = PAMacros.FullMoon(3, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+
+			var gDateOfNewMoonDay = PAMacros.JulianDateDay(jdOfNewMoonDays);
+			var integerDay1 = gDateOfNewMoonDay.Floor();
+			var gDateOfNewMoonMonth = PAMacros.JulianDateMonth(jdOfNewMoonDays);
+			var gDateOfNewMoonYear = PAMacros.JulianDateYear(jdOfNewMoonDays);
+
+			var gDateOfFullMoonDay = PAMacros.JulianDateDay(jdOfFullMoonDays);
+			var integerDay2 = gDateOfFullMoonDay.Floor();
+			var gDateOfFullMoonMonth = PAMacros.JulianDateMonth(jdOfFullMoonDays);
+			var gDateOfFullMoonYear = PAMacros.JulianDateYear(jdOfFullMoonDays);
+
+			var utOfNewMoonHours = 24.0 * (gDateOfNewMoonDay - integerDay1);
+			var utOfFullMoonHours = 24.0 * (gDateOfFullMoonDay - integerDay2);
+			var lctOfNewMoonHours = PAMacros.UniversalTimeToLocalCivilTime(utOfNewMoonHours + 0.008333, 0, 0, daylightSaving, zoneCorrectionHours, integerDay1, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var lctOfFullMoonHours = PAMacros.UniversalTimeToLocalCivilTime(utOfFullMoonHours + 0.008333, 0, 0, daylightSaving, zoneCorrectionHours, integerDay2, gDateOfFullMoonMonth, gDateOfFullMoonYear);
+
+			var nmLocalTimeHour = PAMacros.DecimalHoursHour(lctOfNewMoonHours);
+			var nmLocalTimeMin = PAMacros.DecimalHoursMinute(lctOfNewMoonHours);
+			var nmLocalDateDay = PAMacros.UniversalTime_LocalCivilDay(utOfNewMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay1, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var nmLocalDateMonth = PAMacros.UniversalTime_LocalCivilMonth(utOfNewMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay1, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var nmLocalDateYear = PAMacros.UniversalTime_LocalCivilYear(utOfNewMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay1, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var fmLocalTimeHour = PAMacros.DecimalHoursHour(lctOfFullMoonHours);
+			var fmLocalTimeMin = PAMacros.DecimalHoursMinute(lctOfFullMoonHours);
+			var fmLocalDateDay = PAMacros.UniversalTime_LocalCivilDay(utOfFullMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay2, gDateOfFullMoonMonth, gDateOfFullMoonYear);
+			var fmLocalDateMonth = PAMacros.UniversalTime_LocalCivilMonth(utOfFullMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay2, gDateOfFullMoonMonth, gDateOfFullMoonYear);
+			var fmLocalDateYear = PAMacros.UniversalTime_LocalCivilYear(utOfFullMoonHours, 0, 0, daylightSaving, zoneCorrectionHours, integerDay2, gDateOfFullMoonMonth, gDateOfFullMoonYear);
+
+			return (nmLocalTimeHour, nmLocalTimeMin, nmLocalDateDay, nmLocalDateMonth, nmLocalDateYear, fmLocalTimeHour, fmLocalTimeMin, fmLocalDateDay, fmLocalDateMonth, fmLocalDateYear);
+		}
 	}
 }
