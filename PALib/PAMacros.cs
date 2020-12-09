@@ -327,6 +327,83 @@ namespace PALib
 		}
 
 		/// <summary>
+		/// Get Local Civil Day for Universal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTLcDay
+		/// </remarks>
+		/// <param name="uHours"></param>
+		/// <param name="uMinutes"></param>
+		/// <param name="uSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static double UniversalTime_LocalCivilDay(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = HMStoDH(uHours, uMinutes, uSeconds);
+			var b = a + zoneCorrection;
+			var c = b + daylightSaving;
+			var d = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) + (c / 24.0);
+			var e = JulianDateDay(d);
+			var e1 = e.Floor();
+
+			return e1;
+		}
+
+		/// <summary>
+		/// Get Local Civil Month for Universal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTLcMonth
+		/// </remarks>
+		/// <param name="uHours"></param>
+		/// <param name="uMinutes"></param>
+		/// <param name="uSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static int UniversalTime_LocalCivilMonth(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = HMStoDH(uHours, uMinutes, uSeconds);
+			var b = a + zoneCorrection;
+			var c = b + daylightSaving;
+			var d = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) + (c / 24.0);
+
+			return JulianDateMonth(d);
+		}
+
+		/// <summary>
+		/// Get Local Civil Year for Universal Time
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTLcYear
+		/// </remarks>
+		/// <param name="uHours"></param>
+		/// <param name="uMinutes"></param>
+		/// <param name="uSeconds"></param>
+		/// <param name="daylightSaving"></param>
+		/// <param name="zoneCorrection"></param>
+		/// <param name="greenwichDay"></param>
+		/// <param name="greenwichMonth"></param>
+		/// <param name="greenwichYear"></param>
+		/// <returns></returns>
+		public static int UniversalTime_LocalCivilYear(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
+		{
+			var a = HMStoDH(uHours, uMinutes, uSeconds);
+			var b = a + zoneCorrection;
+			var c = b + daylightSaving;
+			var d = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) + (c / 24.0);
+
+			return JulianDateYear(d);
+		}
+
+		/// <summary>
 		/// Determine Greenwich Day for Local Time
 		/// </summary>
 		/// <remarks>
@@ -4004,6 +4081,166 @@ namespace PALib
 			md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
 
 			return md.ToRadians();
+		}
+
+		/// <summary>
+		/// Calculate Julian date of New Moon.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: NewMoon
+		/// </remarks>
+		/// <param name="ds">Daylight Savings offset.</param>
+		/// <param name="zc">Time zone correction, in hours.</param>
+		/// <param name="dy">Local date, day part.</param>
+		/// <param name="mn">Local date, month part.</param>
+		/// <param name="yr">Local date, year part.</param>
+		/// <returns></returns>
+		public static double NewMoon(int ds, int zc, double dy, int mn, int yr)
+		{
+			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var m0 = LocalCivilTimeGreenwichMonth(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var y0 = LocalCivilTimeGreenwichYear(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+
+			var j0 = CivilDateToJulianDate(0.0, 1, y0) - 2415020.0;
+			var dj = CivilDateToJulianDate(d0, m0, y0) - 2415020.0;
+			var k = Lint(((y0 - 1900.0 + ((dj - j0) / 365.0)) * 12.3685) + 0.5);
+			var tn = k / 1236.85;
+			var tf = (k + 0.5) / 1236.85;
+			var t = tn;
+			var nmfmResult1 = NewMoonFullMoon_L6855(k, t);
+			var ni = nmfmResult1.a;
+			var nf = nmfmResult1.b;
+			t = tf;
+			k = k + 0.5;
+			var nmfmResult2 = NewMoonFullMoon_L6855(k, t);
+
+			return ni + 2415020.0 + nf;
+		}
+
+		/// <summary>
+		/// Calculate Julian date of Full Moon.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: FullMoon
+		/// </remarks>
+		/// <param name="ds">Daylight Savings offset.</param>
+		/// <param name="zc">Time zone correction, in hours.</param>
+		/// <param name="dy">Local date, day part.</param>
+		/// <param name="mn">Local date, month part.</param>
+		/// <param name="yr">Local date, year part.</param>
+		/// <returns></returns>
+		public static double FullMoon(int ds, int zc, double dy, int mn, int yr)
+		{
+			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var m0 = LocalCivilTimeGreenwichMonth(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var y0 = LocalCivilTimeGreenwichYear(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+
+			var j0 = CivilDateToJulianDate(0.0, 1, y0) - 2415020.0;
+			var dj = CivilDateToJulianDate(d0, m0, y0) - 2415020.0;
+			var k = Lint(((y0 - 1900.0 + ((dj - j0) / 365.0)) * 12.3685) + 0.5);
+			var tn = k / 1236.85;
+			var tf = (k + 0.5) / 1236.85;
+			var t = tn;
+			var nmfnResult1 = NewMoonFullMoon_L6855(k, t);
+			t = tf;
+			k = k + 0.5;
+			var nmfnResult2 = NewMoonFullMoon_L6855(k, t);
+			var fi = nmfnResult2.a;
+			var ff = nmfnResult2.b;
+
+			return fi + 2415020.0 + ff;
+		}
+
+		/// <summary>
+		/// Helper function for new_moon() and full_moon() """
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <param name="k"></param>
+		/// <param name="t"></param>
+		/// <returns></returns>
+		public static (double a, double b, double f) NewMoonFullMoon_L6855(double k, double t)
+		{
+			var t2 = t * t;
+			var e = 29.53 * k;
+			var c = 166.56 + (132.87 - 0.009173 * t) * t;
+			c = c.ToRadians();
+			var b = 0.00058868 * k + (0.0001178 - 0.000000155 * t) * t2;
+			b = b + 0.00033 * c.Sine() + 0.75933;
+			var a = k / 12.36886;
+			var a1 = 359.2242 + 360.0 * Fract(a) - (0.0000333 + 0.00000347 * t) * t2;
+			var a2 = 306.0253 + 360.0 * Fract(k / 0.9330851);
+			a2 = a2 + (0.0107306 + 0.00001236 * t) * t2;
+			a = k / 0.9214926;
+			var f = 21.2964 + 360.0 * Fract(a) - (0.0016528 + 0.00000239 * t) * t2;
+			a1 = UnwindDeg(a1);
+			a2 = UnwindDeg(a2);
+			f = UnwindDeg(f);
+			a1 = a1.ToRadians();
+			a2 = a2.ToRadians();
+			f = f.ToRadians();
+
+			var dd = (0.1734 - 0.000393 * t) * a1.Sine() + 0.0021 * (2.0 * a1).Sine();
+			dd = dd - 0.4068 * a2.Sine() + 0.0161 * (2.0 * a2).Sine() - 0.0004 * (3.0 * a2).Sine();
+			dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
+			dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
+			dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
+			dd = dd + 0.0005 * (a1 + 2.0 * a2).Sine();
+			var e1 = e.Floor();
+			b = b + dd + (e - e1);
+			var b1 = b.Floor();
+			a = e1 + b1;
+			b = b - b1;
+
+			return (a, b, f);
+		}
+
+		/// <summary>
+		/// Original macro name: FRACT
+		/// </summary>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double Fract(double w)
+		{
+			return w - Lint(w);
+		}
+
+		/// <summary>
+		/// Original macro name: LINT
+		/// </summary>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double Lint(double w)
+		{
+			return IInt(w) + IInt(((1.0 * Sign(w)) - 1.0) / 2.0);
+		}
+
+		/// <summary>
+		/// Original macro name: IINT
+		/// </summary>
+		/// <param name="w"></param>
+		/// <returns></returns>
+		public static double IInt(double w)
+		{
+			return Sign(w) * Math.Abs(w).Floor();
+		}
+
+		/// <summary>
+		/// Calculate sign of number.
+		/// </summary>
+		/// <param name="numberToCheck">Number to calculate the sign of.</param>
+		/// <returns>signValue -- Sign value: -1, 0, or 1</returns>
+		public static double Sign(double numberToCheck)
+		{
+			var signValue = 0.0;
+
+			if (numberToCheck < 0.0)
+				signValue = -1.0;
+
+			if (numberToCheck > 0.0)
+				signValue = 1.0;
+
+			return signValue;
 		}
 	}
 }

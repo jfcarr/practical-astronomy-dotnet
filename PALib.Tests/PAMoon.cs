@@ -28,5 +28,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((0.22, -71.58), _paMoon.MoonPhase(0, 0, 0, false, 0, 1, 9, 2003, PAAccuracyLevel.Approximate));
 		}
+
+		[Fact]
+		public void TimesOfNewMoonAndFullMoon()
+		{
+			Assert.Equal((17, 27, 27, 8, 2003, 16, 36, 10, 9, 2003), _paMoon.TimesOfNewMoonAndFullMoon(false, 0, 1, 9, 2003));
+		}
 	}
 }
