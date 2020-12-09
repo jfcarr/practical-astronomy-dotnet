@@ -236,5 +236,42 @@ namespace PALib
 
 			return (nmLocalTimeHour, nmLocalTimeMin, nmLocalDateDay, nmLocalDateMonth, nmLocalDateYear, fmLocalTimeHour, fmLocalTimeMin, fmLocalDateDay, fmLocalDateMonth, fmLocalDateYear);
 		}
+
+		/// <summary>
+		/// Calculate Moon's distance, angular diameter, and horizontal parallax.
+		/// </summary>
+		/// <param name="lctHour"></param>
+		/// <param name="lctMin"></param>
+		/// <param name="lctSec"></param>
+		/// <param name="isDaylightSaving"></param>
+		/// <param name="zoneCorrectionHours"></param>
+		/// <param name="localDateDay"></param>
+		/// <param name="localDateMonth"></param>
+		/// <param name="localDateYear"></param>
+		/// <returns>
+		/// <para>earth_moon_dist -- Earth-Moon distance (km)</para>
+		/// <para>ang_diameter_deg -- Angular diameter (degrees part)</para>
+		/// <para>ang_diameter_min -- Angular diameter (minutes part)</para>
+		/// <para>hor_parallax_deg -- Horizontal parallax (degrees part)</para>
+		/// <para>hor_parallax_min -- Horizontal parallax (minutes part)</para>
+		/// <para>hor_parallax_sec -- Horizontal parallax (seconds part)</para>
+		/// </returns>
+		public (double earthMoonDist, double angDiameterDeg, double angDiameterMin, double horParallaxDeg, double horParallaxMin, double horParallaxSec) MoonDistAngDiamHorParallax(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var moonDistance = PAMacros.MoonDist(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var moonAngularDiameter = PAMacros.MoonSize(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var moonHorizontalParallax = PAMacros.MoonHP(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+
+			var earthMoonDist = Math.Round(moonDistance, 0);
+			var angDiameterDeg = PAMacros.DecimalDegreesDegrees(moonAngularDiameter + 0.008333);
+			var angDiameterMin = PAMacros.DecimalDegreesMinutes(moonAngularDiameter + 0.008333);
+			var horParallaxDeg = PAMacros.DecimalDegreesDegrees(moonHorizontalParallax);
+			var horParallaxMin = PAMacros.DecimalDegreesMinutes(moonHorizontalParallax);
+			var horParallaxSec = PAMacros.DecimalDegreesSeconds(moonHorizontalParallax);
+
+			return (earthMoonDist, angDiameterDeg, angDiameterMin, horParallaxDeg, horParallaxMin, horParallaxSec);
+		}
 	}
 }

@@ -1763,6 +1763,53 @@ namespace PALib
 		}
 
 		/// <summary>
+		/// Calculate distance from the Earth to the Moon (km)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonDist
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonDist(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+			var r = 6378.14 / hp.Sine();
+
+			return r;
+		}
+
+		/// <summary>
+		/// Calculate the Moon's angular diameter (degrees)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MoonSize
+		/// </remarks>
+		/// <param name="lh"></param>
+		/// <param name="lm"></param>
+		/// <param name="ls"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <returns></returns>
+		public static double MoonSize(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
+		{
+			var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+			var r = 6378.14 / hp.Sine();
+			var th = 384401.0 * 0.5181 / r;
+
+			return th;
+		}
+
+		/// <summary>
 		/// Convert angle in radians to equivalent angle in degrees.
 		/// </summary>
 		/// <remarks>
