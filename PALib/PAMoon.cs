@@ -273,5 +273,50 @@ namespace PALib
 
 			return (earthMoonDist, angDiameterDeg, angDiameterMin, horParallaxDeg, horParallaxMin, horParallaxSec);
 		}
+
+		/// <summary>
+		/// Calculate date/time of local moonrise and moonset.
+		/// </summary>
+		/// <returns>
+		/// <para>mrLTHour -- Moonrise, local time (hour part)</para>
+		/// <para>mrLTMin -- Moonrise, local time (minutes part)</para>
+		/// <para>mrLocalDateDay -- Moonrise, local date (day)</para>
+		/// <para>mrLocalDateMonth -- Moonrise, local date (month)</para>
+		/// <para>mrLocalDateYear -- Moonrise, local date (year)</para>
+		/// <para>mrAzimuthDeg -- Moonrise, azimuth (degrees)</para>
+		/// <para>msLTHour -- Moonset, local time (hour part)</para>
+		/// <para>msLTMin -- Moonset, local time (minutes part)</para>
+		/// <para>msLocalDateDay -- Moonset, local date (day)</para>
+		/// <para>msLocalDateMonth -- Moonset, local date (month)</para>
+		/// <para>msLocalDateYear -- Moonset, local date (year)</para>
+		/// <para>msAzimuthDeg -- Moonset, azimuth (degrees)</para>
+		/// </returns>
+		public (double mrLTHour, double mrLTMin, double mrLocalDateDay, int mrLocalDateMonth, int mrLocalDateYear, double mrAzimuthDeg, double msLTHour, double msLTMin, double msLocalDateDay, int msLocalDateMonth, int msLocalDateYear, double msAzimuthDeg) MoonriseAndMoonset(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours, double geogLongDeg, double geogLatDeg)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var localTimeOfMoonriseHours = PAMacros.MoonRiseLCT(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+			var moonRiseLCResult = PAMacros.MoonRiseLcDMY(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+			var localAzimuthDeg1 = PAMacros.MoonRiseAz(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+
+			var localTimeOfMoonsetHours = PAMacros.MoonSetLCT(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+			var moonSetLCResult = PAMacros.MoonSetLcDMY(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+			var localAzimuthDeg2 = PAMacros.MoonSetAz(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
+
+			var mrLTHour = PAMacros.DecimalHoursHour(localTimeOfMoonriseHours + 0.008333);
+			var mrLTMin = PAMacros.DecimalHoursMinute(localTimeOfMoonriseHours + 0.008333);
+			var mrLocalDateDay = moonRiseLCResult.dy1;
+			var mrLocalDateMonth = moonRiseLCResult.mn1;
+			var mrLocalDateYear = moonRiseLCResult.yr1;
+			var mrAzimuthDeg = Math.Round(localAzimuthDeg1, 2);
+			var msLTHour = PAMacros.DecimalHoursHour(localTimeOfMoonsetHours + 0.008333);
+			var msLTMin = PAMacros.DecimalHoursMinute(localTimeOfMoonsetHours + 0.008333);
+			var msLocalDateDay = moonSetLCResult.dy1;
+			var msLocalDateMonth = moonSetLCResult.mn1;
+			var msLocalDateYear = moonSetLCResult.yr1;
+			var msAzimuthDeg = Math.Round(localAzimuthDeg2, 2);
+
+			return (mrLTHour, mrLTMin, mrLocalDateDay, mrLocalDateMonth, mrLocalDateYear, mrAzimuthDeg, msLTHour, msLTMin, msLocalDateDay, msLocalDateMonth, msLocalDateYear, msAzimuthDeg);
+		}
 	}
 }
