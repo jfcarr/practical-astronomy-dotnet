@@ -40,5 +40,11 @@ namespace PALib.Tests
 		{
 			Assert.Equal((367964, 0, 32, 0, 59, 35.49), _paMoon.MoonDistAngDiamHorParallax(0, 0, 0, false, 0, 1, 9, 2003));
 		}
+
+		[Fact]
+		public void MoonriseAndMoonset()
+		{
+			Assert.Equal((4, 21, 6, 3, 1986, 127.34, 13, 8, 6, 3, 1986, 234.05), _paMoon.MoonriseAndMoonset(6, 3, 1986, false, -5, -71.05, 42.3667));
+		}
 	}
 }
