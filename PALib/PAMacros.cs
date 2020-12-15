@@ -192,7 +192,6 @@ namespace PALib
 		public static int JulianDateYear(double julianDate)
 		{
 			var i = (julianDate + 0.5).Floor();
-			// var _f = julian_date + 0.5 - i;
 			var a = ((i - 1867216.25) / 36524.25).Floor();
 			var b = (i > 2299160) ? i + 1.0 + a - (a / 4.0).Floor() : i;
 			var c = b + 1524;
@@ -1532,7 +1531,6 @@ namespace PALib
 			var e2 = e * e;
 			ml = (ml).ToRadians();
 			ms = ms.ToRadians();
-			// var _na = na.ToRadians();
 			me1 = me1.ToRadians();
 			mf = mf.ToRadians();
 			md = md.ToRadians();
@@ -1634,7 +1632,6 @@ namespace PALib
 			me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
 			var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
 			var e2 = e * e;
-			var _ml = (ml).ToRadians();
 			ms = (ms).ToRadians();
 			na = (na).ToRadians();
 			me1 = (me1).ToRadians();
@@ -2268,7 +2265,6 @@ namespace PALib
 		public static double RiseSetAzimuthSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
-			var _b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
 			var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
 			var d = vd.ToRadians();
 			var e = g.ToRadians();
@@ -2343,7 +2339,6 @@ namespace PALib
 				else
 				{
 					x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
-					// var _ut = gst_ut(x, 0.0, 0.0, gd, gm, gy);
 
 					if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
 					{
@@ -2409,7 +2404,6 @@ namespace PALib
 			}
 
 			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
-			// var(_a, x, y, _la, s) = sunrise_az_l3710(gd, gm, gy, sr, di, gp);
 			var result2 = SunriseAZ_L3710(gd, gm, gy, sr, di, gp);
 
 			if (!result2.s.Equals("OK"))
@@ -3813,9 +3807,9 @@ namespace PALib
 		/// <param name="p">Perihelion (degrees)</param>
 		/// <param name="n">Node (degrees)</param>
 		/// <returns>
-		/// <para>comet_long_deg -- Comet longitude (degrees)</para>
-		/// <para>comet_lat_deg -- Comet lat (degrees)</para>
-		/// <para>comet_dist_au -- Comet distance from Earth (AU)</para>
+		/// <para>cometLongDeg -- Comet longitude (degrees)</para>
+		/// <para>cometLatDeg -- Comet lat (degrees)</para>
+		/// <para>cometDistAU -- Comet distance from Earth (AU)</para>
 		/// </returns>
 		public static (double cometLongDeg, double cometLatDeg, double cometDistAU) PCometLongLatDist(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr, double td, int tm, int ty, double q, double i, double p, double n)
 		{
@@ -3827,7 +3821,6 @@ namespace PALib
 			var lg = (SunLong(lh, lm, ls, ds, zc, dy, mn, yr) + 180.0).ToRadians();
 			var re = SunDist(lh, lm, ls, ds, zc, dy, mn, yr);
 
-			// var _li = 0.0;
 			var rh2 = 0.0;
 			var rd = 0.0;
 			var s3 = 0.0;
@@ -3859,8 +3852,6 @@ namespace PALib
 				{
 					rh2 = ((re * re) + (r * r) - (2.0 * re * r * (ps).Cosine() * (l + (n).ToRadians() - lg).Cosine())).SquareRoot();
 				}
-
-				// _li = rh * 0.005775518;
 			}
 
 			double ep;
@@ -5008,5 +4999,799 @@ namespace PALib
 			return (mm, bm, pm, dp, th, di, p, q, lu, lct, au);
 		}
 
+		/// <summary>
+		/// Determine if a lunar eclipse is likely to occur.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: LEOccurrence
+		/// </remarks>
+		public static string LunarEclipseOccurrence(int ds, int zc, double dy, int mn, int yr)
+		{
+			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var m0 = LocalCivilTimeGreenwichMonth(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+			var y0 = LocalCivilTimeGreenwichYear(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
+
+			var j0 = CivilDateToJulianDate(0.0, 1, y0);
+			var dj = CivilDateToJulianDate(d0, m0, y0);
+			var k = (y0 - 1900.0 + ((dj - j0) * 1.0 / 365.0)) * 12.3685;
+			k = Lint(k + 0.5);
+			var tn = k / 1236.85;
+			var tf = (k + 0.5) / 1236.85;
+			var t = tn;
+			var l6855result1 = LunarEclipseOccurrence_L6855(t, k);
+			t = tf;
+			k = k + 0.5;
+			var l6855result2 = LunarEclipseOccurrence_L6855(t, k);
+			var fb = l6855result2.f;
+
+			var df = Math.Abs(fb - 3.141592654 * Lint(fb / 3.141592654));
+
+			if (df > 0.37)
+				df = 3.141592654 - df;
+
+			var s = "Lunar eclipse certain";
+			if (df >= 0.242600766)
+			{
+				s = "Lunar eclipse possible";
+
+				if (df > 0.37)
+					s = "No lunar eclipse";
+			}
+
+			return s;
+		}
+
+		/// <summary>
+		/// Helper function for lunar_eclipse_occurrence
+		/// </summary>
+		public static (double f, double dd, double e1, double b1, double a, double b) LunarEclipseOccurrence_L6855(double t, double k)
+		{
+			var t2 = t * t;
+			var e = 29.53 * k;
+			var c = 166.56 + (132.87 - 0.009173 * t) * t;
+			c = c.ToRadians();
+			var b = 0.00058868 * k + (0.0001178 - 0.000000155 * t) * t2;
+			b = b + 0.00033 * c.Sine() + 0.75933;
+			var a = k / 12.36886;
+			var a1 = 359.2242 + 360.0 * FPart(a) - (0.0000333 + 0.00000347 * t) * t2;
+			var a2 = 306.0253 + 360.0 * FPart(k / 0.9330851);
+			a2 = a2 + (0.0107306 + 0.00001236 * t) * t2;
+			a = k / 0.9214926;
+			var f = 21.2964 + 360.0 * FPart(a) - (0.0016528 + 0.00000239 * t) * t2;
+			a1 = UnwindDeg(a1);
+			a2 = UnwindDeg(a2);
+			f = UnwindDeg(f);
+			a1 = a1.ToRadians();
+			a2 = a2.ToRadians();
+			f = f.ToRadians();
+
+			var dd = (0.1734 - 0.000393 * t) * a1.Sine() + 0.0021 * (2.0 * a1).Sine();
+			dd = dd - 0.4068 * a2.Sine() + 0.0161 * (2.0 * a2).Sine() - 0.0004 * (3.0 * a2).Sine();
+			dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
+			dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
+			dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
+			dd = dd + 0.0005 * (a1 + 2.0 * a2).Sine();
+			var e1 = e.Floor();
+			b = b + dd + (e - e1);
+			var b1 = b.Floor();
+			a = e1 + b1;
+			b = b - b1;
+
+			return (f, dd, e1, b1, a, b);
+		}
+
+		/// <summary>
+		/// Calculate time of maximum shadow for lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTMaxLunarEclipse
+		/// </remarks>
+		public static double UTMaxLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var rp = (hd + rn + ps) * 1.02;
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			return z1;
+		}
+
+		/// <summary>
+		/// Calculate time of first shadow contact for lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTFirstContactLunarEclipse
+		/// </remarks>
+		public static double UTFirstContactLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var rp = (hd + rn + ps) * 1.02;
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z6 = z1 - zd;
+
+			if (z6 < 0.0)
+				z6 = z6 + 24.0;
+
+			return z6;
+		}
+
+		/// <summary>
+		/// Calculate time of last shadow contact for lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTLastContactLunarEclipse
+		/// </remarks>
+		public static double UTLastContactLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var rp = (hd + rn + ps) * 1.02;
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z7 = z1 + zd - Lint((z1 + zd) / 24.0) * 24.0;
+
+			return z7;
+		}
+
+		/// <summary>
+		/// Calculate start time of umbra phase of lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTStartUmbraLunarEclipse
+		/// </remarks>
+		public static double UTStartUmbraLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var ru = (hd - rn + ps) * 1.02;
+			var rp = (hd + rn + ps) * 1.02;
+			var pj = Math.Abs(sh * zh / (s2 + z2).SquareRoot());
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z6 = z1 - zd;
+
+			r = rm + ru;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = dd.SquareRoot();
+			var z8 = z1 - zd;
+
+			if (z8 < 0.0)
+				z8 = z8 + 24.0;
+
+			return z8;
+		}
+
+		/// <summary>
+		/// Calculate end time of umbra phase of lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTEndUmbraLunarEclipse
+		/// </remarks>
+		public static double UTEndUmbraLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var ru = (hd - rn + ps) * 1.02;
+			var rp = (hd + rn + ps) * 1.02;
+			var pj = Math.Abs(sh * zh / (s2 + z2).SquareRoot());
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z6 = z1 - zd;
+
+			r = rm + ru;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = dd.SquareRoot();
+			var z9 = z1 + zd - Lint((z1 + zd) / 24.0) * 24.0;
+
+			return z9;
+		}
+
+		/// <summary>
+		/// Calculate start time of total phase of lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTStartTotalLunarEclipse
+		/// </remarks>
+		public static double UTStartTotalLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var ru = (hd - rn + ps) * 1.02;
+			var rp = (hd + rn + ps) * 1.02;
+			var pj = Math.Abs(sh * zh / (s2 + z2).SquareRoot());
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = (dd).SquareRoot();
+			var z6 = z1 - zd;
+
+			r = rm + ru;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = (dd).SquareRoot();
+			var z8 = z1 - zd;
+
+			r = ru - rm;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = (dd).SquareRoot();
+			var zcc = z1 - zd;
+
+			if (zcc < 0.0)
+				zcc = zc + 24.0;
+
+			return zcc;
+		}
+
+		/// <summary>
+		/// Calculate end time of total phase of lunar eclipse (UT)
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: UTEndTotalLunarEclipse
+		/// </remarks>
+		public static double UTEndTotalLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var ru = (hd - rn + ps) * 1.02;
+			var rp = (hd + rn + ps) * 1.02;
+			var pj = Math.Abs(sh * zh / (s2 + z2).SquareRoot());
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z6 = z1 - zd;
+
+			r = rm + ru;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = dd.SquareRoot();
+			var z8 = z1 - zd;
+
+			r = ru - rm;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			zd = dd.SquareRoot();
+			var zb = z1 + zd - Lint((z1 + zd) / 24.0) * 24.0;
+
+			return zb;
+		}
+
+		/// <summary>
+		/// Calculate magnitude of lunar eclipse.
+		/// </summary>
+		/// <remarks>
+		/// Original macro name: MagLunarEclipse
+		/// </remarks>
+		/// <param name="dy"></param>
+		/// <param name="mn"></param>
+		/// <param name="yr"></param>
+		/// <param name="ds"></param>
+		/// <param name="zc"></param>
+		/// <returns></returns>
+		public static double MagLunarEclipse(double dy, int mn, int yr, int ds, int zc)
+		{
+			var tp = 2.0 * Math.PI;
+
+			if (LunarEclipseOccurrence(ds, zc, dy, mn, yr).Equals("No lunar eclipse"))
+				return -99.0;
+
+			var dj = FullMoon(ds, zc, dy, mn, yr);
+			var gday = JulianDateDay(dj);
+			var gmonth = JulianDateMonth(dj);
+			var gyear = JulianDateYear(dj);
+			var igday = gday.Floor();
+			var xi = gday - igday;
+			var utfm = xi * 24.0;
+			var ut = utfm - 1.0;
+			var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			ut = utfm + 1.0;
+			var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
+			var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+
+			if (sb < 0.0)
+				sb = sb + tp;
+
+			var xh = utfm;
+			var x0 = xh + 1.0 - (2.0 * bz / (bz - by));
+			var dm = mz - my;
+
+			if (dm < 0.0)
+				dm = dm + tp;
+
+			var lj = (dm - sb) / 2.0;
+			var q = 0.0;
+			var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
+			ut = x0 - 0.13851852;
+			var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
+			var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+			sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+			sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
+			by = by - q;
+			bz = bz - q;
+			var p3 = 0.00004263;
+			var zh = (sr - mr) / lj;
+			var tc = x0 + zh;
+			var sh = (((bz - by) * (tc - xh - 1.0) / 2.0) + bz) / lj;
+			var s2 = sh * sh;
+			var z2 = zh * zh;
+			var ps = p3 / (rr * lj);
+			var z1 = (zh * z2 / (z2 + s2)) + x0;
+			var h0 = (hy + hz) / (2.0 * lj);
+			var rm = 0.272446 * h0;
+			var rn = 0.00465242 / (lj * rr);
+			var hd = h0 * 0.99834;
+			var ru = (hd - rn + ps) * 1.02;
+			var rp = (hd + rn + ps) * 1.02;
+			var pj = Math.Abs(sh * zh / (s2 + z2).SquareRoot());
+			var r = rm + rp;
+			var dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+
+			if (dd < 0.0)
+				return -99.0;
+
+			var zd = dd.SquareRoot();
+			var z6 = z1 - zd;
+
+			r = rm + ru;
+			dd = z1 - x0;
+			dd = dd * dd - ((z2 - (r * r)) * dd / zh);
+			var mg = (rm + rp - pj) / (2.0 * rm);
+
+			if (dd < 0.0)
+				return mg;
+
+			zd = dd.SquareRoot();
+			var z8 = z1 - zd;
+
+
+			r = ru - rm;
+			dd = z1 - x0;
+			mg = (rm + ru - pj) / (2.0 * rm);
+
+			return mg;
+		}
 	}
 }
