@@ -43,11 +43,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate the circumstances of a lunar eclipse.
 		/// </summary>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
 		/// <returns>
 		/// <para>lunarEclipseCertainDateDay -- Lunar eclipse date (day)</para>
 		/// <para>lunarEclipseCertainDateMonth -- Lunar eclipse date (month)</para>

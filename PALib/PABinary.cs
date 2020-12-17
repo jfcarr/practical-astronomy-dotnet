@@ -9,11 +9,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate orbital data for binary star.
 		/// </summary>
-		/// <param name="positionAngleDeg"></param>
-		/// <param name="greenwichDateDay"></param>
-		/// <param name="greenwichDateMonth"></param>
-		/// <param name="greenwichDateYear"></param>
-		/// <param name="binaryName"></param>
 		/// <returns>
 		/// <para>positionAngleDeg -- Position angle (degrees)</para>
 		/// <para>separationArcsec -- Separation of binary members (arcseconds)</para>

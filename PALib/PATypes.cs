@@ -1,6 +1,12 @@
 using System;
 namespace PALib
 {
+	public enum PACoordinateType
+	{
+		Apparent,
+		True
+	}
+
 	/// <summary>
 	/// Twilight type
 	/// </summary>
@@ -27,5 +33,11 @@ namespace PALib
 	{
 		Approximate,
 		Precise
+	}
+
+	public enum PAWarningFlag
+	{
+		OK,
+		Warning
 	}
 }

@@ -14,10 +14,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: HMSDH
 		/// </remarks>
-		/// <param name="hours"></param>
-		/// <param name="minutes"></param>
-		/// <param name="seconds"></param>
-		/// <returns></returns>
 		public static double HMStoDH(double hours, double minutes, double seconds)
 		{
 			double fHours = hours;
@@ -37,8 +33,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DHHour
 		/// </remarks>
-		/// <param name="decimalHours"></param>
-		/// <returns></returns>
 		public static int DecimalHoursHour(double decimalHours)
 		{
 			var a = Math.Abs(decimalHours);
@@ -55,8 +49,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DHMin
 		/// </remarks>
-		/// <param name="decimalHours"></param>
-		/// <returns></returns>
 		public static int DecimalHoursMinute(double decimalHours)
 		{
 			var a = Math.Abs(decimalHours);
@@ -73,8 +65,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DHSec
 		/// </remarks>
-		/// <param name="decimalHours"></param>
-		/// <returns></returns>
 		public static double DecimalHoursSecond(double decimalHours)
 		{
 			var a = Math.Abs(decimalHours);
@@ -91,10 +81,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: CDJD
 		/// </remarks>
-		/// <param name="day"></param>
-		/// <param name="month"></param>
-		/// <param name="year"></param>
-		/// <returns></returns>
 		public static double CivilDateToJulianDate(double day, double month, double year)
 		{
 			var fDay = (double)day;
@@ -142,8 +128,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: JDCDay
 		/// </remarks>
-		/// <param name="julianDate"></param>
-		/// <returns></returns>
 		public static double JulianDateDay(double julianDate)
 		{
 			var i = (julianDate + 0.5).Floor();
@@ -164,8 +148,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: JDCMonth
 		/// </remarks>
-		/// <param name="julianDate"></param>
-		/// <returns></returns>
 		public static int JulianDateMonth(double julianDate)
 		{
 			var i = (julianDate + 0.5).Floor();
@@ -187,8 +169,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: JDCYear
 		/// </remarks>
-		/// <param name="julianDate"></param>
-		/// <returns></returns>
 		public static int JulianDateYear(double julianDate)
 		{
 			var i = (julianDate + 0.5).Floor();
@@ -211,19 +191,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: RAHA
 		/// </remarks>
-		/// <param name="raHours"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="isDaylightSavings"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="geographicalLongitude"></param>
-		/// <returns></returns>
 		public static double RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
 			var a = LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
@@ -244,19 +211,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: HARA
 		/// </remarks>
-		/// <param name="hourAngleHours"></param>
-		/// <param name="hourAngleMinutes"></param>
-		/// <param name="hourAngleSeconds"></param>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="geographicalLongitude"></param>
-		/// <returns></returns>
 		public static double HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
 			var a = LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
@@ -277,15 +231,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: LctUT
 		/// </remarks>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <returns></returns>
 		public static double LocalCivilTimeToUniversalTime(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
 		{
 			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
@@ -304,15 +249,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UTLct
 		/// </remarks>
-		/// <param name="uHours"></param>
-		/// <param name="uMinutes"></param>
-		/// <param name="uSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double UniversalTimeToLocalCivilTime(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = HMStoDH(uHours, uMinutes, uSeconds);
@@ -331,15 +267,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UTLcDay
 		/// </remarks>
-		/// <param name="uHours"></param>
-		/// <param name="uMinutes"></param>
-		/// <param name="uSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double UniversalTime_LocalCivilDay(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = HMStoDH(uHours, uMinutes, uSeconds);
@@ -358,15 +285,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UTLcMonth
 		/// </remarks>
-		/// <param name="uHours"></param>
-		/// <param name="uMinutes"></param>
-		/// <param name="uSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static int UniversalTime_LocalCivilMonth(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = HMStoDH(uHours, uMinutes, uSeconds);
@@ -383,15 +301,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UTLcYear
 		/// </remarks>
-		/// <param name="uHours"></param>
-		/// <param name="uMinutes"></param>
-		/// <param name="uSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static int UniversalTime_LocalCivilYear(double uHours, double uMinutes, double uSeconds, int daylightSaving, int zoneCorrection, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = HMStoDH(uHours, uMinutes, uSeconds);
@@ -408,15 +317,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: LctGDay
 		/// </remarks>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <returns></returns>
 		public static double LocalCivilTimeGreenwichDay(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
 		{
 			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
@@ -434,15 +334,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: LctGMonth
 		/// </remarks>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <returns></returns>
 		public static int LocalCivilTimeGreenwichMonth(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
 		{
 			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
@@ -459,15 +350,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: LctGYear
 		/// </remarks>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <returns></returns>
 		public static int LocalCivilTimeGreenwichYear(double lctHours, double lctMinutes, double lctSeconds, int daylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear)
 		{
 			var a = HMStoDH(lctHours, lctMinutes, lctSeconds);
@@ -484,13 +366,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UTGST
 		/// </remarks>
-		/// <param name="uHours"></param>
-		/// <param name="uMinutes"></param>
-		/// <param name="uSeconds"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double UniversalTimeToGreenwichSiderealTime(double uHours, double uMinutes, double uSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
@@ -511,11 +386,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: GSTLST
 		/// </remarks>
-		/// <param name="greenwichHours"></param>
-		/// <param name="greenwichMinutes"></param>
-		/// <param name="greenwichSeconds"></param>
-		/// <param name="geographicalLongitude"></param>
-		/// <returns></returns>
 		public static double GreenwichSiderealTimeToLocalSiderealTime(double greenwichHours, double greenwichMinutes, double greenwichSeconds, double geographicalLongitude)
 		{
 			var a = HMStoDH(greenwichHours, greenwichMinutes, greenwichSeconds);
@@ -531,14 +401,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: EQAz
 		/// </remarks>
-		/// <param name="hourAngleHours"></param>
-		/// <param name="hourAngleMinutes"></param>
-		/// <param name="hourAngleSeconds"></param>
-		/// <param name="declinationDegrees"></param>
-		/// <param name="declinationMinutes"></param>
-		/// <param name="declinationSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
-		/// <returns></returns>
 		public static double EquatorialCoordinatesToAzimuth(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
 		{
 			var a = HMStoDH(hourAngleHours, hourAngleMinutes, hourAngleSeconds);
@@ -561,14 +423,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: EQAlt
 		/// </remarks>
-		/// <param name="hourAngleHours"></param>
-		/// <param name="hourAngleMinutes"></param>
-		/// <param name="hourAngleSeconds"></param>
-		/// <param name="declinationDegrees"></param>
-		/// <param name="declinationMinutes"></param>
-		/// <param name="declinationSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
-		/// <returns></returns>
 		public static double EquatorialCoordinatesToAltitude(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
 		{
 			var a = HMStoDH(hourAngleHours, hourAngleMinutes, hourAngleSeconds);
@@ -588,10 +442,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DMSDD
 		/// </remarks>
-		/// <param name="degrees"></param>
-		/// <param name="minutes"></param>
-		/// <param name="seconds"></param>
-		/// <returns></returns>
 		public static double DegreesMinutesSecondsToDecimalDegrees(double degrees, double minutes, double seconds)
 		{
 			var a = Math.Abs(seconds) / 60;
@@ -607,8 +457,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: Degrees
 		/// </remarks>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double Degrees(double w)
 		{
 			return w * 57.29577951;
@@ -620,8 +468,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DDDeg
 		/// </remarks>
-		/// <param name="decimalDegrees"></param>
-		/// <returns></returns>
 		public static double DecimalDegreesDegrees(double decimalDegrees)
 		{
 			var a = Math.Abs(decimalDegrees);
@@ -638,8 +484,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DDMin
 		/// </remarks>
-		/// <param name="decimalDegrees"></param>
-		/// <returns></returns>
 		public static double DecimalDegreesMinutes(double decimalDegrees)
 		{
 			var a = Math.Abs(decimalDegrees);
@@ -656,8 +500,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DDSec
 		/// </remarks>
-		/// <param name="decimalDegrees"></param>
-		/// <returns></returns>
 		public static double DecimalDegreesSeconds(double decimalDegrees)
 		{
 			var a = Math.Abs(decimalDegrees);
@@ -674,8 +516,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DDDH
 		/// </remarks>
-		/// <param name="decimalDegrees"></param>
-		/// <returns></returns>
 		public static double DecimalDegreesToDegreeHours(double decimalDegrees)
 		{
 			return decimalDegrees / 15;
@@ -687,8 +527,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: DHDD
 		/// </remarks>
-		/// <param name="degreeHours"></param>
-		/// <returns></returns>
 		public static double DegreeHoursToDecimalDegrees(double degreeHours)
 		{
 			return degreeHours * 15;
@@ -700,14 +538,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: HORDec
 		/// </remarks>
-		/// <param name="azimuthDegrees"></param>
-		/// <param name="azimuthMinutes"></param>
-		/// <param name="azimuthSeconds"></param>
-		/// <param name="altitudeDegrees"></param>
-		/// <param name="altitudeMinutes"></param>
-		/// <param name="altitudeSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
-		/// <returns></returns>
 		public static double HorizonCoordinatesToDeclination(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
 		{
 			var a = DegreesMinutesSecondsToDecimalDegrees(azimuthDegrees, azimuthMinutes, azimuthSeconds);
@@ -726,14 +556,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: HORHa
 		/// </remarks>
-		/// <param name="azimuthDegrees"></param>
-		/// <param name="azimuthMinutes"></param>
-		/// <param name="azimuthSeconds"></param>
-		/// <param name="altitudeDegrees"></param>
-		/// <param name="altitudeMinutes"></param>
-		/// <param name="altitudeSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
-		/// <returns></returns>
 		public static double HorizonCoordinatesToHourAngle(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
 		{
 			var a = DegreesMinutesSecondsToDecimalDegrees(azimuthDegrees, azimuthMinutes, azimuthSeconds);
@@ -755,10 +577,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: Obliq
 		/// </remarks>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double Obliq(double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
@@ -776,10 +594,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: NutatLong
 		/// </remarks>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double NutatLong(double gd, int gm, int gy)
 		{
 			var dj = CivilDateToJulianDate(gd, gm, gy) - 2415020;
@@ -835,10 +649,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: NutatObl
 		/// </remarks>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double NutatObl(double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var dj = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear) - 2415020;
@@ -889,11 +699,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: LSTGST
 		/// </remarks>
-		/// <param name="localHours"></param>
-		/// <param name="localMinutes"></param>
-		/// <param name="localSeconds"></param>
-		/// <param name="longitude"></param>
-		/// <returns></returns>
 		public static double LocalSiderealTimeToGreenwichSiderealTime(double localHours, double localMinutes, double localSeconds, double longitude)
 		{
 			var a = HMStoDH(localHours, localMinutes, localSeconds);
@@ -909,13 +714,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: GSTUT
 		/// </remarks>
-		/// <param name="greenwichSiderealHours"></param>
-		/// <param name="greenwichSiderealMinutes"></param>
-		/// <param name="greenwichSiderealSeconds"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public static double GreenwichSiderealTimeToUniversalTime(double greenwichSiderealHours, double greenwichSiderealMinutes, double greenwichSiderealSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var a = CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
@@ -936,14 +734,7 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: eGSTUT
 		/// </remarks>
-		/// <param name="gsh"></param>
-		/// <param name="gsm"></param>
-		/// <param name="gss"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
-		public static string EGstUt(double gsh, double gsm, double gss, double gd, int gm, int gy)
+		public static PAWarningFlag EGstUt(double gsh, double gsm, double gss, double gd, int gm, int gy)
 		{
 			var a = CivilDateToJulianDate(gd, gm, gy);
 			var b = a - 2451545;
@@ -954,7 +745,7 @@ namespace PALib
 			var g = f - e;
 			var h = g - (24 * (g / 24).Floor());
 
-			return ((h * 0.9972695663) < (4.0 / 60.0)) ? "Warning" : "OK";
+			return ((h * 0.9972695663) < (4.0 / 60.0)) ? PAWarningFlag.Warning : PAWarningFlag.OK;
 		}
 
 		/// <summary>
@@ -963,15 +754,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunLong
 		/// </remarks>
-		/// <param name="lch"></param>
-		/// <param name="lcm"></param>
-		/// <param name="lcs"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <returns></returns>
 		public static double SunLong(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
 		{
 			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
@@ -1034,9 +816,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: TrueAnomaly
 		/// </remarks>
-		/// <param name="am"></param>
-		/// <param name="ec"></param>
-		/// <returns></returns>
 		public static double TrueAnomaly(double am, double ec)
 		{
 			var tp = 6.283185308;
@@ -1065,9 +844,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: EccentricAnomaly
 		/// </remarks>
-		/// <param name="am"></param>
-		/// <param name="ec"></param>
-		/// <returns></returns>
 		public static double EccentricAnomaly(double am, double ec)
 		{
 			var tp = 6.283185308;
@@ -1096,16 +872,11 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: Refract
 		/// </remarks>
-		/// <param name="y2"></param>
-		/// <param name="sw"></param>
-		/// <param name="pr"></param>
-		/// <param name="tr"></param>
-		/// <returns></returns>
-		public static double Refract(double y2, string sw, double pr, double tr)
+		public static double Refract(double y2, PACoordinateType sw, double pr, double tr)
 		{
 			var y = y2.ToRadians();
 
-			var d = (sw.Substring(0, 1).ToLower() == "t") ? -1.0 : 1.0;
+			var d = (sw == PACoordinateType.True) ? -1.0 : 1.0;
 
 			if (d == -1)
 			{
@@ -1147,11 +918,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for Refract
 		/// </summary>
-		/// <param name="pr"></param>
-		/// <param name="tr"></param>
-		/// <param name="y"></param>
-		/// <param name="d"></param>
-		/// <returns></returns>
 		public static double RefractL3035(double pr, double tr, double y, double d)
 		{
 			if (y < 0.2617994)
@@ -1175,18 +941,7 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: ParallaxHA
 		/// </remarks>
-		/// <param name="hh"></param>
-		/// <param name="hm"></param>
-		/// <param name="hs"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="sw"></param>
-		/// <param name="gp"></param>
-		/// <param name="ht"></param>
-		/// <param name="hp"></param>
-		/// <returns></returns>
-		public static double ParallaxHA(double hh, double hm, double hs, double dd, double dm, double ds, string sw, double gp, double ht, double hp)
+		public static double ParallaxHA(double hh, double hm, double hs, double dd, double dm, double ds, PACoordinateType sw, double gp, double ht, double hp)
 		{
 			var a = gp.ToRadians();
 			var c1 = a.Cosine();
@@ -1209,7 +964,7 @@ namespace PALib
 			var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
 			var y1 = y;
 
-			var d = (sw.Substring(0, 1).ToLower().Equals("t")) ? 1.0 : -1.0;
+			var d = (sw.Equals(PACoordinateType.True)) ? 1.0 : -1.0;
 
 			if (d == 1)
 			{
@@ -1250,13 +1005,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for parallax_ha
 		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="rc"></param>
-		/// <param name="rp"></param>
-		/// <param name="rs"></param>
-		/// <param name="tp"></param>
-		/// <returns></returns>
 		public static (double p, double q) ParallaxHAL2870(double x, double y, double rc, double rp, double rs, double tp)
 		{
 			var cx = x.Cosine();
@@ -1286,18 +1034,7 @@ namespace PALib
 		/// HH,HM,HS,DD,DM,DS,SW,GP,HT,HP
 		/// </para>
 		/// </remarks>
-		/// <param name="hh"></param>
-		/// <param name="hm"></param>
-		/// <param name="hs"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="sw"></param>
-		/// <param name="gp"></param>
-		/// <param name="ht"></param>
-		/// <param name="hp"></param>
-		/// <returns></returns>
-		public static double ParallaxDec(double hh, double hm, double hs, double dd, double dm, double ds, string sw, double gp, double ht, double hp)
+		public static double ParallaxDec(double hh, double hm, double hs, double dd, double dm, double ds, PACoordinateType sw, double gp, double ht, double hp)
 		{
 			var a = gp.ToRadians();
 			var c1 = a.Cosine();
@@ -1321,7 +1058,7 @@ namespace PALib
 			var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
 			var y1 = y;
 
-			var d = (sw.Substring(0, 1).ToLower().Equals("t")) ? 1.0 : -1.0;
+			var d = (sw.Equals(PACoordinateType.True)) ? 1.0 : -1.0;
 
 			if (d == 1)
 			{
@@ -1361,13 +1098,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for parallax_dec
 		/// </summary>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="rc"></param>
-		/// <param name="rp"></param>
-		/// <param name="rs"></param>
-		/// <param name="tp"></param>
-		/// <returns></returns>
 		public static (double p, double q) ParallaxDecL2870(double x, double y, double rc, double rp, double rs, double tp)
 		{
 			var cx = x.Cosine();
@@ -1391,15 +1121,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunDia
 		/// </remarks>
-		/// <param name="lch"></param>
-		/// <param name="lcm"></param>
-		/// <param name="lcs"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <returns></returns>
 		public static double SunDia(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
 		{
 			var a = SunDist(lch, lcm, lcs, ds, zc, ld, lm, ly);
@@ -1413,15 +1134,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunDist
 		/// </remarks>
-		/// <param name="lch"></param>
-		/// <param name="lcm"></param>
-		/// <param name="lcs"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <returns></returns>
 		public static double SunDist(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
 		{
 			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
@@ -1471,15 +1183,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonLong
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonLong(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -1574,15 +1277,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonLat
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonLat(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -1676,15 +1370,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonHP
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonHP(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -1765,15 +1450,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonDist
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonDist(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
@@ -1788,15 +1464,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonSize
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonSize(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
@@ -1812,8 +1479,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: Unwind
 		/// </remarks>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double Unwind(double w)
 		{
 			return w - 6.283185308 * (w / 6.283185308).Floor();
@@ -1825,7 +1490,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: UnwindDeg
 		/// </remarks>
-		/// <param name="w"></param>
 		public static double UnwindDeg(double w)
 		{
 			return w - 360 * (w / 360).Floor();
@@ -1837,10 +1501,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunElong
 		/// </remarks>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double SunELong(double gd, int gm, int gy)
 		{
 			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
@@ -1856,10 +1516,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunPeri
 		/// </remarks>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double SunPeri(double gd, int gm, int gy)
 		{
 			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
@@ -1875,10 +1531,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunEcc
 		/// </remarks>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double SunEcc(double gd, int gm, int gy)
 		{
 			var t = (CivilDateToJulianDate(gd, gm, gy) - 2415020) / 36525;
@@ -1893,16 +1545,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: ECDec
 		/// </remarks>
-		/// <param name="eld"></param>
-		/// <param name="elm"></param>
-		/// <param name="els"></param>
-		/// <param name="bd"></param>
-		/// <param name="bm"></param>
-		/// <param name="bs"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double EcDec(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
 		{
 			var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
@@ -1919,16 +1561,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: ECRA
 		/// </remarks>
-		/// <param name="eld"></param>
-		/// <param name="elm"></param>
-		/// <param name="els"></param>
-		/// <param name="bd"></param>
-		/// <param name="bm"></param>
-		/// <param name="bs"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <returns></returns>
 		public static double EcRA(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
 		{
 			var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
@@ -1947,15 +1579,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunTrueAnomaly
 		/// </remarks>
-		/// <param name="lch"></param>
-		/// <param name="lcm"></param>
-		/// <param name="lcs"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <returns></returns>
 		public static double SunTrueAnomaly(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
 		{
 			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
@@ -1984,15 +1607,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunMeanAnomaly
 		/// </remarks>
-		/// <param name="lch"></param>
-		/// <param name="lcm"></param>
-		/// <param name="lcs"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <returns></returns>
 		public static double SunMeanAnomaly(double lch, double lcm, double lcs, int ds, int zc, double ld, int lm, int ly)
 		{
 			var aa = LocalCivilTimeGreenwichDay(lch, lcm, lcs, ds, zc, ld, lm, ly);
@@ -2016,14 +1630,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunriseLCT
 		/// </remarks>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="gl"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static double SunriseLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
 		{
 			var di = 0.8333333;
@@ -2044,7 +1650,7 @@ namespace PALib
 				var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 				var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 				{
 					xx = -99.0;
 				}
@@ -2072,17 +1678,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for sunrise_lct()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) SunriseLCTL3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2117,7 +1712,7 @@ namespace PALib
 				var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 				var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+				if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 				{
 					xx = -99.0;
 				}
@@ -2144,12 +1739,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for sunset_lct().
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="s"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) SunsetLCTL3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2167,15 +1756,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: RSLSTR
 		/// </remarks>
-		/// <param name="rah"></param>
-		/// <param name="ram"></param>
-		/// <param name="ras"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="vd"></param>
-		/// <param name="g"></param>
-		/// <returns></returns>
 		public static double RiseSetLocalSiderealTimeRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
@@ -2196,15 +1776,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: RSLSTS
 		/// </remarks>
-		/// <param name="rah"></param>
-		/// <param name="ram"></param>
-		/// <param name="ras"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="vd"></param>
-		/// <param name="g"></param>
-		/// <returns></returns>
 		public static double RiseSetLocalSiderealTimeSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
@@ -2225,15 +1796,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: RSAZR
 		/// </remarks>
-		/// <param name="rah"></param>
-		/// <param name="ram"></param>
-		/// <param name="ras"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="vd"></param>
-		/// <param name="g"></param>
-		/// <returns></returns>
 		public static double RiseSetAzimuthRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
@@ -2253,15 +1815,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: RSAZS
 		/// </remarks>
-		/// <param name="rah"></param>
-		/// <param name="ram"></param>
-		/// <param name="ras"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="vd"></param>
-		/// <param name="g"></param>
-		/// <returns></returns>
 		public static double RiseSetAzimuthSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
@@ -2282,15 +1835,6 @@ namespace PALib
 		/// <para>Possible values: "OK", "** never rises", "** circumpolar"</para>
 		/// <para>Original macro name: eRS</para>
 		/// </remarks>
-		/// <param name="rah"></param>
-		/// <param name="ram"></param>
-		/// <param name="ras"></param>
-		/// <param name="dd"></param>
-		/// <param name="dm"></param>
-		/// <param name="ds"></param>
-		/// <param name="vd"></param>
-		/// <param name="g"></param>
-		/// <returns></returns>
 		public static string ERS(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 		{
 			var a = HMStoDH(rah, ram, ras);
@@ -2340,7 +1884,7 @@ namespace PALib
 				{
 					x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
 
-					if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+					if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 					{
 						var s = result2.s + " GST to UT conversion warning";
 
@@ -2355,17 +1899,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for e_sun_rs()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) ESunRS_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2398,7 +1931,7 @@ namespace PALib
 			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 			{
 				return -99.0;
 			}
@@ -2417,17 +1950,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for sunrise_az()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) SunriseAZ_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2445,14 +1967,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SunsetAz
 		/// </remarks>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="gl"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static double SunsetAZ(double ld, int lm, int ly, int ds, int zc, double gl, double gp)
 		{
 			var di = 0.8333333;
@@ -2471,7 +1985,7 @@ namespace PALib
 			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 			{
 				return -99.0;
 			}
@@ -2490,13 +2004,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for sunset_az()
 		/// </summary>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) SunsetAZ_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2515,15 +2022,6 @@ namespace PALib
 		/// <para>Twilight type (TT) can be one of "C" (civil), "N" (nautical), or "A" (astronomical)</para>
 		/// <para>Original macro name: TwilightAMLCT</para>
 		/// </remarks>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="gl"></param>
-		/// <param name="gp"></param>
-		/// <param name="tt"></param>
-		/// <returns></returns>
 		public static double TwilightAMLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp, PATwilightType tt)
 		{
 			var di = (double)tt;
@@ -2541,7 +2039,7 @@ namespace PALib
 			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 				return -99.0;
 
 			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
@@ -2562,17 +2060,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for twilight_am_lct()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) TwilightAMLCT_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2591,15 +2078,6 @@ namespace PALib
 		/// <para>Twilight type can be one of "C" (civil), "N" (nautical), or "A" (astronomical)</para>
 		/// <para>Original macro name: TwilightPMLCT</para>
 		/// </remarks>
-		/// <param name="ld"></param>
-		/// <param name="lm"></param>
-		/// <param name="ly"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="gl"></param>
-		/// <param name="gp"></param>
-		/// <param name="tt"></param>
-		/// <returns></returns>
 		public static double TwilightPMLCT(double ld, int lm, int ly, int ds, int zc, double gl, double gp, PATwilightType tt)
 		{
 			var di = (double)tt;
@@ -2617,7 +2095,7 @@ namespace PALib
 			var x = LocalSiderealTimeToGreenwichSiderealTime(result1.la, 0, 0, gl);
 			var ut = GreenwichSiderealTimeToUniversalTime(x, 0, 0, gd, gm, gy);
 
-			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 				return 0.0;
 
 			sr = SunLong(ut, 0, 0, 0, 0, gd, gm, gy);
@@ -2636,17 +2114,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for twilight_pm_lct()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="x"></param>
-		/// <param name="y"></param>
-		/// <param name="la"></param>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) TwilightPMLCT_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2695,7 +2162,7 @@ namespace PALib
 
 			x = LocalSiderealTimeToGreenwichSiderealTime(result2.la, 0, 0, gl);
 
-			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals("OK"))
+			if (!EGstUt(x, 0, 0, gd, gm, gy).Equals(PAWarningFlag.OK))
 			{
 				result2.s = $"{result2.s} GST to UT conversion warning";
 
@@ -2708,13 +2175,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for e_twilight()
 		/// </summary>
-		/// <param name="gd"></param>
-		/// <param name="gm"></param>
-		/// <param name="gy"></param>
-		/// <param name="sr"></param>
-		/// <param name="di"></param>
-		/// <param name="gp"></param>
-		/// <returns></returns>
 		public static (double a, double x, double y, double la, string s) ETwilight_L3710(double gd, int gm, int gy, double sr, double di, double gp)
 		{
 			var a = sr + NutatLong(gd, gm, gy) - 0.005694;
@@ -2747,20 +2207,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: Angle
 		/// </remarks>
-		/// <param name="xx1"></param>
-		/// <param name="xm1"></param>
-		/// <param name="xs1"></param>
-		/// <param name="dd1"></param>
-		/// <param name="dm1"></param>
-		/// <param name="ds1"></param>
-		/// <param name="xx2"></param>
-		/// <param name="xm2"></param>
-		/// <param name="xs2"></param>
-		/// <param name="dd2"></param>
-		/// <param name="dm2"></param>
-		/// <param name="ds2"></param>
-		/// <param name="s"></param>
-		/// <returns></returns>
 		public static double Angle(double xx1, double xm1, double xs1, double dd1, double dm1, double ds1, double xx2, double xm2, double xs2, double dd2, double dm2, double ds2, PAAngleMeasure s
 		)
 		{
@@ -3387,9 +2833,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for planet_long_lat()
 		/// </summary>
-		/// <param name="qa"></param>
-		/// <param name="pl"></param>
-		/// <returns></returns>
 		public static (double qa, double qb) PlanetLong_L4685(List<PlanetDataPrecise> pl)
 		{
 			var qa = 0.00204 * (5.0 * pl[2].APValue - 2.0 * pl[1].APValue + 0.21328).Cosine();
@@ -3408,13 +2851,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for planet_long_lat()
 		/// </summary>
-		/// <param name="qa"></param>
-		/// <param name="qb"></param>
-		/// <param name="qc"></param>
-		/// <param name="pl"></param>
-		/// <param name="ms"></param>
-		/// <param name="t"></param>
-		/// <returns></returns>
 		public static (double qa, double qb, double qc, double qe) PlanetLong_L4735(List<PlanetDataPrecise> pl, double ms, double t)
 		{
 			var qc = 0.00077 * (4.1406 + t * 2.6227).Sine();
@@ -3441,15 +2877,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for planet_long_lat()
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="sa"></param>
-		/// <param name="ca"></param>
-		/// <param name="qc"></param>
-		/// <param name="qe"></param>
-		/// <param name="qa"></param>
-		/// <param name="pl"></param>
-		/// <param name="ms"></param>
-		/// <returns></returns>
 		public static (double a, double sa, double ca, double qc, double qe, double qa, double qb) PlanetLong_L4810(List<PlanetDataPrecise> pl, double ms)
 		{
 			var a = 3.0 * pl[4].APValue - 8.0 * pl[3].APValue + 4.0 * ms;
@@ -3489,15 +2916,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for planet_long_lat()
 		/// </summary>
-		/// <param name="qa"></param>
-		/// <param name="qb"></param>
-		/// <param name="qc"></param>
-		/// <param name="qd"></param>
-		/// <param name="qe"></param>
-		/// <param name="qf"></param>
-		/// <param name="t"></param>
-		/// <param name="planet"></param>
-		/// <returns></returns>
 		public static (double qa, double qb, double qc, double qd, double qe, double qf, double qg) PlanetLong_L4945(double t, PlanetDataPrecise planet)
 		{
 			var qa = 0.0;
@@ -3765,8 +3183,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SolveCubic
 		/// </remarks>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double SolveCubic(double w)
 		{
 			var s = w / 3.0;
@@ -3875,8 +3291,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro names: MoonLong, MoonLat, MoonHP
 		/// </remarks>
-		/// <param name="moonLongDeg"></param>
-		/// <param name="moonLatDeg"></param>
 		/// <param name="lh">Local civil time, hour part.</param>
 		/// <param name="lm">Local civil time, minutes part.</param>
 		/// <param name="ls">Local civil time, seconds part.</param>
@@ -4038,15 +3452,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonPhase
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonPhase(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var moonResult = MoonLongLatHP(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -4068,15 +3473,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonMeanAnomaly
 		/// </remarks>
-		/// <param name="lh"></param>
-		/// <param name="lm"></param>
-		/// <param name="ls"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static double MoonMeanAnomaly(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 		{
 			var ut = LocalCivilTimeToUniversalTime(lh, lm, ls, ds, zc, dy, mn, yr);
@@ -4132,7 +3528,6 @@ namespace PALib
 		/// <param name="dy">Local date, day part.</param>
 		/// <param name="mn">Local date, month part.</param>
 		/// <param name="yr">Local date, year part.</param>
-		/// <returns></returns>
 		public static double NewMoon(int ds, int zc, double dy, int mn, int yr)
 		{
 			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
@@ -4166,7 +3561,6 @@ namespace PALib
 		/// <param name="dy">Local date, day part.</param>
 		/// <param name="mn">Local date, month part.</param>
 		/// <param name="yr">Local date, year part.</param>
-		/// <returns></returns>
 		public static double FullMoon(int ds, int zc, double dy, int mn, int yr)
 		{
 			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
@@ -4192,11 +3586,6 @@ namespace PALib
 		/// <summary>
 		/// Helper function for new_moon() and full_moon() """
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <param name="k"></param>
-		/// <param name="t"></param>
-		/// <returns></returns>
 		public static (double a, double b, double f) NewMoonFullMoon_L6855(double k, double t)
 		{
 			var t2 = t * t;
@@ -4236,8 +3625,6 @@ namespace PALib
 		/// <summary>
 		/// Original macro name: FRACT
 		/// </summary>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double Fract(double w)
 		{
 			return w - Lint(w);
@@ -4246,8 +3633,6 @@ namespace PALib
 		/// <summary>
 		/// Original macro name: LINT
 		/// </summary>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double Lint(double w)
 		{
 			return IInt(w) + IInt(((1.0 * Sign(w)) - 1.0) / 2.0);
@@ -4256,8 +3641,6 @@ namespace PALib
 		/// <summary>
 		/// Original macro name: IINT
 		/// </summary>
-		/// <param name="w"></param>
-		/// <returns></returns>
 		public static double IInt(double w)
 		{
 			return Sign(w) * Math.Abs(w).Floor();
@@ -4339,13 +3722,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MoonRiseLCT
 		/// </remarks>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="gLong"></param>
-		/// <param name="gLat"></param>
 		/// <returns>hours</returns>
 		public static double MoonRiseLCT(double dy, int mn, int yr, int ds, int zc, double gLong, double gLat)
 		{
@@ -4403,7 +3779,7 @@ namespace PALib
 			x = LocalSiderealTimeToGreenwichSiderealTime(la, 0.0, 0.0, gLong);
 			ut = GreenwichSiderealTimeToUniversalTime(x, 0.0, 0.0, gdy, gmn, gyr);
 
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4418,7 +3794,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonRiseLCT_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4523,7 +3899,7 @@ namespace PALib
 			x = LocalSiderealTimeToGreenwichSiderealTime(la, 0.0, 0.0, gLong);
 			ut = GreenwichSiderealTimeToUniversalTime(x, 0.0, 0.0, gdy, gmn, gyr);
 
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4540,7 +3916,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonRiseLcDMY_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4648,7 +4024,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonRiseAz_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4746,7 +4122,7 @@ namespace PALib
 			x = LocalSiderealTimeToGreenwichSiderealTime(la, 0.0, 0.0, gLong);
 			ut = GreenwichSiderealTimeToUniversalTime(x, 0.0, 0.0, gdy, gmn, gyr);
 
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4761,7 +4137,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonSetLCT_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4865,7 +4241,7 @@ namespace PALib
 			x = LocalSiderealTimeToGreenwichSiderealTime(la, 0.0, 0.0, gLong);
 			ut = GreenwichSiderealTimeToUniversalTime(x, 0.0, 0.0, gdy, gmn, gyr);
 
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4882,7 +4258,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonSetLcDMY_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -4991,7 +4367,7 @@ namespace PALib
 		/// </summary>
 		public static (double ut, double lct, double dy1, int mn1, int yr1, double gdy, int gmn, int gyr) MoonSetAz_L6680(double x, int ds, int zc, double gdy, int gmn, int gyr, double g1, double ut)
 		{
-			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals("OK"))
+			if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 				if (Math.Abs(g1 - ut) > 0.5)
 					ut = ut + 23.93447;
 
@@ -5727,12 +5103,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: MagLunarEclipse
 		/// </remarks>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <returns></returns>
 		public static double MagLunarEclipse(double dy, int mn, int yr, int ds, int zc)
 		{
 			var tp = 2.0 * Math.PI;
@@ -5828,12 +5198,6 @@ namespace PALib
 		/// <remarks>
 		/// Original macro name: SEOccurrence
 		/// </remarks>
-		/// <param name="ds"></param>
-		/// <param name="zc"></param>
-		/// <param name="dy"></param>
-		/// <param name="mn"></param>
-		/// <param name="yr"></param>
-		/// <returns></returns>
 		public static string SolarEclipseOccurrence(int ds, int zc, double dy, int mn, int yr)
 		{
 			var d0 = LocalCivilTimeGreenwichDay(12.0, 0.0, 0.0, ds, zc, dy, mn, yr);
@@ -6014,8 +5378,8 @@ namespace PALib
 			var paa = EcRA(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var qaa = EcDec(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var xaa = RightAscensionToHourAngle(DecimalDegreesToDegreeHours(paa), 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
-			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
+			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
+			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 			var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
 			var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
 			var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
@@ -6132,8 +5496,8 @@ namespace PALib
 			var paa = EcRA(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var qaa = EcDec(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var xaa = RightAscensionToHourAngle(DecimalDegreesToDegreeHours(paa), 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
-			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
+			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
+			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 			var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
 			var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
 			var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
@@ -6247,8 +5611,8 @@ namespace PALib
 			var paa = EcRA(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var qaa = EcDec(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var xaa = RightAscensionToHourAngle(DecimalDegreesToDegreeHours(paa), 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
-			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
+			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
+			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 			var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
 			var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
 			var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
@@ -6363,8 +5727,8 @@ namespace PALib
 			var paa = EcRA(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var qaa = EcDec(Degrees(x), 0.0, 0.0, Degrees(y), 0.0, 0.0, igday, gmonth, gyear);
 			var xaa = RightAscensionToHourAngle(DecimalDegreesToDegreeHours(paa), 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
-			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, "true", glat, 0.0, Degrees(hp));
+			var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
+			var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 			var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
 			var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
 			var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();

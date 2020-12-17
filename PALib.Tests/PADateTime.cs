@@ -62,7 +62,7 @@ namespace PALib.Tests
 		[Fact]
 		public void GreenwichSiderealTimeToUniversalTime()
 		{
-			Assert.Equal((14, 36, 51.67, "OK"), _paDateTime.GreenwichSiderealTimeToUniversalTime(4, 40, 5.23, 22, 4, 1980));
+			Assert.Equal((14, 36, 51.67, PAWarningFlag.OK), _paDateTime.GreenwichSiderealTimeToUniversalTime(4, 40, 5.23, 22, 4, 1980));
 		}
 
 		[Fact]
