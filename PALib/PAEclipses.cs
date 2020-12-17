@@ -122,5 +122,91 @@ namespace PALib
 
 			return (lunarEclipseCertainDateDay, lunarEclipseCertainDateMonth, lunarEclipseCertainDateYear, utStartPenPhaseHour, utStartPenPhaseMinutes, utStartUmbralPhaseHour, utStartUmbralPhaseMinutes, utStartTotalPhaseHour, utStartTotalPhaseMinutes, utMidEclipseHour, utMidEclipseMinutes, utEndTotalPhaseHour, utEndTotalPhaseMinutes, utEndUmbralPhaseHour, utEndUmbralPhaseMinutes, utEndPenPhaseHour, utEndPenPhaseMinutes, eclipseMagnitude);
 		}
+
+		/// <summary>
+		/// Determine if a solar eclipse is likely to occur.
+		/// </summary>
+		/// <returns>
+		/// <para>status -- One of "Solar eclipse certain", "Solar eclipse possible", or "No solar eclipse".</para>
+		/// <para>event_date_day -- Date of eclipse event (day).</para>
+		/// <para>event_date_month -- Date of eclipse event (month).</para>
+		/// <para>event_date_year -- Date of eclipse event (year).</para>
+		/// </returns>
+		public (string status, double eventDateDay, int eventDateMonth, int eventDateYear) SolarEclipseOccurrence(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var julianDateOfNewMoon = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var gDateOfNewMoonDay = PAMacros.JulianDateDay(julianDateOfNewMoon);
+			var integerDay = (gDateOfNewMoonDay).Floor();
+			var gDateOfNewMoonMonth = PAMacros.JulianDateMonth(julianDateOfNewMoon);
+			var gDateOfNewMoonYear = PAMacros.JulianDateYear(julianDateOfNewMoon);
+			var utOfNewMoonHours = gDateOfNewMoonDay - integerDay;
+
+			var localCivilDateDay = PAMacros.UniversalTime_LocalCivilDay(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var localCivilDateMonth = PAMacros.UniversalTime_LocalCivilMonth(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var localCivilDateYear = PAMacros.UniversalTime_LocalCivilYear(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+
+			var eclipseOccurrence = PAMacros.SolarEclipseOccurrence(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+
+			var status = eclipseOccurrence;
+			var eventDateDay = localCivilDateDay;
+			var eventDateMonth = localCivilDateMonth;
+			var eventDateYear = localCivilDateYear;
+
+			return (status, eventDateDay, eventDateMonth, eventDateYear);
+		}
+
+		/// <summary>
+		/// Calculate the circumstances of a solar eclipse.
+		/// </summary>
+		/// <returns>
+		/// <para>solarEclipseCertainDateDay -- Solar eclipse date (day)</para>
+		/// <para>solarEclipseCertainDateMonth -- Solar eclipse date (month)</para>
+		/// <para>solarEclipseCertainDateYear -- Solar eclipse date (year)</para>
+		/// <para>utFirstContactHour -- First contact of shadow (hour)</para>
+		/// <para>utFirstContactMinutes -- First contact of shadow (minutes)</para>
+		/// <para>utMidEclipseHour -- Mid-eclipse (hour)</para>
+		/// <para>utMidEclipseMinutes -- Mid-eclipse (minutes)</para>
+		/// <para>utLastContactHour -- Last contact of shadow (hour)</para>
+		/// <para>utLastContactMinutes -- Last contact of shadow (minutes)</para>
+		/// <para>eclipseMagnitude -- Eclipse magnitude</para>
+		/// </returns>
+		public (double solarEclipseCertainDateDay, int solarEclipseCertainDateMonth, int solarEclipseCertainDateYear, double utFirstContactHour, double utFirstContactMinutes, double utMidEclipseHour, double utMidEclipseMinutes, double utLastContactHour, double utLastContactMinutes, double eclipseMagnitude) SolarEclipseCircumstances(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours, double geogLongitudeDeg, double geogLatitudeDeg)
+		{
+			var daylightSaving = (isDaylightSaving) ? 1 : 0;
+
+			var julianDateOfNewMoon = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
+			var gDateOfNewMoonDay = PAMacros.JulianDateDay(julianDateOfNewMoon);
+			var integerDay = (gDateOfNewMoonDay).Floor();
+			var gDateOfNewMoonMonth = PAMacros.JulianDateMonth(julianDateOfNewMoon);
+			var gDateOfNewMoonYear = PAMacros.JulianDateYear(julianDateOfNewMoon);
+			var utOfNewMoonHours = gDateOfNewMoonDay - integerDay;
+			var localCivilDateDay = PAMacros.UniversalTime_LocalCivilDay(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var localCivilDateMonth = PAMacros.UniversalTime_LocalCivilMonth(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+			var localCivilDateYear = PAMacros.UniversalTime_LocalCivilYear(utOfNewMoonHours, 0.0, 0.0, daylightSaving, zoneCorrectionHours, integerDay, gDateOfNewMoonMonth, gDateOfNewMoonYear);
+
+			var utMaxEclipse = PAMacros.UTMaxSolarEclipse(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongitudeDeg, geogLatitudeDeg);
+			var utFirstContact = PAMacros.UTFirstContactSolarEclipse(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongitudeDeg, geogLatitudeDeg);
+			var utLastContact = PAMacros.UTLastContactSolarEclipse(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongitudeDeg, geogLatitudeDeg);
+			var magnitude = PAMacros.MagSolarEclipse(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongitudeDeg, geogLatitudeDeg);
+
+			var solarEclipseCertainDateDay = localCivilDateDay;
+			var solarEclipseCertainDateMonth = localCivilDateMonth;
+			var solarEclipseCertainDateYear = localCivilDateYear;
+
+			var utFirstContactHour = (utFirstContact == -99.0) ? -99.0 : PAMacros.DecimalHoursHour(utFirstContact + 0.008333);
+			var utFirstContactMinutes = (utFirstContact == -99.0) ? -99.0 : PAMacros.DecimalHoursMinute(utFirstContact + 0.008333);
+
+			var utMidEclipseHour = (utMaxEclipse == -99.0) ? -99.0 : PAMacros.DecimalHoursHour(utMaxEclipse + 0.008333);
+			var utMidEclipseMinutes = (utMaxEclipse == -99.0) ? -99.0 : PAMacros.DecimalHoursMinute(utMaxEclipse + 0.008333);
+
+			var utLastContactHour = (utLastContact == -99.0) ? -99.0 : PAMacros.DecimalHoursHour(utLastContact + 0.008333);
+			var utLastContactMinutes = (utLastContact == -99.0) ? -99.0 : PAMacros.DecimalHoursMinute(utLastContact + 0.008333);
+
+			var eclipseMagnitude = (magnitude == -99.0) ? -99.0 : Math.Round(magnitude, 3);
+
+			return (solarEclipseCertainDateDay, solarEclipseCertainDateMonth, solarEclipseCertainDateYear, utFirstContactHour, utFirstContactMinutes, utMidEclipseHour, utMidEclipseMinutes, utLastContactHour, utLastContactMinutes, eclipseMagnitude);
+		}
 	}
 }
