@@ -9,16 +9,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate approximate position of a planet.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="planetName"></param>
-		/// <returns></returns>
 		public (double planetRAHour, double planetRAMin, double planetRASec, double planetDecDeg, double planetDecMin, double planetDecSec) ApproximatePositionOfPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
 		{
 			var daylightSaving = (isDaylightSaving) ? 1 : 0;
@@ -77,16 +67,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate precise position of a planet.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="planetName"></param>
-		/// <returns></returns>
 		public (double planetRAHour, double planetRAMin, double planetRASec, double planetDecDeg, double planetDecMin, double planetDecSec) PrecisePositionOfPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
 		{
 			var daylightSaving = (isDaylightSaving) ? 1 : 0;
@@ -109,15 +89,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate several visual aspects of a planet.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="planetName"></param>
 		/// <returns>
 		/// <para>distance_au -- Planet's distance from Earth, in AU.</para>
 		/// <para>ang_dia_arcsec -- Angular diameter of the planet.</para>

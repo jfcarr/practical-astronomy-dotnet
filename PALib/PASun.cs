@@ -58,15 +58,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate precise position of the sun for a local date and time.
 		/// </summary>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <returns></returns>
 		public (double sunRAHour, double sunRAMin, double sunRASec, double sunDecDeg, double sunDecMin, double sunDecSec) PrecisePositionOfSun(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
 		{
 			var daylightSaving = (isDaylightSaving == true) ? 1 : 0;
@@ -92,14 +83,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate distance to the Sun (in km), and angular size.
 		/// </summary>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
 		/// <returns>
 		/// <para>sunDistKm -- Sun's distance, in kilometers</para>
 		/// <para>sunAngSizeDeg -- Sun's angular size (degrees part)</para>
@@ -131,13 +114,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate local sunrise and sunset.
 		/// </summary>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="geographicalLongDeg"></param>
-		/// <param name="geographicalLatDeg"></param>
 		/// <returns>
 		/// <para>localSunriseHour -- Local sunrise, hour part</para>
 		/// <para>localSunriseMinute -- Local sunrise, minutes part</para>
@@ -247,15 +223,6 @@ namespace PALib
 		/// <remarks>
 		/// Solar elongation is the angle between the lines of sight from the Earth to the Sun and from the Earth to the celestial body.
 		/// </remarks>
-		/// <param name="raHour"></param>
-		/// <param name="raMin"></param>
-		/// <param name="raSec"></param>
-		/// <param name="decDeg"></param>
-		/// <param name="decMin"></param>
-		/// <param name="decSec"></param>
-		/// <param name="gwdateDay"></param>
-		/// <param name="gwdateMonth"></param>
-		/// <param name="gwdateYear"></param>
 		/// <returns>solarElongationDeg -- Solar elongation, in degrees</returns>
 		public double SolarElongation(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, double gwdateDay, int gwdateMonth, int gwdateYear)
 		{

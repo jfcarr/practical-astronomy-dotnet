@@ -8,19 +8,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate approximate position of the Moon.
 		/// </summary>
-		/// <param name="moonRAHour"></param>
-		/// <param name="moonRAMin"></param>
-		/// <param name="moonRASec"></param>
-		/// <param name="moonDecDeg"></param>
-		/// <param name="moonDecMin"></param>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
 		/// <returns>
 		/// <para>moon_ra_hour -- Right ascension of Moon (hour part)</para>
 		/// <para>moon_ra_min -- Right ascension of Moon (minutes part)</para>
@@ -80,21 +67,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate precise position of the Moon.
 		/// </summary>
-		/// <param name="moonRAHour"></param>
-		/// <param name="moonRAMin"></param>
-		/// <param name="moonRASec"></param>
-		/// <param name="moonDecDeg"></param>
-		/// <param name="moonDecMin"></param>
-		/// <param name="moonDecSec"></param>
-		/// <param name="earthMoonDistKM"></param>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
 		/// <returns>
 		/// <para>moonRAHour -- Right ascension of Moon (hour part)</para>
 		/// <para>moonRAMin -- Right ascension of Moon (minutes part)</para>
@@ -136,16 +108,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate Moon phase and position angle of bright limb.
 		/// </summary>
-		/// <param name="moonPhase"></param>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="accuracyLevel"></param>
 		/// <returns>
 		/// <para>moonPhase -- Phase of Moon, between 0 and 1, where 0 is New and 1 is Full.</para>
 		/// <para>paBrightLimbDeg -- Position angle of the bright limb (degrees)</para>
@@ -183,11 +145,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate new moon and full moon instances.
 		/// </summary>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
 		/// <returns>
 		/// <para>nmLocalTimeHour -- new Moon instant - local time (hour)</para>
 		/// <para>nmLocalTimeMin -- new Moon instant - local time (minutes)</para>
@@ -239,14 +196,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate Moon's distance, angular diameter, and horizontal parallax.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
 		/// <returns>
 		/// <para>earth_moon_dist -- Earth-Moon distance (km)</para>
 		/// <para>ang_diameter_deg -- Angular diameter (degrees part)</para>

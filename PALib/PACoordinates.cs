@@ -8,9 +8,6 @@ namespace PALib
 		/// <summary>
 		/// Convert an Angle (degrees, minutes, and seconds) to Decimal Degrees
 		/// </summary>
-		/// <param name="degrees"></param>
-		/// <param name="minutes"></param>
-		/// <param name="seconds"></param>
 		/// <returns>Decimal Degrees (double)</returns>
 		public double AngleToDecimalDegrees(double degrees, double minutes, double seconds)
 		{
@@ -25,9 +22,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Decimal Degrees to an Angle (degrees, minutes, and seconds)
 		/// </summary>
-		/// <param name="degrees"></param>
-		/// <param name="minutes"></param>
-		/// <param name="decimalDegrees"></param>
 		/// <returns>Tuple (degrees, minutes, seconds)</returns>
 		public (double degrees, double minutes, double seconds) DecimalDegreesToAngle(double decimalDegrees)
 		{
@@ -46,18 +40,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Right Ascension to Hour Angle
 		/// </summary>
-		/// <param name="raHours"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="isDaylightSavings"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="geographicalLongitude"></param>
 		/// <returns>Tuple (hourAngleHours, hourAngleMinutes, hourAngleSeconds)</returns>
 		public (double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds) RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
@@ -75,18 +57,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Hour Angle to Right Ascension
 		/// </summary>
-		/// <param name="hourAngleHours"></param>
-		/// <param name="hourAngleMinutes"></param>
-		/// <param name="hourAngleSeconds"></param>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
-		/// <param name="geographicalLongitude"></param>
 		/// <returns>Tuple (rightAscensionHours, rightAscensionMinutes, rightAscensionSeconds)</returns>
 		public (double raHours, double raMinutes, double raSeconds) HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 		{
@@ -104,13 +74,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Equatorial Coordinates to Horizon Coordinates
 		/// </summary>
-		/// <param name="hourAngleHours"></param>
-		/// <param name="hourAngleMinutes"></param>
-		/// <param name="hourAngleSeconds"></param>
-		/// <param name="declinationDegrees"></param>
-		/// <param name="declinationMinutes"></param>
-		/// <param name="declinationSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
 		/// <returns>Tuple (azimuthDegrees, azimuthMinutes, azimuthSeconds, altitudeDegrees, altitudeMinutes, altitudeSeconds)</returns>
 		public (double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds) EquatorialCoordinatesToHorizonCoordinates(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double declinationDegrees, double declinationMinutes, double declinationSeconds, double geographicalLatitude)
 		{
@@ -132,13 +95,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Horizon Coordinates to Equatorial Coordinates
 		/// </summary>
-		/// <param name="azimuthDegrees"></param>
-		/// <param name="azimuthMinutes"></param>
-		/// <param name="azimuthSeconds"></param>
-		/// <param name="altitudeDegrees"></param>
-		/// <param name="altitudeMinutes"></param>
-		/// <param name="altitudeSeconds"></param>
-		/// <param name="geographicalLatitude"></param>
 		/// <returns>Tuple (hourAngleHours, hourAngleMinutes, hourAngleSeconds, declinationDegrees, declinationMinutes, declinationSeconds)</returns>
 		public (double hour_angle_hours, double hour_angle_minutes, double hour_angle_seconds, double declination_degrees, double declination_minutes, double declinationseconds) HorizonCoordinatesToEquatorialCoordinates(double azimuthDegrees, double azimuthMinutes, double azimuthSeconds, double altitudeDegrees, double altitudeMinutes, double altitudeSeconds, double geographicalLatitude)
 		{
@@ -160,10 +116,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate Mean Obliquity of the Ecliptic for a Greenwich Date
 		/// </summary>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
-		/// <returns></returns>
 		public double MeanObliquityOfTheEcliptic(double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
 			var jd = PAMacros.CivilDateToJulianDate(greenwichDay, greenwichMonth, greenwichYear);
@@ -178,15 +130,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Ecliptic Coordinates to Equatorial Coordinates
 		/// </summary>
-		/// <param name="eclipticLongitudeDegrees"></param>
-		/// <param name="eclipticLongitudeMinutes"></param>
-		/// <param name="eclipticLongitudeSeconds"></param>
-		/// <param name="eclipticLatitudeDegrees"></param>
-		/// <param name="eclipticLatitudeMinutes"></param>
-		/// <param name="eclipticLatitudeSeconds"></param>
-		/// <param name="greenwichDay"></param>
-		/// <param name="greenwichMonth"></param>
-		/// <param name="greenwichYear"></param>
 		/// <returns>Tuple (outRAHours, outRAMinutes, outRASeconds, outDecDegrees, outDecMinutes, outDecSeconds)</returns>
 		public (double outRAHours, double outRAMinutes, double outRASeconds, double outDecDegrees, double outDecMinutes, double outDecSeconds) EclipticCoordinateToEquatorialCoordinate(double eclipticLongitudeDegrees, double eclipticLongitudeMinutes, double eclipticLongitudeSeconds, double eclipticLatitudeDegrees, double eclipticLatitudeMinutes, double eclipticLatitudeSeconds, double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
@@ -219,15 +162,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Equatorial Coordinates to Ecliptic Coordinates
 		/// </summary>
-		/// <param name="raHours"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="decDegrees"></param>
-		/// <param name="decMinutes"></param>
-		/// <param name="decSeconds"></param>
-		/// <param name="gwDay"></param>
-		/// <param name="gwMonth"></param>
-		/// <param name="gwYear"></param>
 		/// <returns>Tuple (outEclLongDeg, outEclLongMin, outEclLongSec, outEclLatDeg, outEclLatMin, outEclLatSec)</returns>
 		public (double outEclLongDeg, double outEclLongMin, double outEclLongSec, double outEclLatDeg, double outEclLatMin, double outEclLatSec) EquatorialCoordinateToEclipticCoordinate(double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds, double gwDay, int gwMonth, int gwYear)
 		{
@@ -259,12 +193,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Equatorial Coordinates to Galactic Coordinates
 		/// </summary>
-		/// <param name="raHours"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="decDegrees"></param>
-		/// <param name="decMinutes"></param>
-		/// <param name="decSeconds"></param>
 		/// <returns>Tuple (galLongDeg, galLongMin, galLongSec, galLatDeg, galLatMin, galLatSec)</returns>
 		public (double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec) EquatorialCoordinateToGalacticCoordinate(double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds)
 		{
@@ -293,12 +221,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Galactic Coordinates to Equatorial Coordinates
 		/// </summary>
-		/// <param name="galLongDeg"></param>
-		/// <param name="galLongMin"></param>
-		/// <param name="galLongSec"></param>
-		/// <param name="galLatDeg"></param>
-		/// <param name="galLatMin"></param>
-		/// <param name="galLatSec"></param>
 		/// <returns>Tuple (raHours, raMinutes, raSeconds, decDegrees, decMinutes, decSeconds)</returns>
 		public (double raHours, double raMinutes, double raSeconds, double decDegrees, double decMinutes, double decSeconds) GalacticCoordinateToEquatorialCoordinate(double galLongDeg, double galLongMin, double galLongSec, double galLatDeg, double galLatMin, double galLatSec)
 		{
@@ -329,31 +251,18 @@ namespace PALib
 		/// <summary>
 		/// Calculate the angle between two celestial objects
 		/// </summary>
-		/// <param name="raLong1HourDeg"></param>
-		/// <param name="raLong1Min"></param>
-		/// <param name="raLong1Sec"></param>
-		/// <param name="decLat1Deg"></param>
-		/// <param name="decLat1Min"></param>
-		/// <param name="decLat1Sec"></param>
-		/// <param name="raLong2HourDeg"></param>
-		/// <param name="raLong2Min"></param>
-		/// <param name="raLong2Sec"></param>
-		/// <param name="decLat2Deg"></param>
-		/// <param name="decLat2Min"></param>
-		/// <param name="decLat2Sec"></param>
-		/// <param name="hourOrDegree"></param>
 		/// <returns>Tuple (angleDeg, angleMin, angleSec)</returns>
-		public (double angleDeg, double angleMin, double angleSec) AngleBetweenTwoObjects(double raLong1HourDeg, double raLong1Min, double raLong1Sec, double decLat1Deg, double decLat1Min, double decLat1Sec, double raLong2HourDeg, double raLong2Min, double raLong2Sec, double decLat2Deg, double decLat2Min, double decLat2Sec, string hourOrDegree)
+		public (double angleDeg, double angleMin, double angleSec) AngleBetweenTwoObjects(double raLong1HourDeg, double raLong1Min, double raLong1Sec, double decLat1Deg, double decLat1Min, double decLat1Sec, double raLong2HourDeg, double raLong2Min, double raLong2Sec, double decLat2Deg, double decLat2Min, double decLat2Sec, PAAngleMeasure hourOrDegree)
 		{
-			var raLong1Decimal = (hourOrDegree.Equals("H")) ? PAMacros.HMStoDH(raLong1HourDeg, raLong1Min, raLong1Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong1HourDeg, raLong1Min, raLong1Sec);
-			var raLong1Deg = (hourOrDegree.Equals("H")) ? PAMacros.DegreeHoursToDecimalDegrees(raLong1Decimal) : raLong1Decimal;
+			var raLong1Decimal = (hourOrDegree == PAAngleMeasure.Hours) ? PAMacros.HMStoDH(raLong1HourDeg, raLong1Min, raLong1Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong1HourDeg, raLong1Min, raLong1Sec);
+			var raLong1Deg = (hourOrDegree == PAAngleMeasure.Hours) ? PAMacros.DegreeHoursToDecimalDegrees(raLong1Decimal) : raLong1Decimal;
 
 			var raLong1Rad = raLong1Deg.ToRadians();
 			var decLat1Deg1 = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decLat1Deg, decLat1Min, decLat1Sec);
 			var decLat1Rad = decLat1Deg1.ToRadians();
 
-			var raLong2Decimal = (hourOrDegree.Equals("H")) ? PAMacros.HMStoDH(raLong2HourDeg, raLong2Min, raLong2Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong2HourDeg, raLong2Min, raLong2Sec);
-			var raLong2Deg = (hourOrDegree.Equals("H")) ? PAMacros.DegreeHoursToDecimalDegrees(raLong2Decimal) : raLong2Decimal;
+			var raLong2Decimal = (hourOrDegree == PAAngleMeasure.Hours) ? PAMacros.HMStoDH(raLong2HourDeg, raLong2Min, raLong2Sec) : PAMacros.DegreesMinutesSecondsToDecimalDegrees(raLong2HourDeg, raLong2Min, raLong2Sec);
+			var raLong2Deg = (hourOrDegree == PAAngleMeasure.Hours) ? PAMacros.DegreeHoursToDecimalDegrees(raLong2Decimal) : raLong2Decimal;
 			var raLong2Rad = raLong2Deg.ToRadians();
 			var decLat2Deg1 = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decLat2Deg, decLat2Min, decLat2Sec);
 			var decLat2Rad = decLat2Deg1.ToRadians();
@@ -373,18 +282,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate rising and setting times for an object.
 		/// </summary>
-		/// <param name="raHours"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="decDeg"></param>
-		/// <param name="decMin"></param>
-		/// <param name="decSec"></param>
-		/// <param name="gwDateDay"></param>
-		/// <param name="gwDateMonth"></param>
-		/// <param name="gwDateYear"></param>
-		/// <param name="geogLongDeg"></param>
-		/// <param name="geogLatDeg"></param>
-		/// <param name="vertShiftDeg"></param>
 		/// <returns>Tuple (riseSetStatus, utRiseHour, utRiseMin, utSetHour, utSetMin, azRise, azSet)</returns>
 		public (string riseSetStatus, double utRiseHour, double utRiseMin, double utSetHour, double utSetMin, double azRise, double azSet) RisingAndSetting(double raHours, double raMinutes, double raSeconds, double decDeg, double decMin, double decSec, double gwDateDay, int gwDateMonth, int gwDateYear, double geogLongDeg, double geogLatDeg, double vertShiftDeg)
 		{
@@ -423,18 +320,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate precession (corrected coordinates between two epochs)
 		/// </summary>
-		/// <param name="raHour"></param>
-		/// <param name="raMinutes"></param>
-		/// <param name="raSeconds"></param>
-		/// <param name="decDeg"></param>
-		/// <param name="decMinutes"></param>
-		/// <param name="decSeconds"></param>
-		/// <param name="epoch1Day"></param>
-		/// <param name="epoch1Month"></param>
-		/// <param name="epoch1Year"></param>
-		/// <param name="epoch2Day"></param>
-		/// <param name="epoch2Month"></param>
-		/// <param name="epoch2Year"></param>
 		/// <returns>Tuple (correctedRAHour, correctedRAMinutes, correctedRASeconds, correctedDecDeg, correctedDecMinutes, correctedDecSeconds)</returns>
 		public (double correctedRAHour, double correctedRAMinutes, double correctedRASeconds, double correctedDecDeg, double correctedDecMinutes, double correctedDecSeconds) CorrectForPrecession(double raHour, double raMinutes, double raSeconds, double decDeg, double decMinutes, double decSeconds, double epoch1Day, int epoch1Month, int epoch1Year, double epoch2Day, int epoch2Month, int epoch2Year)
 		{
@@ -462,9 +347,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate nutation for two values: ecliptic longitude and obliquity, for a Greenwich date.
 		/// </summary>
-		/// <param name="greenwich_day"></param>
-		/// <param name="greenwich_month"></param>
-		/// <param name="greenwich_year"></param>
 		/// <returns>Tuple (nutation in ecliptic longitude (degrees), nutation in obliquity (degrees))</returns>
 		public (double nutInLongDeg, double nutInOblDeg) NutationInEclipticLongitudeAndObliquity(double greenwichDay, int greenwichMonth, int greenwichYear)
 		{
@@ -491,18 +373,6 @@ namespace PALib
 		/// <summary>
 		/// Correct ecliptic coordinates for the effects of aberration.
 		/// </summary>
-		/// <param name="utHour"></param>
-		/// <param name="utMinutes"></param>
-		/// <param name="utSeconds"></param>
-		/// <param name="gwDay"></param>
-		/// <param name="gwMonth"></param>
-		/// <param name="gwYear"></param>
-		/// <param name="trueEclLongDeg"></param>
-		/// <param name="trueEclLongMin"></param>
-		/// <param name="trueEclLongSec"></param>
-		/// <param name="trueEclLatDeg"></param>
-		/// <param name="trueEclLatMin"></param>
-		/// <param name="trueEclLatSec"></param>
 		/// <returns>
 		/// apparent ecliptic longitude (degrees, minutes, seconds),
 		/// apparent ecliptic latitude (degrees, minutes, seconds)
@@ -534,30 +404,11 @@ namespace PALib
 		/// <remarks>
 		/// NOTE: Valid values for coordinate_type are "TRUE" and "APPARENT".
 		/// </remarks>
-		/// <param name="trueRAHour"></param>
-		/// <param name="trueRAMin"></param>
-		/// <param name="trueRASec"></param>
-		/// <param name="trueDecDeg"></param>
-		/// <param name="trueDecMin"></param>
-		/// <param name="trueDecSec"></param>
-		/// <param name="coordinateType"></param>
-		/// <param name="geogLongDeg"></param>
-		/// <param name="geogLatDeg"></param>
-		/// <param name="daylightSavingHours"></param>
-		/// <param name="timezoneHours"></param>
-		/// <param name="lcdDay"></param>
-		/// <param name="lcdMonth"></param>
-		/// <param name="lcdYear"></param>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="atmosphericPressureMbar"></param>
-		/// <param name="atmosphericTemperatureCelsius"></param>
 		/// <returns>
-		/// corrected RA hours,minutes,seconds,
-		/// corrected Declination degrees,minutes,seconds
+		/// <para>corrected RA hours,minutes,seconds</para>
+		/// <para>corrected Declination degrees,minutes,seconds</para>
 		/// </returns>
-		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) AtmosphericRefraction(double trueRAHour, double trueRAMin, double trueRASec, double trueDecDeg, double trueDecMin, double trueDecSec, string coordinateType, double geogLongDeg, double geogLatDeg, int daylightSavingHours, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec, double atmosphericPressureMbar, double atmosphericTemperatureCelsius)
+		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) AtmosphericRefraction(double trueRAHour, double trueRAMin, double trueRASec, double trueDecDeg, double trueDecMin, double trueDecSec, PACoordinateType coordinateType, double geogLongDeg, double geogLatDeg, int daylightSavingHours, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec, double atmosphericPressureMbar, double atmosphericTemperatureCelsius)
 		{
 			var haHour = PAMacros.RightAscensionToHourAngle(trueRAHour, trueRAMin, trueRASec, lctHour, lctMin, lctSec, daylightSavingHours, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
 			var azimuthDeg = PAMacros.EquatorialCoordinatesToAzimuth(haHour, 0, 0, trueDecDeg, trueDecMin, trueDecSec, geogLatDeg);
@@ -582,30 +433,8 @@ namespace PALib
 		/// <summary>
 		/// Calculate corrected RA/Dec, accounting for geocentric parallax.
 		/// </summary>
-		/// <remarks>
-		/// NOTE: Valid values for coordinate_type are "TRUE" and "APPARENT".
-		/// </remarks>
-		/// <param name="raHour"></param>
-		/// <param name="raMin"></param>
-		/// <param name="raSec"></param>
-		/// <param name="decDeg"></param>
-		/// <param name="decMin"></param>
-		/// <param name="decSec"></param>
-		/// <param name="coordinateType"></param>
-		/// <param name="equatorialHorParallaxDeg"></param>
-		/// <param name="geogLongDeg"></param>
-		/// <param name="geogLatDeg"></param>
-		/// <param name="heightM"></param>
-		/// <param name="daylightSaving"></param>
-		/// <param name="timezoneHours"></param>
-		/// <param name="lcdDay"></param>
-		/// <param name="lcdMonth"></param>
-		/// <param name="lcdYear"></param>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
 		/// <returns>corrected RA hours,minutes,seconds and corrected Declination degrees,minutes,seconds</returns>
-		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) CorrectionsForGeocentricParallax(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, string coordinateType, double equatorialHorParallaxDeg, double geogLongDeg, double geogLatDeg, double heightM, int daylightSaving, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec)
+		public (double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) CorrectionsForGeocentricParallax(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, PACoordinateType coordinateType, double equatorialHorParallaxDeg, double geogLongDeg, double geogLatDeg, double heightM, int daylightSaving, int timezoneHours, double lcdDay, int lcdMonth, int lcdYear, double lctHour, double lctMin, double lctSec)
 		{
 			var haHours = PAMacros.RightAscensionToHourAngle(raHour, raMin, raSec, lctHour, lctMin, lctSec, daylightSaving, timezoneHours, lcdDay, lcdMonth, lcdYear, geogLongDeg);
 
@@ -628,11 +457,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate heliographic coordinates for a given Greenwich date, with a given heliographic position angle and heliographic displacement in arc minutes.
 		/// </summary>
-		/// <param name="helioPositionAngleDeg"></param>
-		/// <param name="helioDisplacementArcmin"></param>
-		/// <param name="gwdateDay"></param>
-		/// <param name="gwdateMonth"></param>
-		/// <param name="gwdateYear"></param>
 		/// <returns>heliographic longitude and heliographic latitude, in degrees</returns>
 		public (double helioLongDeg, double helioLatDeg) HeliographicCoordinates(double helioPositionAngleDeg, double helioDisplacementArcmin, double gwdateDay, int gwdateMonth, int gwdateYear)
 		{
@@ -666,9 +490,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate carrington rotation number for a Greenwich date
 		/// </summary>
-		/// <param name="gwdateDay"></param>
-		/// <param name="gwdateMonth"></param>
-		/// <param name="gwdateYear"></param>
 		/// <returns>carrington rotation number</returns>
 		public int CarringtonRotationNumber(double gwdateDay, int gwdateMonth, int gwdateYear)
 		{
@@ -682,9 +503,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate selenographic (lunar) coordinates (sub-Earth)
 		/// </summary>
-		/// <param name="gwdateDay"></param>
-		/// <param name="gwdateMonth"></param>
-		/// <param name="gwdateYear"></param>
 		/// <returns>sub-earth longitude, sub-earth latitude, and position angle of pole</returns>
 		public (double subEarthLongitude, double subEarthLatitude, double positionAngleOfPole) SelenographicCoordinates1(double gwdateDay, int gwdateMonth, int gwdateYear)
 		{
@@ -719,9 +537,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate selenographic (lunar) coordinates (sub-Solar)
 		/// </summary>
-		/// <param name="gwdateDay"></param>
-		/// <param name="gwdateMonth"></param>
-		/// <param name="gwdateYear"></param>
 		/// <returns>sub-solar longitude, sub-solar colongitude, and sub-solar latitude</returns>
 		public (double subSolarLongitude, double subSolarColongitude, double subSolarLatitude) SelenographicCoordinates2(double gwdateDay, int gwdateMonth, int gwdateYear)
 		{

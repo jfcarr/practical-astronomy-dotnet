@@ -9,15 +9,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate position of an elliptical comet.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="cometName"></param>
 		/// <returns>
 		/// cometRAHour -- Right ascension of comet (hour part)
 		/// cometRAMin -- Right ascension of comet (minutes part)
@@ -76,15 +67,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate position of a parabolic comet.
 		/// </summary>
-		/// <param name="lctHour"></param>
-		/// <param name="lctMin"></param>
-		/// <param name="lctSec"></param>
-		/// <param name="isDaylightSaving"></param>
-		/// <param name="zoneCorrectionHours"></param>
-		/// <param name="localDateDay"></param>
-		/// <param name="localDateMonth"></param>
-		/// <param name="localDateYear"></param>
-		/// <param name="cometName"></param>
 		/// <returns>
 		/// cometRAHour -- Right ascension of comet (hour part)
 		/// cometRAMin -- Right ascension of comet (minutes part)
@@ -103,8 +85,6 @@ namespace PALib
 			var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 			var greenwichDateYear = PAMacros.LocalCivilTimeGreenwichYear(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 
-			// var _utHours = PAMacros.LocalCivilTimeToUniversalTime(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
-
 			var cometInfo = CometInfoParabolic.GetCometParabolicInfo(cometName);
 
 			var perihelionEpochDay = cometInfo.EpochPeriDay;
@@ -115,7 +95,6 @@ namespace PALib
 			var perihelionDeg = cometInfo.ArgPeri;
 			var nodeDeg = cometInfo.Node;
 
-			// let(comet_long_deg, comet_lat_deg, comet_dist_au) = 
 			var cometLongLatDist = PAMacros.PCometLongLatDist(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear, perihelionEpochDay, perihelionEpochMonth, perihelionEpochYear, qAU, inclinationDeg, perihelionDeg, nodeDeg);
 
 			var cometRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(cometLongLatDist.cometLongDeg, 0, 0, cometLongLatDist.cometLatDeg, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear));

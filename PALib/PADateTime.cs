@@ -8,7 +8,6 @@ namespace PALib
 		/// <summary>
 		/// Gets the date of Easter for the year specified.
 		/// </summary>
-		/// <param name="inputYear"></param>
 		/// <returns>(Month, Day, Year)</returns>
 		public (int Month, int Day, int Year) GetDateOfEaster(int inputYear)
 		{
@@ -38,10 +37,6 @@ namespace PALib
 		/// <summary>
 		/// Calculate day number for a date.
 		/// </summary>
-		/// <param name="month"></param>
-		/// <param name="day"></param>
-		/// <param name="year"></param>
-		/// <returns></returns>
 		public int CivilDateToDayNumber(int month, int day, int year)
 		{
 			if (month <= 2)
@@ -62,10 +57,6 @@ namespace PALib
 		/// <summary>
 		/// Convert a Civil Time (hours,minutes,seconds) to Decimal Hours
 		/// </summary>
-		/// <param name="hours"></param>
-		/// <param name="minutes"></param>
-		/// <param name="seconds"></param>
-		/// <returns></returns>
 		public double CivilTimeToDecimalHours(double hours, double minutes, double seconds)
 		{
 			return PAMacros.HMStoDH(hours, minutes, seconds);
@@ -74,7 +65,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Decimal Hours to Civil Time
 		/// </summary>
-		/// <param name="decimalHours"></param>
 		/// <returns>Tuple(hours (double), minutes (double), seconds (double))</returns>
 		public (double hours, double minutes, double seconds) DecimalHoursToCivilTime(double decimalHours)
 		{
@@ -88,14 +78,6 @@ namespace PALib
 		/// <summary>
 		/// Convert local Civil Time to Universal Time
 		/// </summary>
-		/// <param name="lctHours"></param>
-		/// <param name="lctMinutes"></param>
-		/// <param name="lctSeconds"></param>
-		/// <param name="isDaylightSavings"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="localDay"></param>
-		/// <param name="localMonth"></param>
-		/// <param name="localYear"></param>
 		/// <returns>Tuple (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear)</returns>
 		public (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear) LocalCivilTimeToUniversalTime(double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear)
 		{
@@ -127,14 +109,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Universal Time to local Civil Time
 		/// </summary>
-		/// <param name="utHours"></param>
-		/// <param name="utMinutes"></param>
-		/// <param name="utSeconds"></param>
-		/// <param name="isDaylightSavings"></param>
-		/// <param name="zoneCorrection"></param>
-		/// <param name="gwDay"></param>
-		/// <param name="gwMonth"></param>
-		/// <param name="gwYear"></param>
 		/// <returns>Tuple (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear)</returns>
 		public (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear) UniversalTimeToLocalCivilTime(double utHours, double utMinutes, double utSeconds, bool isDaylightSavings, int zoneCorrection, int gwDay, int gwMonth, int gwYear)
 		{
@@ -163,12 +137,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Universal Time to Greenwich Sidereal Time
 		/// </summary>
-		/// <param name="utHours"></param>
-		/// <param name="utMinutes"></param>
-		/// <param name="utSeconds"></param>
-		/// <param name="gwDay"></param>
-		/// <param name="gwMonth"></param>
-		/// <param name="gwYear"></param>
 		/// <returns>Tuple (int gstHours, int gstMinutes, double gstSeconds)</returns>
 		public (int gstHours, int gstMinutes, double gstSeconds) UniversalTimeToGreenwichSiderealTime(double utHours, double utMinutes, double utSeconds, double gwDay, int gwMonth, int gwYear)
 		{
@@ -192,14 +160,8 @@ namespace PALib
 		/// <summary>
 		/// Convert Greenwich Sidereal Time to Universal Time
 		/// </summary>
-		/// <param name="gstHours"></param>
-		/// <param name="gstMinutes"></param>
-		/// <param name="gstSeconds"></param>
-		/// <param name="gwDay"></param>
-		/// <param name="gwMonth"></param>
-		/// <param name="gwYear"></param>
-		/// <returns>Tuple (int utHours, int utMinutes, double utSeconds, string warningFlag)</returns>
-		public (int utHours, int utMinutes, double utSeconds, string warningFlag) GreenwichSiderealTimeToUniversalTime(double gstHours, double gstMinutes, double gstSeconds, double gwDay, int gwMonth, int gwYear)
+		/// <returns>Tuple (int utHours, int utMinutes, double utSeconds, PAWarningFlag warningFlag)</returns>
+		public (int utHours, int utMinutes, double utSeconds, PAWarningFlag warningFlag) GreenwichSiderealTimeToUniversalTime(double gstHours, double gstMinutes, double gstSeconds, double gwDay, int gwMonth, int gwYear)
 		{
 			var jd = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear);
 			var s = jd - 2451545;
@@ -215,7 +177,7 @@ namespace PALib
 			var utMinutes = PAMacros.DecimalHoursMinute(ut);
 			var utSeconds = PAMacros.DecimalHoursSecond(ut);
 
-			var warningFlag = (ut < 0.065574) ? "Warning" : "OK";
+			var warningFlag = (ut < 0.065574) ? PAWarningFlag.Warning : PAWarningFlag.OK;
 
 			return (utHours, utMinutes, utSeconds, warningFlag);
 		}
@@ -223,10 +185,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Greenwich Sidereal Time to Local Sidereal Time
 		/// </summary>
-		/// <param name="gstHours"></param>
-		/// <param name="gstMinutes"></param>
-		/// <param name="gstSeconds"></param>
-		/// <param name="geographicalLongitude"></param>
 		/// <returns>Tuple (int lstHours, int lstMinutes, double lstSeconds)</returns>
 		public (int lstHours, int lstMinutes, double lstSeconds) GreenwichSiderealTimeToLocalSiderealTime(double gstHours, double gstMinutes, double gstSeconds, double geographicalLongitude)
 		{
@@ -245,10 +203,6 @@ namespace PALib
 		/// <summary>
 		/// Convert Local Sidereal Time to Greenwich Sidereal Time
 		/// </summary>
-		/// <param name="lstHours"></param>
-		/// <param name="lstMinutes"></param>
-		/// <param name="lstSeconds"></param>
-		/// <param name="geographicalLongitude"></param>
 		/// <returns>Tuple (int gstHours, int gstMinutes, double gstSeconds)</returns>
 		public (int gstHours, int gstMinutes, double gstSeconds) LocalSiderealTimeToGreenwichSiderealTime(double lstHours, double lstMinutes, double lstSeconds, double geographicalLongitude)
 		{
