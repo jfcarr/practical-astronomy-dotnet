@@ -4,6 +4,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Binary star calculations.
+	/// </summary>
 	public class PABinary
 	{
 		/// <summary>

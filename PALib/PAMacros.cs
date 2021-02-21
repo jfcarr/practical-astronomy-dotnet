@@ -6,6 +6,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Miscellaneous macro functions supporting the other classes.
+	/// </summary>
 	public static class PAMacros
 	{
 		/// <summary>

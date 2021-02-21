@@ -4,6 +4,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Comet calculations.
+	/// </summary>
 	public class PAComet
 	{
 		/// <summary>

@@ -3,30 +3,101 @@ using System.Linq;
 
 namespace PALib.Data
 {
+	/// <summary>
+	/// Information about a comet with an elliptical orbit.
+	/// </summary>
 	public class CometDataElliptical
 	{
+		/// <summary>
+		/// Name of comet
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Epoch of the perihelion
+		/// </summary>
 		public double epoch_EpochOfPerihelion { get; set; }
+
+		/// <summary>
+		/// Longitude of the perihelion
+		/// </summary>
 		public double peri_LongitudeOfPerihelion { get; set; }
+
+		/// <summary>
+		/// Longitude of the ascending node
+		/// </summary>
 		public double node_LongitudeOfAscendingNode { get; set; }
+
+		/// <summary>
+		/// Period of the orbit
+		/// </summary>
 		public double period_PeriodOfOrbit { get; set; }
+
+		/// <summary>
+		/// Semi-major axis of the orbit
+		/// </summary>
 		public double axis_SemiMajorAxisOfOrbit { get; set; }
+
+		/// <summary>
+		/// Eccentricity of the orbit
+		/// </summary>
 		public double ecc_EccentricityOfOrbit { get; set; }
+
+		/// <summary>
+		/// Inclination of the orbit
+		/// </summary>
 		public double incl_InclinationOfOrbit { get; set; }
 	}
 
+	/// <summary>
+	/// Information about a comet with a parabolic orbit.
+	/// </summary>
 	public class CometDataParabolic
 	{
+		/// <summary>
+		/// Name of the comet
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Epoch perihelion day
+		/// </summary>
 		public double EpochPeriDay { get; set; }
+
+		/// <summary>
+		/// Epoch perihelion month
+		/// </summary>
 		public int EpochPeriMonth { get; set; }
+
+		/// <summary>
+		/// Epoch perihelion year
+		/// </summary>
 		public int EpochPeriYear { get; set; }
+
+		/// <summary>
+		/// Arg perihelion
+		/// </summary>
 		public double ArgPeri { get; set; }
+
+		/// <summary>
+		/// Comet's node
+		/// </summary>
 		public double Node { get; set; }
+
+		/// <summary>
+		/// Distance at the perihelion
+		/// </summary>
 		public double PeriDist { get; set; }
+
+		/// <summary>
+		/// Inclination
+		/// </summary>
 		public double Incl { get; set; }
 	}
 
+	/// <summary>
+	/// Data manager for comets with elliptical orbits.
+	/// </summary>
 	public static class CometInfoElliptical
 	{
 		static List<CometDataElliptical> _cometDataElliptical;
@@ -188,6 +259,9 @@ namespace PALib.Data
 			};
 		}
 
+		/// <summary>
+		/// Get information about a comet with an elliptical orbit.
+		/// </summary>
 		public static CometDataElliptical GetCometEllipticalInfo(string name)
 		{
 			var returnValue = _cometDataElliptical
@@ -198,6 +272,10 @@ namespace PALib.Data
 			return (returnValue == null) ? new CometDataElliptical() { Name = "NotFound" } : returnValue;
 		}
 	}
+
+	/// <summary>
+	/// Data manager for comets with parabolic orbits.
+	/// </summary>
 	public static class CometInfoParabolic
 	{
 		static List<CometDataParabolic> _cometDataParabolic;
@@ -218,6 +296,9 @@ namespace PALib.Data
 			};
 		}
 
+		/// <summary>
+		/// Get information about a comet with a parabolic orbit.
+		/// </summary>
 		public static CometDataParabolic GetCometParabolicInfo(string name)
 		{
 			var returnValue = _cometDataParabolic

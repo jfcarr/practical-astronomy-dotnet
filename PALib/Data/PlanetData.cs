@@ -3,8 +3,14 @@ using System.Linq;
 
 namespace PALib.Data
 {
+	/// <summary>
+	/// Information about a planet.
+	/// </summary>
 	public class PlanetData
 	{
+		/// <summary>
+		/// Name of planet.
+		/// </summary>
 		public string Name { get; set; }
 
 		/// <summary>
@@ -89,21 +95,70 @@ namespace PALib.Data
 		public double v0_VisualMagnitude { get; set; }
 	}
 
+	/// <summary>
+	/// Working data for precise planet calculations.
+	/// </summary>
 	public class PlanetDataPrecise
 	{
+		/// <summary>
+		/// Name of planet.
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Working value 1.
+		/// </summary>
 		public double Value1 { get; set; }
+
+		/// <summary>
+		/// Working value 2.
+		/// </summary>
 		public double Value2 { get; set; }
+
+		/// <summary>
+		/// Working value 3.
+		/// </summary>
 		public double Value3 { get; set; }
+
+		/// <summary>
+		/// Working value 4.
+		/// </summary>
 		public double Value4 { get; set; }
+
+		/// <summary>
+		/// Working value 5.
+		/// </summary>
 		public double Value5 { get; set; }
+
+		/// <summary>
+		/// Working value 6.
+		/// </summary>
 		public double Value6 { get; set; }
+
+		/// <summary>
+		/// Working value 7.
+		/// </summary>
 		public double Value7 { get; set; }
+
+		/// <summary>
+		/// Working value 8.
+		/// </summary>
 		public double Value8 { get; set; }
+
+		/// <summary>
+		/// Working value 9.
+		/// </summary>
 		public double Value9 { get; set; }
+
+		/// <summary>
+		/// Working AP value.
+		/// </summary>
 		public double APValue { get; set; }
 	}
 
+	/// <summary>
+	/// Data manager for planets.
+	/// </summary>
 	public static class PlanetInfo
 	{
 		static List<PlanetData> _planetData;
@@ -210,6 +265,9 @@ namespace PALib.Data
 			};
 		}
 
+		/// <summary>
+		/// Get information about a planet.
+		/// </summary>
 		public static PlanetData GetPlanetInfo(string name)
 		{
 			var returnValue = _planetData

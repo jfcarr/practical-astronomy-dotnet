@@ -3,6 +3,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Coordinate system calculations and conversions.
+	/// </summary>
 	public class PACoordinates
 	{
 		/// <summary>

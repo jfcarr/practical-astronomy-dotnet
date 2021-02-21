@@ -3,6 +3,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Eclipse calculations.
+	/// </summary>
 	public class PAEclipses
 	{
 		/// <summary>

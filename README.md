@@ -6,6 +6,48 @@ Algorithms from "[Practical Astronomy with your Calculator or Spreadsheet](https
 
 If you're interested in this topic, please buy the book! It provides far more detail and context.
 
+## Getting Started (for clients)
+
+Create a console application:
+
+```bash
+dotnet new console -o PAConsoleTest
+
+cd PAConsoleTest
+```
+
+Using the NuGet package is the easiest way to consume the library in a client application.  Add a NuGet reference for the Practical Astronomy library, following the directions [here](https://www.nuget.org/packages/PracticalAstronomyDotNet/).
+
+Open Program.cs, and make a few changes.  First, add a `using` statement for Practical Astronomy:
+
+```csharp
+using PALib;
+```
+
+Then, replace the 'Hello World' boilerplate with this:
+
+```csharp
+// Coordinates test (angle degrees to decimal degrees)
+var paCoordinates = new PALib.PACoordinates();
+
+var decimalDegrees = Math.Round(paCoordinates.AngleToDecimalDegrees(182, 31, 27), 3);
+
+Console.WriteLine($"Decimal degrees value is {decimalDegrees}");
+
+// Moon test (approximate moon phase)
+var paMoon = new PALib.PAMoon();
+
+var (moonPhase, brightLimbDegrees) = paMoon.MoonPhase(0, 0, 0, false, 0, 1, 9, 2003, PAAccuracyLevel.Approximate);
+
+Console.WriteLine($"Moon phase value is {moonPhase}, bright limb degrees value is {brightLimbDegrees}");
+```
+
+When you run, you should see this:
+
+```
+Decimal degrees value is 182.524
+Moon phase value is 0.22, bright limb degrees value is -71.58
+```
 ## Library Functions - Status
 
 ### Date/Time

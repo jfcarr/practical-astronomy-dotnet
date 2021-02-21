@@ -2,6 +2,9 @@ using System;
 
 namespace PALib.Helpers
 {
+	/// <summary>
+	/// Extension methods for mathematical calculations.
+	/// </summary>
 	public static class MathExtensions
 	{
 		/// <summary>
@@ -48,8 +51,6 @@ namespace PALib.Helpers
 		/// <summary>
 		/// Returns the cosine of the specified angle.
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
 		public static double Cosine(this double d)
 		{
 			return Math.Cos(d);
@@ -79,8 +80,6 @@ namespace PALib.Helpers
 		/// <summary>
 		/// Returns the sine of the specified angle.
 		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
 		public static double Sine(this double a)
 		{
 			return Math.Sin(a);

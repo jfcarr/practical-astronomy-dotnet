@@ -3,6 +3,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Sun calculations.
+	/// </summary>
 	public class PASun
 	{
 		/// <summary>
@@ -197,9 +200,9 @@ namespace PALib
 		/// <summary>
 		/// Calculate the equation of time. (The difference between the real Sun time and the mean Sun time.)
 		/// </summary>
-		/// <param name="gwdate_day">Greenwich date (day part)</param>
-		/// <param name="gwdate_month">Greenwich date (month part)</param>
-		/// <param name="gwdate_year">Greenwich date (year part)</param>
+		/// <param name="gwdateDay">Greenwich date (day part)</param>
+		/// <param name="gwdateMonth">Greenwich date (month part)</param>
+		/// <param name="gwdateYear">Greenwich date (year part)</param>
 		/// <returns>
 		/// <para>equation_of_time_min -- equation of time (minute part)</para>
 		/// <para>equation_of_time_sec -- equation of time (seconds part)</para>

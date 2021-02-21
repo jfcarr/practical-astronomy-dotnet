@@ -3,6 +3,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Moon calculations.
+	/// </summary>
 	public class PAMoon
 	{
 		/// <summary>

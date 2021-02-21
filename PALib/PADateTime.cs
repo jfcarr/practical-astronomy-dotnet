@@ -3,6 +3,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Date and time calculations.
+	/// </summary>
 	public class PADateTime
 	{
 		/// <summary>

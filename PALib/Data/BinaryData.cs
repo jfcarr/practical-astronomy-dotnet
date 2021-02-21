@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace PALib.Data
 {
+	/// <summary>
+	/// Holds information about binary star systems.
+	/// </summary>
 	public class BinaryData
 	{
 		/// <summary>
@@ -46,6 +49,9 @@ namespace PALib.Data
 		public double PANode { get; set; }
 	}
 
+	/// <summary>
+	/// Binary star system data manager.
+	/// </summary>
 	public static class BinaryInfo
 	{
 		static List<BinaryData> _binaryData;
@@ -157,6 +163,10 @@ namespace PALib.Data
 			};
 		}
 
+		/// <summary>
+		/// Retrieve information about a specific binary star system.
+		/// </summary>
+		/// <returns></returns>
 		public static BinaryData GetBinaryInfo(string name)
 		{
 			var returnValue = _binaryData

@@ -1,6 +1,9 @@
 using System;
 namespace PALib
 {
+	/// <summary>
+	/// Utility methods.
+	/// </summary>
 	public static class PAUtils
 	{
 		/// <summary>

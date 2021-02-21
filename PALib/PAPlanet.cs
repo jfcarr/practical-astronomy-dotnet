@@ -4,6 +4,9 @@ using PALib.Helpers;
 
 namespace PALib
 {
+	/// <summary>
+	/// Planet calculations.
+	/// </summary>
 	public class PAPlanet
 	{
 		/// <summary>
