@@ -1,171 +1,171 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PALib.Data
+namespace PALib.Data;
+
+/// <summary>
+/// Information about a planet.
+/// </summary>
+public class PlanetData
 {
 	/// <summary>
-	/// Information about a planet.
+	/// Name of planet.
 	/// </summary>
-	public class PlanetData
-	{
-		/// <summary>
-		/// Name of planet.
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
-		/// Period of orbit.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: tp
-		/// </remarks>
-		/// <value></value>
-		public double tp_PeriodOrbit { get; set; }
-
-		/// <summary>
-		/// Longitude at the epoch.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: long
-		/// </remarks>
-		/// <value></value>
-		public double long_LongitudeEpoch { get; set; }
-
-		/// <summary>
-		/// Longitude of the perihelion.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: peri
-		/// </remarks>
-		/// <value></value>
-		public double peri_LongitudePerihelion { get; set; }
-
-		/// <summary>
-		/// Eccentricity of the orbit.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: ecc
-		/// </remarks>
-		/// <value></value>
-		public double ecc_EccentricityOrbit { get; set; }
-
-		/// <summary>
-		/// Semi-major axis of the orbit.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: axis
-		/// </remarks>
-		/// <value></value>
-		public double axis_AxisOrbit { get; set; }
-
-		/// <summary>
-		/// Orbital inclination.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: incl
-		/// </remarks>
-		/// <value></value>
-		public double incl_OrbitalInclination { get; set; }
-
-		/// <summary>
-		/// Longitude of the ascending node.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: node
-		/// </remarks>
-		/// <value></value>
-		public double node_LongitudeAscendingNode { get; set; }
-
-		/// <summary>
-		/// Angular diameter at 1 AU.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: theta0
-		/// </remarks>
-		/// <value></value>
-		public double theta0_AngularDiameter { get; set; }
-
-		/// <summary>
-		/// Visual magnitude at 1 AU.
-		/// </summary>
-		/// <remarks>
-		/// Original element name: v0
-		/// </remarks>
-		/// <value></value>
-		public double v0_VisualMagnitude { get; set; }
-	}
+	public string Name { get; set; }
 
 	/// <summary>
-	/// Working data for precise planet calculations.
+	/// Period of orbit.
 	/// </summary>
-	public class PlanetDataPrecise
-	{
-		/// <summary>
-		/// Name of planet.
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
-		/// Working value 1.
-		/// </summary>
-		public double Value1 { get; set; }
-
-		/// <summary>
-		/// Working value 2.
-		/// </summary>
-		public double Value2 { get; set; }
-
-		/// <summary>
-		/// Working value 3.
-		/// </summary>
-		public double Value3 { get; set; }
-
-		/// <summary>
-		/// Working value 4.
-		/// </summary>
-		public double Value4 { get; set; }
-
-		/// <summary>
-		/// Working value 5.
-		/// </summary>
-		public double Value5 { get; set; }
-
-		/// <summary>
-		/// Working value 6.
-		/// </summary>
-		public double Value6 { get; set; }
-
-		/// <summary>
-		/// Working value 7.
-		/// </summary>
-		public double Value7 { get; set; }
-
-		/// <summary>
-		/// Working value 8.
-		/// </summary>
-		public double Value8 { get; set; }
-
-		/// <summary>
-		/// Working value 9.
-		/// </summary>
-		public double Value9 { get; set; }
-
-		/// <summary>
-		/// Working AP value.
-		/// </summary>
-		public double APValue { get; set; }
-	}
+	/// <remarks>
+	/// Original element name: tp
+	/// </remarks>
+	/// <value></value>
+	public double tp_PeriodOrbit { get; set; }
 
 	/// <summary>
-	/// Data manager for planets.
+	/// Longitude at the epoch.
 	/// </summary>
-	public static class PlanetInfo
-	{
-		static List<PlanetData> _planetData;
+	/// <remarks>
+	/// Original element name: long
+	/// </remarks>
+	/// <value></value>
+	public double long_LongitudeEpoch { get; set; }
 
-		static PlanetInfo()
-		{
-			_planetData = new List<PlanetData>() {
+	/// <summary>
+	/// Longitude of the perihelion.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: peri
+	/// </remarks>
+	/// <value></value>
+	public double peri_LongitudePerihelion { get; set; }
+
+	/// <summary>
+	/// Eccentricity of the orbit.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: ecc
+	/// </remarks>
+	/// <value></value>
+	public double ecc_EccentricityOrbit { get; set; }
+
+	/// <summary>
+	/// Semi-major axis of the orbit.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: axis
+	/// </remarks>
+	/// <value></value>
+	public double axis_AxisOrbit { get; set; }
+
+	/// <summary>
+	/// Orbital inclination.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: incl
+	/// </remarks>
+	/// <value></value>
+	public double incl_OrbitalInclination { get; set; }
+
+	/// <summary>
+	/// Longitude of the ascending node.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: node
+	/// </remarks>
+	/// <value></value>
+	public double node_LongitudeAscendingNode { get; set; }
+
+	/// <summary>
+	/// Angular diameter at 1 AU.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: theta0
+	/// </remarks>
+	/// <value></value>
+	public double theta0_AngularDiameter { get; set; }
+
+	/// <summary>
+	/// Visual magnitude at 1 AU.
+	/// </summary>
+	/// <remarks>
+	/// Original element name: v0
+	/// </remarks>
+	/// <value></value>
+	public double v0_VisualMagnitude { get; set; }
+}
+
+/// <summary>
+/// Working data for precise planet calculations.
+/// </summary>
+public class PlanetDataPrecise
+{
+	/// <summary>
+	/// Name of planet.
+	/// </summary>
+	public string Name { get; set; }
+
+	/// <summary>
+	/// Working value 1.
+	/// </summary>
+	public double Value1 { get; set; }
+
+	/// <summary>
+	/// Working value 2.
+	/// </summary>
+	public double Value2 { get; set; }
+
+	/// <summary>
+	/// Working value 3.
+	/// </summary>
+	public double Value3 { get; set; }
+
+	/// <summary>
+	/// Working value 4.
+	/// </summary>
+	public double Value4 { get; set; }
+
+	/// <summary>
+	/// Working value 5.
+	/// </summary>
+	public double Value5 { get; set; }
+
+	/// <summary>
+	/// Working value 6.
+	/// </summary>
+	public double Value6 { get; set; }
+
+	/// <summary>
+	/// Working value 7.
+	/// </summary>
+	public double Value7 { get; set; }
+
+	/// <summary>
+	/// Working value 8.
+	/// </summary>
+	public double Value8 { get; set; }
+
+	/// <summary>
+	/// Working value 9.
+	/// </summary>
+	public double Value9 { get; set; }
+
+	/// <summary>
+	/// Working AP value.
+	/// </summary>
+	public double APValue { get; set; }
+}
+
+/// <summary>
+/// Data manager for planets.
+/// </summary>
+public static class PlanetInfo
+{
+	static List<PlanetData> _planetData;
+
+	static PlanetInfo()
+	{
+		_planetData = new List<PlanetData>() {
 				new PlanetData() {
 					Name = "Mercury",
 					tp_PeriodOrbit = 0.24085,
@@ -263,19 +263,18 @@ namespace PALib.Data
 					v0_VisualMagnitude = -6.87
 				}
 			};
-		}
+	}
 
-		/// <summary>
-		/// Get information about a planet.
-		/// </summary>
-		public static PlanetData GetPlanetInfo(string name)
-		{
-			var returnValue = _planetData
-				.Where(x => x.Name == name)
-				.Select(x => x)
-				.FirstOrDefault();
+	/// <summary>
+	/// Get information about a planet.
+	/// </summary>
+	public static PlanetData GetPlanetInfo(string name)
+	{
+		var returnValue = _planetData
+			.Where(x => x.Name == name)
+			.Select(x => x)
+			.FirstOrDefault();
 
-			return (returnValue == null) ? new PlanetData() { Name = "NotFound" } : returnValue;
-		}
+		return (returnValue == null) ? new PlanetData() { Name = "NotFound" } : returnValue;
 	}
 }
