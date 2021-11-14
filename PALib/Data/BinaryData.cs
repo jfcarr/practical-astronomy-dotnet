@@ -1,64 +1,64 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PALib.Data
+namespace PALib.Data;
+
+/// <summary>
+/// Holds information about binary star systems.
+/// </summary>
+public class BinaryData
 {
 	/// <summary>
-	/// Holds information about binary star systems.
+	/// Name of binary system.
 	/// </summary>
-	public class BinaryData
-	{
-		/// <summary>
-		/// Name of binary system.
-		/// </summary>
-		public string Name { get; set; }
-
-		/// <summary>
-		/// Period of the orbit.
-		/// </summary>
-		public double Period { get; set; }
-
-		/// <summary>
-		/// Epoch of the perihelion.
-		/// </summary>
-		public double EpochPeri { get; set; }
-
-		/// <summary>
-		/// Longitude of the perihelion.
-		/// </summary>
-		public double LongPeri { get; set; }
-
-		/// <summary>
-		/// Eccentricity of the orbit.
-		/// </summary>
-		public double Ecc { get; set; }
-
-		/// <summary>
-		/// Semi-major axis of the orbit.
-		/// </summary>
-		public double Axis { get; set; }
-
-		/// <summary>
-		/// Orbital inclination.
-		/// </summary>
-		public double Incl { get; set; }
-
-		/// <summary>
-		/// Position angle of the ascending node.
-		/// </summary>
-		public double PANode { get; set; }
-	}
+	public string Name { get; set; }
 
 	/// <summary>
-	/// Binary star system data manager.
+	/// Period of the orbit.
 	/// </summary>
-	public static class BinaryInfo
-	{
-		static List<BinaryData> _binaryData;
+	public double Period { get; set; }
 
-		static BinaryInfo()
-		{
-			_binaryData = new List<BinaryData>()
+	/// <summary>
+	/// Epoch of the perihelion.
+	/// </summary>
+	public double EpochPeri { get; set; }
+
+	/// <summary>
+	/// Longitude of the perihelion.
+	/// </summary>
+	public double LongPeri { get; set; }
+
+	/// <summary>
+	/// Eccentricity of the orbit.
+	/// </summary>
+	public double Ecc { get; set; }
+
+	/// <summary>
+	/// Semi-major axis of the orbit.
+	/// </summary>
+	public double Axis { get; set; }
+
+	/// <summary>
+	/// Orbital inclination.
+	/// </summary>
+	public double Incl { get; set; }
+
+	/// <summary>
+	/// Position angle of the ascending node.
+	/// </summary>
+	public double PANode { get; set; }
+}
+
+/// <summary>
+/// Binary star system data manager.
+/// </summary>
+public static class BinaryInfo
+{
+	static List<BinaryData> _binaryData;
+
+	static BinaryInfo()
+	{
+		_binaryData = new List<BinaryData>()
 			{
 				new BinaryData() {
 					Name = "eta-Cor",
@@ -161,20 +161,19 @@ namespace PALib.Data
 					PANode = 273.0,
 				}
 			};
-		}
+	}
 
-		/// <summary>
-		/// Retrieve information about a specific binary star system.
-		/// </summary>
-		/// <returns></returns>
-		public static BinaryData GetBinaryInfo(string name)
-		{
-			var returnValue = _binaryData
-				.Where(x => x.Name == name)
-				.Select(x => x)
-				.FirstOrDefault();
+	/// <summary>
+	/// Retrieve information about a specific binary star system.
+	/// </summary>
+	/// <returns></returns>
+	public static BinaryData GetBinaryInfo(string name)
+	{
+		var returnValue = _binaryData
+			.Where(x => x.Name == name)
+			.Select(x => x)
+			.FirstOrDefault();
 
-			return (returnValue == null) ? new BinaryData() { Name = "NotFound" } : returnValue;
-		}
+		return (returnValue == null) ? new BinaryData() { Name = "NotFound" } : returnValue;
 	}
 }
