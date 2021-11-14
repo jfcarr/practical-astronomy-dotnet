@@ -2,7 +2,7 @@
 
 ![Main](https://github.com/jfcarr-astronomy/practical-astronomy-dotnet/workflows/Build-Test/badge.svg)
 
-Algorithms from "[Practical Astronomy with your Calculator or Spreadsheet](https://www.amazon.com/Practical-Astronomy-your-Calculator-Spreadsheet/dp/1108436072)" by Peter Duffett-Smith, implemented in .NET 5.
+Algorithms from "[Practical Astronomy with your Calculator or Spreadsheet](https://www.amazon.com/Practical-Astronomy-your-Calculator-Spreadsheet/dp/1108436072)" by Peter Duffett-Smith, implemented in .NET 6.
 
 If you're interested in this topic, please buy the book! It provides far more detail and context.
 
