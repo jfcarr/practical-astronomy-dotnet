@@ -29,31 +29,31 @@ public class PASun
 	/// </returns>
 	public (double sunRAHour, double sunRAMin, double sunRASec, double sunDecDeg, double sunDecMin, double sunDecSec) ApproximatePositionOfSun(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
 	{
-		var daylightSaving = (isDaylightSaving == true) ? 1 : 0;
+		int daylightSaving = (isDaylightSaving == true) ? 1 : 0;
 
-		var greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var greenwichDateYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var utHours = PAMacros.LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var utDays = utHours / 24;
-		var jdDays = PAMacros.CivilDateToJulianDate(greenwichDateDay, greenwichDateMonth, greenwichDateYear) + utDays;
-		var dDays = jdDays - PAMacros.CivilDateToJulianDate(0, 1, 2010);
-		var nDeg = 360 * dDays / 365.242191;
-		var mDeg1 = nDeg + PAMacros.SunELong(0, 1, 2010) - PAMacros.SunPeri(0, 1, 2010);
-		var mDeg2 = mDeg1 - 360 * (mDeg1 / 360).Floor();
-		var eCDeg = 360 * PAMacros.SunEcc(0, 1, 2010) * mDeg2.ToRadians().Sine() / Math.PI;
-		var lSDeg1 = nDeg + eCDeg + PAMacros.SunELong(0, 1, 2010);
-		var lSDeg2 = lSDeg1 - 360 * (lSDeg1 / 360).Floor();
-		var raDeg = PAMacros.EcRA(lSDeg2, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear);
-		var raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg);
-		var decDeg = PAMacros.EcDec(lSDeg2, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear);
+		double greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int greenwichDateYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double utHours = PAMacros.LocalCivilTimeToUniversalTime(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double utDays = utHours / 24;
+		double jdDays = PAMacros.CivilDateToJulianDate(greenwichDateDay, greenwichDateMonth, greenwichDateYear) + utDays;
+		double dDays = jdDays - PAMacros.CivilDateToJulianDate(0, 1, 2010);
+		double nDeg = 360 * dDays / 365.242191;
+		double mDeg1 = nDeg + PAMacros.SunELong(0, 1, 2010) - PAMacros.SunPeri(0, 1, 2010);
+		double mDeg2 = mDeg1 - 360 * (mDeg1 / 360).Floor();
+		double eCDeg = 360 * PAMacros.SunEcc(0, 1, 2010) * mDeg2.ToRadians().Sine() / Math.PI;
+		double lSDeg1 = nDeg + eCDeg + PAMacros.SunELong(0, 1, 2010);
+		double lSDeg2 = lSDeg1 - 360 * (lSDeg1 / 360).Floor();
+		double raDeg = PAMacros.EcRA(lSDeg2, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear);
+		double raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg);
+		double decDeg = PAMacros.EcDec(lSDeg2, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear);
 
-		var sunRAHour = PAMacros.DecimalHoursHour(raHours);
-		var sunRAMin = PAMacros.DecimalHoursMinute(raHours);
-		var sunRASec = PAMacros.DecimalHoursSecond(raHours);
-		var sunDecDeg = PAMacros.DecimalDegreesDegrees(decDeg);
-		var sunDecMin = PAMacros.DecimalDegreesMinutes(decDeg);
-		var sunDecSec = PAMacros.DecimalDegreesSeconds(decDeg);
+		int sunRAHour = PAMacros.DecimalHoursHour(raHours);
+		int sunRAMin = PAMacros.DecimalHoursMinute(raHours);
+		double sunRASec = PAMacros.DecimalHoursSecond(raHours);
+		double sunDecDeg = PAMacros.DecimalDegreesDegrees(decDeg);
+		double sunDecMin = PAMacros.DecimalDegreesMinutes(decDeg);
+		double sunDecSec = PAMacros.DecimalDegreesSeconds(decDeg);
 
 		return (sunRAHour, sunRAMin, sunRASec, sunDecDeg, sunDecMin, sunDecSec);
 	}
@@ -63,22 +63,22 @@ public class PASun
 	/// </summary>
 	public (double sunRAHour, double sunRAMin, double sunRASec, double sunDecDeg, double sunDecMin, double sunDecSec) PrecisePositionOfSun(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
 	{
-		var daylightSaving = (isDaylightSaving == true) ? 1 : 0;
+		int daylightSaving = (isDaylightSaving == true) ? 1 : 0;
 
-		var gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var gYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var sunEclipticLongitudeDeg = PAMacros.SunLong(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var raDeg = PAMacros.EcRA(sunEclipticLongitudeDeg, 0, 0, 0, 0, 0, gDay, gMonth, gYear);
-		var raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg);
-		var decDeg = PAMacros.EcDec(sunEclipticLongitudeDeg, 0, 0, 0, 0, 0, gDay, gMonth, gYear);
+		double gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int gYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double sunEclipticLongitudeDeg = PAMacros.SunLong(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double raDeg = PAMacros.EcRA(sunEclipticLongitudeDeg, 0, 0, 0, 0, 0, gDay, gMonth, gYear);
+		double raHours = PAMacros.DecimalDegreesToDegreeHours(raDeg);
+		double decDeg = PAMacros.EcDec(sunEclipticLongitudeDeg, 0, 0, 0, 0, 0, gDay, gMonth, gYear);
 
-		var sunRAHour = PAMacros.DecimalHoursHour(raHours);
-		var sunRAMin = PAMacros.DecimalHoursMinute(raHours);
-		var sunRASec = PAMacros.DecimalHoursSecond(raHours);
-		var sunDecDeg = PAMacros.DecimalDegreesDegrees(decDeg);
-		var sunDecMin = PAMacros.DecimalDegreesMinutes(decDeg);
-		var sunDecSec = PAMacros.DecimalDegreesSeconds(decDeg);
+		int sunRAHour = PAMacros.DecimalHoursHour(raHours);
+		int sunRAMin = PAMacros.DecimalHoursMinute(raHours);
+		double sunRASec = PAMacros.DecimalHoursSecond(raHours);
+		double sunDecDeg = PAMacros.DecimalDegreesDegrees(decDeg);
+		double sunDecMin = PAMacros.DecimalDegreesMinutes(decDeg);
+		double sunDecSec = PAMacros.DecimalDegreesSeconds(decDeg);
 
 		return (sunRAHour, sunRAMin, sunRASec, sunDecDeg, sunDecMin, sunDecSec);
 	}
@@ -94,22 +94,22 @@ public class PASun
 	/// </returns>
 	public (double sunDistKm, double sunAngSizeDeg, double sunAngSizeMin, double sunAngSizeSec) SunDistanceAndAngularSize(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
 	{
-		var daylightSaving = isDaylightSaving ? 1 : 0;
+		int daylightSaving = isDaylightSaving ? 1 : 0;
 
-		var gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var gYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var trueAnomalyDeg = PAMacros.SunTrueAnomaly(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
-		var trueAnomalyRad = trueAnomalyDeg.ToRadians();
-		var eccentricity = PAMacros.SunEcc(gDay, gMonth, gYear);
-		var f = (1 + eccentricity * trueAnomalyRad.Cosine()) / (1 - eccentricity * eccentricity);
-		var rKm = 149598500 / f;
-		var thetaDeg = f * 0.533128;
+		double gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		int gYear = PAMacros.LocalCivilTimeGreenwichYear(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double trueAnomalyDeg = PAMacros.SunTrueAnomaly(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
+		double trueAnomalyRad = trueAnomalyDeg.ToRadians();
+		double eccentricity = PAMacros.SunEcc(gDay, gMonth, gYear);
+		double f = (1 + eccentricity * trueAnomalyRad.Cosine()) / (1 - eccentricity * eccentricity);
+		double rKm = 149598500 / f;
+		double thetaDeg = f * 0.533128;
 
-		var sunDistKm = Math.Round(rKm, 0);
-		var sunAngSizeDeg = PAMacros.DecimalDegreesDegrees(thetaDeg);
-		var sunAngSizeMin = PAMacros.DecimalDegreesMinutes(thetaDeg);
-		var sunAngSizeSec = PAMacros.DecimalDegreesSeconds(thetaDeg);
+		double sunDistKm = Math.Round(rKm, 0);
+		double sunAngSizeDeg = PAMacros.DecimalDegreesDegrees(thetaDeg);
+		double sunAngSizeMin = PAMacros.DecimalDegreesMinutes(thetaDeg);
+		double sunAngSizeSec = PAMacros.DecimalDegreesSeconds(thetaDeg);
 
 		return (sunDistKm, sunAngSizeDeg, sunAngSizeMin, sunAngSizeSec);
 	}
@@ -128,29 +128,29 @@ public class PASun
 	/// </returns>
 	public (double localSunriseHour, double localSunriseMinute, double localSunsetHour, double localSunsetMinute, double azimuthOfSunriseDeg, double azimuthOfSunsetDeg, string status) SunriseAndSunset(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg)
 	{
-		var daylightSaving = isDaylightSaving ? 1 : 0;
+		int daylightSaving = isDaylightSaving ? 1 : 0;
 
-		var localSunriseHours = PAMacros.SunriseLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
-		var localSunsetHours = PAMacros.SunsetLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+		double localSunriseHours = PAMacros.SunriseLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+		double localSunsetHours = PAMacros.SunsetLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 
-		var sunRiseSetStatus = PAMacros.ESunRS(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+		string sunRiseSetStatus = PAMacros.ESunRS(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 
-		var adjustedSunriseHours = localSunriseHours + 0.008333;
-		var adjustedSunsetHours = localSunsetHours + 0.008333;
+		double adjustedSunriseHours = localSunriseHours + 0.008333;
+		double adjustedSunsetHours = localSunsetHours + 0.008333;
 
-		var azimuthOfSunriseDeg1 = PAMacros.SunriseAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
-		var azimuthOfSunsetDeg1 = PAMacros.SunsetAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+		double azimuthOfSunriseDeg1 = PAMacros.SunriseAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
+		double azimuthOfSunsetDeg1 = PAMacros.SunsetAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 
-		var localSunriseHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunriseHours) : 0;
-		var localSunriseMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunriseHours) : 0;
+		int localSunriseHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunriseHours) : 0;
+		int localSunriseMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunriseHours) : 0;
 
-		var localSunsetHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunsetHours) : 0;
-		var localSunsetMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunsetHours) : 0;
+		int localSunsetHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunsetHours) : 0;
+		int localSunsetMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunsetHours) : 0;
 
-		var azimuthOfSunriseDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunriseDeg1, 2) : 0;
-		var azimuthOfSunsetDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunsetDeg1, 2) : 0;
+		double azimuthOfSunriseDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunriseDeg1, 2) : 0;
+		double azimuthOfSunsetDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunsetDeg1, 2) : 0;
 
-		var status = sunRiseSetStatus;
+		string status = sunRiseSetStatus;
 
 		return (localSunriseHour, localSunriseMinute, localSunsetHour, localSunsetMinute, azimuthOfSunriseDeg, azimuthOfSunsetDeg, status);
 	}
@@ -175,16 +175,16 @@ public class PASun
 	/// </returns>
 	public (double amTwilightBeginsHour, double amTwilightBeginsMin, double pmTwilightEndsHour, double pmTwilightEndsMin, string status) MorningAndEveningTwilight(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg, PATwilightType twilightType)
 	{
-		var daylightSaving = isDaylightSaving ? 1 : 0;
+		int daylightSaving = isDaylightSaving ? 1 : 0;
 
-		var startOfAMTwilightHours = PAMacros.TwilightAMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+		double startOfAMTwilightHours = PAMacros.TwilightAMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
 
-		var endOfPMTwilightHours = PAMacros.TwilightPMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+		double endOfPMTwilightHours = PAMacros.TwilightPMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
 
-		var twilightStatus = PAMacros.ETwilight(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
+		string twilightStatus = PAMacros.ETwilight(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
 
-		var adjustedAMStartTime = startOfAMTwilightHours + 0.008333;
-		var adjustedPMStartTime = endOfPMTwilightHours + 0.008333;
+		double adjustedAMStartTime = startOfAMTwilightHours + 0.008333;
+		double adjustedPMStartTime = endOfPMTwilightHours + 0.008333;
 
 		double amTwilightBeginsHour = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedAMStartTime) : -99;
 		double amTwilightBeginsMin = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedAMStartTime) : -99;
@@ -192,7 +192,7 @@ public class PASun
 		double pmTwilightEndsHour = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedPMStartTime) : -99;
 		double pmTwilightEndsMin = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedPMStartTime) : -99;
 
-		var status = twilightStatus;
+		string status = twilightStatus;
 
 		return (amTwilightBeginsHour, amTwilightBeginsMin, pmTwilightEndsHour, pmTwilightEndsMin, status);
 	}
@@ -209,13 +209,13 @@ public class PASun
 	/// </returns>
 	public (double equationOfTimeMin, double equationOfTimeSec) EquationOfTime(double gwdateDay, int gwdateMonth, int gwdateYear)
 	{
-		var sunLongitudeDeg = PAMacros.SunLong(12, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var sunRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear));
-		var equivalentUTHours = PAMacros.GreenwichSiderealTimeToUniversalTime(sunRAHours, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var equationOfTimeHours = equivalentUTHours - 12;
+		double sunLongitudeDeg = PAMacros.SunLong(12, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+		double sunRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear));
+		double equivalentUTHours = PAMacros.GreenwichSiderealTimeToUniversalTime(sunRAHours, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+		double equationOfTimeHours = equivalentUTHours - 12;
 
-		var equationOfTimeMin = PAMacros.DecimalHoursMinute(equationOfTimeHours);
-		var equationOfTimeSec = PAMacros.DecimalHoursSecond(equationOfTimeHours);
+		int equationOfTimeMin = PAMacros.DecimalHoursMinute(equationOfTimeHours);
+		double equationOfTimeSec = PAMacros.DecimalHoursSecond(equationOfTimeHours);
 
 		return (equationOfTimeMin, equationOfTimeSec);
 	}
@@ -229,10 +229,10 @@ public class PASun
 	/// <returns>solarElongationDeg -- Solar elongation, in degrees</returns>
 	public double SolarElongation(double raHour, double raMin, double raSec, double decDeg, double decMin, double decSec, double gwdateDay, int gwdateMonth, int gwdateYear)
 	{
-		var sunLongitudeDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var sunRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear));
-		var sunDecDeg = PAMacros.EcDec(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var solarElongationDeg = PAMacros.Angle(sunRAHours, 0, 0, sunDecDeg, 0, 0, raHour, raMin, raSec, decDeg, decMin, decSec, PAAngleMeasure.Hours);
+		double sunLongitudeDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+		double sunRAHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear));
+		double sunDecDeg = PAMacros.EcDec(sunLongitudeDeg, 0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
+		double solarElongationDeg = PAMacros.Angle(sunRAHours, 0, 0, sunDecDeg, 0, 0, raHour, raMin, raSec, decDeg, decMin, decSec, PAAngleMeasure.Hours);
 
 		return Math.Round(solarElongationDeg, 2);
 	}

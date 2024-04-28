@@ -169,7 +169,7 @@ public static class BinaryInfo
 	/// <returns></returns>
 	public static BinaryData GetBinaryInfo(string name)
 	{
-		var returnValue = _binaryData
+		BinaryData returnValue = _binaryData
 			.Where(x => x.Name == name)
 			.Select(x => x)
 			.FirstOrDefault();

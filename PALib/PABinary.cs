@@ -18,25 +18,25 @@ public class PABinary
 	/// </returns>
 	public (double positionAngleDeg, double separationArcsec) BinaryStarOrbit(double greenwichDateDay, int greenwichDateMonth, int greenwichDateYear, string binaryName)
 	{
-		var binaryInfo = BinaryInfo.GetBinaryInfo(binaryName);
+		BinaryData binaryInfo = BinaryInfo.GetBinaryInfo(binaryName);
 
-		var yYears = greenwichDateYear + (PAMacros.CivilDateToJulianDate(greenwichDateDay, greenwichDateMonth, greenwichDateYear) - PAMacros.CivilDateToJulianDate(0, 1, greenwichDateYear)) / 365.242191 - binaryInfo.EpochPeri;
-		var mDeg = 360 * yYears / binaryInfo.Period;
-		var mRad = (mDeg - 360 * (mDeg / 360).Floor()).ToRadians();
-		var eccentricity = binaryInfo.Ecc;
-		var trueAnomalyRad = PAMacros.TrueAnomaly(mRad, eccentricity);
-		var rArcsec = (1 - eccentricity * PAMacros.EccentricAnomaly(mRad, eccentricity).Cosine()) * binaryInfo.Axis;
-		var taPeriRad = trueAnomalyRad + binaryInfo.LongPeri.ToRadians();
+		double yYears = greenwichDateYear + (PAMacros.CivilDateToJulianDate(greenwichDateDay, greenwichDateMonth, greenwichDateYear) - PAMacros.CivilDateToJulianDate(0, 1, greenwichDateYear)) / 365.242191 - binaryInfo.EpochPeri;
+		double mDeg = 360 * yYears / binaryInfo.Period;
+		double mRad = (mDeg - 360 * (mDeg / 360).Floor()).ToRadians();
+		double eccentricity = binaryInfo.Ecc;
+		double trueAnomalyRad = PAMacros.TrueAnomaly(mRad, eccentricity);
+		double rArcsec = (1 - eccentricity * PAMacros.EccentricAnomaly(mRad, eccentricity).Cosine()) * binaryInfo.Axis;
+		double taPeriRad = trueAnomalyRad + binaryInfo.LongPeri.ToRadians();
 
-		var y = taPeriRad.Sine() * binaryInfo.Incl.ToRadians().Cosine();
-		var x = taPeriRad.Cosine();
-		var aDeg = PAMacros.Degrees(y.AngleTangent2(x));
-		var thetaDeg1 = aDeg + binaryInfo.PANode;
-		var thetaDeg2 = thetaDeg1 - 360 * (thetaDeg1 / 360).Floor();
-		var rhoArcsec = rArcsec * taPeriRad.Cosine() / (thetaDeg2 - binaryInfo.PANode).ToRadians().Cosine();
+		double y = taPeriRad.Sine() * binaryInfo.Incl.ToRadians().Cosine();
+		double x = taPeriRad.Cosine();
+		double aDeg = PAMacros.Degrees(y.AngleTangent2(x));
+		double thetaDeg1 = aDeg + binaryInfo.PANode;
+		double thetaDeg2 = thetaDeg1 - 360 * (thetaDeg1 / 360).Floor();
+		double rhoArcsec = rArcsec * taPeriRad.Cosine() / (thetaDeg2 - binaryInfo.PANode).ToRadians().Cosine();
 
-		var positionAngleDeg = Math.Round(thetaDeg2, 1);
-		var separationArcsec = Math.Round(rhoArcsec, 2);
+		double positionAngleDeg = Math.Round(thetaDeg2, 1);
+		double separationArcsec = Math.Round(rhoArcsec, 2);
 
 		return (positionAngleDeg, separationArcsec);
 	}

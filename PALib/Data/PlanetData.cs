@@ -270,7 +270,7 @@ public static class PlanetInfo
 	/// </summary>
 	public static PlanetData GetPlanetInfo(string name)
 	{
-		var returnValue = _planetData
+		PlanetData returnValue = _planetData
 			.Where(x => x.Name == name)
 			.Select(x => x)
 			.FirstOrDefault();

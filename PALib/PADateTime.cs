@@ -16,23 +16,23 @@ public class PADateTime
 	{
 		double year = inputYear;
 
-		var a = year % 19;
-		var b = (year / 100).Floor();
-		var c = year % 100;
-		var d = (b / 4).Floor();
-		var e = b % 4;
-		var f = ((b + 8) / 25).Floor();
-		var g = ((b - f + 1) / 3).Floor();
-		var h = ((19 * a) + b - d - g + 15) % 30;
-		var i = (c / 4).Floor();
-		var k = c % 4;
-		var l = (32 + 2 * (e + i) - h - k) % 7;
-		var m = ((a + (11 * h) + (22 * l)) / 451).Floor();
-		var n = ((h + l - (7 * m) + 114) / 31).Floor();
-		var p = (h + l - (7 * m) + 114) % 31;
+		double a = year % 19;
+		double b = (year / 100).Floor();
+		double c = year % 100;
+		double d = (b / 4).Floor();
+		double e = b % 4;
+		double f = ((b + 8) / 25).Floor();
+		double g = ((b - f + 1) / 3).Floor();
+		double h = ((19 * a) + b - d - g + 15) % 30;
+		double i = (c / 4).Floor();
+		double k = c % 4;
+		double l = (32 + 2 * (e + i) - h - k) % 7;
+		double m = ((a + (11 * h) + (22 * l)) / 451).Floor();
+		double n = ((h + l - (7 * m) + 114) / 31).Floor();
+		double p = (h + l - (7 * m) + 114) % 31;
 
-		var day = p + 1;
-		var month = n;
+		double day = p + 1;
+		double month = n;
 
 		return ((int)month, (int)day, (int)year);
 	}
@@ -71,9 +71,9 @@ public class PADateTime
 	/// <returns>Tuple(hours (double), minutes (double), seconds (double))</returns>
 	public (double hours, double minutes, double seconds) DecimalHoursToCivilTime(double decimalHours)
 	{
-		var hours = PAMacros.DecimalHoursHour(decimalHours);
-		var minutes = PAMacros.DecimalHoursMinute(decimalHours);
-		var seconds = PAMacros.DecimalHoursSecond(decimalHours);
+		int hours = PAMacros.DecimalHoursHour(decimalHours);
+		int minutes = PAMacros.DecimalHoursMinute(decimalHours);
+		double seconds = PAMacros.DecimalHoursSecond(decimalHours);
 
 		return (hours, minutes, seconds);
 	}
@@ -84,20 +84,20 @@ public class PADateTime
 	/// <returns>Tuple (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear)</returns>
 	public (int utHours, int utMinutes, int utSeconds, int gwDay, int gwMonth, int gwYear) LocalCivilTimeToUniversalTime(double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear)
 	{
-		var lct = CivilTimeToDecimalHours(lctHours, lctMinutes, lctSeconds);
+		double lct = CivilTimeToDecimalHours(lctHours, lctMinutes, lctSeconds);
 
-		var daylightSavingsOffset = isDaylightSavings ? 1 : 0;
+		int daylightSavingsOffset = isDaylightSavings ? 1 : 0;
 
-		var utInterim = lct - daylightSavingsOffset - zoneCorrection;
-		var gdayInterim = localDay + (utInterim / 24);
+		double utInterim = lct - daylightSavingsOffset - zoneCorrection;
+		double gdayInterim = localDay + (utInterim / 24);
 
-		var jd = PAMacros.CivilDateToJulianDate(gdayInterim, localMonth, localYear);
+		double jd = PAMacros.CivilDateToJulianDate(gdayInterim, localMonth, localYear);
 
-		var gDay = PAMacros.JulianDateDay(jd);
-		var gMonth = PAMacros.JulianDateMonth(jd);
-		var gYear = PAMacros.JulianDateYear(jd);
+		double gDay = PAMacros.JulianDateDay(jd);
+		int gMonth = PAMacros.JulianDateMonth(jd);
+		int gYear = PAMacros.JulianDateYear(jd);
 
-		var ut = 24 * (gDay - gDay.Floor());
+		double ut = 24 * (gDay - gDay.Floor());
 
 		return (
 			PAMacros.DecimalHoursHour(ut),
@@ -115,17 +115,17 @@ public class PADateTime
 	/// <returns>Tuple (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear)</returns>
 	public (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear) UniversalTimeToLocalCivilTime(double utHours, double utMinutes, double utSeconds, bool isDaylightSavings, int zoneCorrection, int gwDay, int gwMonth, int gwYear)
 	{
-		var dstValue = isDaylightSavings ? 1 : 0;
-		var ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
-		var zoneTime = ut + zoneCorrection;
-		var localTime = zoneTime + dstValue;
-		var localJDPlusLocalTime = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear) + (localTime / 24);
-		var localDay = PAMacros.JulianDateDay(localJDPlusLocalTime);
-		var integerDay = localDay.Floor();
-		var localMonth = PAMacros.JulianDateMonth(localJDPlusLocalTime);
-		var localYear = PAMacros.JulianDateYear(localJDPlusLocalTime);
+		int dstValue = isDaylightSavings ? 1 : 0;
+		double ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
+		double zoneTime = ut + zoneCorrection;
+		double localTime = zoneTime + dstValue;
+		double localJDPlusLocalTime = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear) + (localTime / 24);
+		double localDay = PAMacros.JulianDateDay(localJDPlusLocalTime);
+		double integerDay = localDay.Floor();
+		int localMonth = PAMacros.JulianDateMonth(localJDPlusLocalTime);
+		int localYear = PAMacros.JulianDateYear(localJDPlusLocalTime);
 
-		var lct = 24 * (localDay - integerDay);
+		double lct = 24 * (localDay - integerDay);
 
 		return (
 			PAMacros.DecimalHoursHour(lct),
@@ -143,19 +143,19 @@ public class PADateTime
 	/// <returns>Tuple (int gstHours, int gstMinutes, double gstSeconds)</returns>
 	public (int gstHours, int gstMinutes, double gstSeconds) UniversalTimeToGreenwichSiderealTime(double utHours, double utMinutes, double utSeconds, double gwDay, int gwMonth, int gwYear)
 	{
-		var jd = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear);
-		var s = jd - 2451545;
-		var t = s / 36525;
-		var t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
-		var t02 = t01 - (24.0 * (t01 / 24).Floor());
-		var ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
-		var a = ut * 1.002737909;
-		var gst1 = t02 + a;
-		var gst2 = gst1 - (24.0 * (gst1 / 24).Floor());
+		double jd = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear);
+		double s = jd - 2451545;
+		double t = s / 36525;
+		double t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
+		double t02 = t01 - (24.0 * (t01 / 24).Floor());
+		double ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
+		double a = ut * 1.002737909;
+		double gst1 = t02 + a;
+		double gst2 = gst1 - (24.0 * (gst1 / 24).Floor());
 
-		var gstHours = PAMacros.DecimalHoursHour(gst2);
-		var gstMinutes = PAMacros.DecimalHoursMinute(gst2);
-		var gstSeconds = PAMacros.DecimalHoursSecond(gst2);
+		int gstHours = PAMacros.DecimalHoursHour(gst2);
+		int gstMinutes = PAMacros.DecimalHoursMinute(gst2);
+		double gstSeconds = PAMacros.DecimalHoursSecond(gst2);
 
 		return (gstHours, gstMinutes, gstSeconds);
 	}
@@ -166,21 +166,21 @@ public class PADateTime
 	/// <returns>Tuple (int utHours, int utMinutes, double utSeconds, PAWarningFlag warningFlag)</returns>
 	public (int utHours, int utMinutes, double utSeconds, PAWarningFlag warningFlag) GreenwichSiderealTimeToUniversalTime(double gstHours, double gstMinutes, double gstSeconds, double gwDay, int gwMonth, int gwYear)
 	{
-		var jd = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear);
-		var s = jd - 2451545;
-		var t = s / 36525;
-		var t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
-		var t02 = t01 - (24 * (t01 / 24).Floor());
-		var gstHours1 = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
+		double jd = PAMacros.CivilDateToJulianDate(gwDay, gwMonth, gwYear);
+		double s = jd - 2451545;
+		double t = s / 36525;
+		double t01 = 6.697374558 + (2400.051336 * t) + (0.000025862 * t * t);
+		double t02 = t01 - (24 * (t01 / 24).Floor());
+		double gstHours1 = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
 
-		var a = gstHours1 - t02;
-		var b = a - (24 * (a / 24).Floor());
-		var ut = b * 0.9972695663;
-		var utHours = PAMacros.DecimalHoursHour(ut);
-		var utMinutes = PAMacros.DecimalHoursMinute(ut);
-		var utSeconds = PAMacros.DecimalHoursSecond(ut);
+		double a = gstHours1 - t02;
+		double b = a - (24 * (a / 24).Floor());
+		double ut = b * 0.9972695663;
+		int utHours = PAMacros.DecimalHoursHour(ut);
+		int utMinutes = PAMacros.DecimalHoursMinute(ut);
+		double utSeconds = PAMacros.DecimalHoursSecond(ut);
 
-		var warningFlag = (ut < 0.065574) ? PAWarningFlag.Warning : PAWarningFlag.OK;
+		PAWarningFlag warningFlag = (ut < 0.065574) ? PAWarningFlag.Warning : PAWarningFlag.OK;
 
 		return (utHours, utMinutes, utSeconds, warningFlag);
 	}
@@ -191,14 +191,14 @@ public class PADateTime
 	/// <returns>Tuple (int lstHours, int lstMinutes, double lstSeconds)</returns>
 	public (int lstHours, int lstMinutes, double lstSeconds) GreenwichSiderealTimeToLocalSiderealTime(double gstHours, double gstMinutes, double gstSeconds, double geographicalLongitude)
 	{
-		var gst = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
-		var offset = geographicalLongitude / 15;
-		var lstHours1 = gst + offset;
-		var lstHours2 = lstHours1 - (24 * (lstHours1 / 24).Floor());
+		double gst = PAMacros.HMStoDH(gstHours, gstMinutes, gstSeconds);
+		double offset = geographicalLongitude / 15;
+		double lstHours1 = gst + offset;
+		double lstHours2 = lstHours1 - (24 * (lstHours1 / 24).Floor());
 
-		var lstHours = PAMacros.DecimalHoursHour(lstHours2);
-		var lstMinutes = PAMacros.DecimalHoursMinute(lstHours2);
-		var lstSeconds = PAMacros.DecimalHoursSecond(lstHours2);
+		int lstHours = PAMacros.DecimalHoursHour(lstHours2);
+		int lstMinutes = PAMacros.DecimalHoursMinute(lstHours2);
+		double lstSeconds = PAMacros.DecimalHoursSecond(lstHours2);
 
 		return (lstHours, lstMinutes, lstSeconds);
 	}
@@ -209,14 +209,14 @@ public class PADateTime
 	/// <returns>Tuple (int gstHours, int gstMinutes, double gstSeconds)</returns>
 	public (int gstHours, int gstMinutes, double gstSeconds) LocalSiderealTimeToGreenwichSiderealTime(double lstHours, double lstMinutes, double lstSeconds, double geographicalLongitude)
 	{
-		var gst = PAMacros.HMStoDH(lstHours, lstMinutes, lstSeconds);
-		var longHours = geographicalLongitude / 15;
-		var gst1 = gst - longHours;
-		var gst2 = gst1 - (24 * (gst1 / 24).Floor());
+		double gst = PAMacros.HMStoDH(lstHours, lstMinutes, lstSeconds);
+		double longHours = geographicalLongitude / 15;
+		double gst1 = gst - longHours;
+		double gst2 = gst1 - (24 * (gst1 / 24).Floor());
 
-		var gstHours = PAMacros.DecimalHoursHour(gst2);
-		var gstMinutes = PAMacros.DecimalHoursMinute(gst2);
-		var gstSeconds = PAMacros.DecimalHoursSecond(gst2);
+		int gstHours = PAMacros.DecimalHoursHour(gst2);
+		int gstMinutes = PAMacros.DecimalHoursMinute(gst2);
+		double gstSeconds = PAMacros.DecimalHoursSecond(gst2);
 
 		return (gstHours, gstMinutes, gstSeconds);
 	}
