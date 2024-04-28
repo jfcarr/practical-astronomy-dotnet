@@ -45,13 +45,13 @@ public class PADateTime
 		if (month <= 2)
 		{
 			month = month - 1;
-			month = (year.IsLeapYear()) ? month * 62 : month * 63;
+			month = year.IsLeapYear() ? month * 62 : month * 63;
 			month = (int)((double)month / 2).Floor();
 		}
 		else
 		{
 			month = (int)(((double)month + 1) * 30.6).Floor();
-			month = (year.IsLeapYear()) ? month - 62 : month - 63;
+			month = year.IsLeapYear() ? month - 62 : month - 63;
 		}
 
 		return month + day;
@@ -86,7 +86,7 @@ public class PADateTime
 	{
 		var lct = CivilTimeToDecimalHours(lctHours, lctMinutes, lctSeconds);
 
-		var daylightSavingsOffset = (isDaylightSavings) ? 1 : 0;
+		var daylightSavingsOffset = isDaylightSavings ? 1 : 0;
 
 		var utInterim = lct - daylightSavingsOffset - zoneCorrection;
 		var gdayInterim = localDay + (utInterim / 24);
@@ -115,7 +115,7 @@ public class PADateTime
 	/// <returns>Tuple (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear)</returns>
 	public (int lctHours, int lctMinutes, int lctSeconds, int localDay, int localMonth, int localYear) UniversalTimeToLocalCivilTime(double utHours, double utMinutes, double utSeconds, bool isDaylightSavings, int zoneCorrection, int gwDay, int gwMonth, int gwYear)
 	{
-		var dstValue = (isDaylightSavings) ? 1 : 0;
+		var dstValue = isDaylightSavings ? 1 : 0;
 		var ut = PAMacros.HMStoDH(utHours, utMinutes, utSeconds);
 		var zoneTime = ut + zoneCorrection;
 		var localTime = zoneTime + dstValue;

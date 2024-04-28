@@ -21,7 +21,7 @@ public class PAComet
 	/// </returns>
 	public (double cometRAHour, double cometRAMin, double cometDecDeg, double cometDecMin, double cometDistEarth) PositionOfEllipticalComet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string cometName)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -35,28 +35,28 @@ public class PAComet
 		var eccentricity = cometInfo.ecc_EccentricityOfOrbit;
 		var trueAnomalyDeg = PAMacros.Degrees(PAMacros.TrueAnomaly(mcRad, eccentricity));
 		var lcDeg = trueAnomalyDeg + cometInfo.peri_LongitudeOfPerihelion;
-		var rAU = cometInfo.axis_SemiMajorAxisOfOrbit * (1 - eccentricity * eccentricity) / (1 + eccentricity * ((trueAnomalyDeg).ToRadians()).Cosine());
+		var rAU = cometInfo.axis_SemiMajorAxisOfOrbit * (1 - eccentricity * eccentricity) / (1 + eccentricity * trueAnomalyDeg.ToRadians().Cosine());
 		var lcNodeRad = (lcDeg - cometInfo.node_LongitudeOfAscendingNode).ToRadians();
-		var psiRad = ((lcNodeRad).Sine() * ((cometInfo.incl_InclinationOfOrbit).ToRadians()).Sine()).ASine();
+		var psiRad = (lcNodeRad.Sine() * cometInfo.incl_InclinationOfOrbit.ToRadians().Sine()).ASine();
 
-		var y = (lcNodeRad).Sine() * ((cometInfo.incl_InclinationOfOrbit).ToRadians()).Cosine();
-		var x = (lcNodeRad).Cosine();
+		var y = lcNodeRad.Sine() * cometInfo.incl_InclinationOfOrbit.ToRadians().Cosine();
+		var x = lcNodeRad.Cosine();
 
 		var ldDeg = PAMacros.Degrees(y.AngleTangent2(x)) + cometInfo.node_LongitudeOfAscendingNode;
-		var rdAU = rAU * (psiRad).Cosine();
+		var rdAU = rAU * psiRad.Cosine();
 
 		var earthLongitudeLeDeg = PAMacros.SunLong(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear) + 180.0;
 		var earthRadiusVectorAU = PAMacros.SunDist(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 
 		var leLdRad = (earthLongitudeLeDeg - ldDeg).ToRadians();
-		var aRad = (rdAU < earthRadiusVectorAU) ? (rdAU * (leLdRad).Sine()).AngleTangent2(earthRadiusVectorAU - rdAU * (leLdRad).Cosine()) : (earthRadiusVectorAU * (-leLdRad).Sine()).AngleTangent2(rdAU - earthRadiusVectorAU * (leLdRad).Cosine());
+		var aRad = (rdAU < earthRadiusVectorAU) ? (rdAU * leLdRad.Sine()).AngleTangent2(earthRadiusVectorAU - rdAU * leLdRad.Cosine()) : (earthRadiusVectorAU * (-leLdRad).Sine()).AngleTangent2(rdAU - earthRadiusVectorAU * leLdRad.Cosine());
 
 		var cometLongDeg1 = (rdAU < earthRadiusVectorAU) ? 180.0 + earthLongitudeLeDeg + PAMacros.Degrees(aRad) : PAMacros.Degrees(aRad) + ldDeg;
 		var cometLongDeg = cometLongDeg1 - 360 * (cometLongDeg1 / 360).Floor();
-		var cometLatDeg = PAMacros.Degrees((rdAU * (psiRad).Tangent() * ((cometLongDeg1 - ldDeg).ToRadians()).Sine() / (earthRadiusVectorAU * (-leLdRad).Sine())).AngleTangent());
+		var cometLatDeg = PAMacros.Degrees((rdAU * psiRad.Tangent() * (cometLongDeg1 - ldDeg).ToRadians().Sine() / (earthRadiusVectorAU * (-leLdRad).Sine())).AngleTangent());
 		var cometRAHours1 = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(cometLongDeg, 0, 0, cometLatDeg, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear));
 		var cometDecDeg1 = PAMacros.EcDec(cometLongDeg, 0, 0, cometLatDeg, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear);
-		var cometDistanceAU = (Math.Pow(earthRadiusVectorAU, 2) + Math.Pow(rAU, 2) - 2.0 * earthRadiusVectorAU * rAU * ((lcDeg - earthLongitudeLeDeg).ToRadians()).Cosine() * (psiRad).Cosine()).SquareRoot();
+		var cometDistanceAU = (Math.Pow(earthRadiusVectorAU, 2) + Math.Pow(rAU, 2) - 2.0 * earthRadiusVectorAU * rAU * (lcDeg - earthLongitudeLeDeg).ToRadians().Cosine() * psiRad.Cosine()).SquareRoot();
 
 		var cometRAHour = PAMacros.DecimalHoursHour(cometRAHours1 + 0.008333);
 		var cometRAMin = PAMacros.DecimalHoursMinute(cometRAHours1 + 0.008333);
@@ -82,7 +82,7 @@ public class PAComet
 	/// <returns></returns>
 	public (double cometRAHour, double cometRAMin, double cometRASec, double cometDecDeg, double cometDecMin, double cometDecSec, double cometDistEarth) PositionOfParabolicComet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string cometName)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);

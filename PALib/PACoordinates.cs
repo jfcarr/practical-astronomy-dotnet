@@ -46,7 +46,7 @@ public class PACoordinates
 	/// <returns>Tuple (hourAngleHours, hourAngleMinutes, hourAngleSeconds)</returns>
 	public (double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds) RightAscensionToHourAngle(double raHours, double raMinutes, double raSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSavings, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 	{
-		var daylightSaving = (isDaylightSavings) ? 1 : 0;
+		var daylightSaving = isDaylightSavings ? 1 : 0;
 
 		var hourAngle = PAMacros.RightAscensionToHourAngle(raHours, raMinutes, raSeconds, lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear, geographicalLongitude);
 
@@ -63,7 +63,7 @@ public class PACoordinates
 	/// <returns>Tuple (rightAscensionHours, rightAscensionMinutes, rightAscensionSeconds)</returns>
 	public (double raHours, double raMinutes, double raSeconds) HourAngleToRightAscension(double hourAngleHours, double hourAngleMinutes, double hourAngleSeconds, double lctHours, double lctMinutes, double lctSeconds, bool isDaylightSaving, int zoneCorrection, double localDay, int localMonth, int localYear, double geographicalLongitude)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var rightAscension = PAMacros.HourAngleToRightAscension(hourAngleHours, hourAngleMinutes, hourAngleSeconds, lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear, geographicalLongitude);
 
@@ -203,11 +203,11 @@ public class PACoordinates
 		var decDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDegrees, decMinutes, decSeconds);
 		var raRad = raDeg.ToRadians();
 		var decRad = decDeg.ToRadians();
-		var sinB = decRad.Cosine() * (27.4).ToRadians().Cosine() * (raRad - (192.25).ToRadians()).Cosine() + decRad.Sine() * (27.4).ToRadians().Sine();
+		var sinB = decRad.Cosine() * 27.4.ToRadians().Cosine() * (raRad - 192.25.ToRadians()).Cosine() + decRad.Sine() * 27.4.ToRadians().Sine();
 		var bRadians = sinB.ASine();
 		var bDeg = PAMacros.Degrees(bRadians);
-		var y = decRad.Sine() - sinB * (27.4).ToRadians().Sine();
-		var x = decRad.Cosine() * (raRad - (192.25).ToRadians()).Sine() * (27.4).ToRadians().Cosine();
+		var y = decRad.Sine() - sinB * 27.4.ToRadians().Sine();
+		var x = decRad.Cosine() * (raRad - 192.25.ToRadians()).Sine() * 27.4.ToRadians().Cosine();
 		var longDeg1 = PAMacros.Degrees(y.AngleTangent2(x)) + 33;
 		var longDeg2 = longDeg1 - 360 * (longDeg1 / 360).Floor();
 
@@ -231,11 +231,11 @@ public class PACoordinates
 		var glatDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(galLatDeg, galLatMin, galLatSec);
 		var glongRad = glongDeg.ToRadians();
 		var glatRad = glatDeg.ToRadians();
-		var sinDec = glatRad.Cosine() * (27.4).ToRadians().Cosine() * (glongRad - (33.0).ToRadians()).Sine() + glatRad.Sine() * (27.4).ToRadians().Sine();
+		var sinDec = glatRad.Cosine() * 27.4.ToRadians().Cosine() * (glongRad - 33.0.ToRadians()).Sine() + glatRad.Sine() * 27.4.ToRadians().Sine();
 		var decRadians = sinDec.ASine();
 		var decDeg = PAMacros.Degrees(decRadians);
-		var y = glatRad.Cosine() * (glongRad - (33.0).ToRadians()).Cosine();
-		var x = glatRad.Sine() * ((27.4).ToRadians()).Cosine() - (glatRad).Cosine() * ((27.4).ToRadians()).Sine() * (glongRad - (33.0).ToRadians()).Sine();
+		var y = glatRad.Cosine() * (glongRad - 33.0.ToRadians()).Cosine();
+		var x = glatRad.Sine() * 27.4.ToRadians().Cosine() - glatRad.Cosine() * 27.4.ToRadians().Sine() * (glongRad - 33.0.ToRadians()).Sine();
 
 		var raDeg1 = PAMacros.Degrees(y.AngleTangent2(x)) + 192.25;
 		var raDeg2 = raDeg1 - 360 * (raDeg1 / 360).Floor();
@@ -294,11 +294,11 @@ public class PACoordinates
 		var geoLatRadians = geogLatDeg.ToRadians();
 		var cosH = -(verticalDisplRadians.Sine() + geoLatRadians.Sine() * decRad.Sine()) / (geoLatRadians.Cosine() * decRad.Cosine());
 		var hHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.Degrees(cosH.ACosine()));
-		var lstRiseHours = (raHours1 - hHours) - 24 * ((raHours1 - hHours) / 24).Floor();
-		var lstSetHours = (raHours1 + hHours) - 24 * ((raHours1 + hHours) / 24).Floor();
-		var aDeg = PAMacros.Degrees((((decRad).Sine() + (verticalDisplRadians).Sine() * (geoLatRadians).Sine()) / ((verticalDisplRadians).Cosine() * (geoLatRadians).Cosine())).ACosine());
+		var lstRiseHours = raHours1 - hHours - 24 * ((raHours1 - hHours) / 24).Floor();
+		var lstSetHours = raHours1 + hHours - 24 * ((raHours1 + hHours) / 24).Floor();
+		var aDeg = PAMacros.Degrees(((decRad.Sine() + verticalDisplRadians.Sine() * geoLatRadians.Sine()) / (verticalDisplRadians.Cosine() * geoLatRadians.Cosine())).ACosine());
 		var azRiseDeg = aDeg - 360 * (aDeg / 360).Floor();
-		var azSetDeg = (360 - aDeg) - 360 * ((360 - aDeg) / 360).Floor();
+		var azSetDeg = 360 - aDeg - 360 * ((360 - aDeg) / 360).Floor();
 		var utRiseHours1 = PAMacros.GreenwichSiderealTimeToUniversalTime(PAMacros.LocalSiderealTimeToGreenwichSiderealTime(lstRiseHours, 0, 0, geogLongDeg), 0, 0, gwDateDay, gwDateMonth, gwDateYear);
 		var utSetHours1 = PAMacros.GreenwichSiderealTimeToUniversalTime(PAMacros.LocalSiderealTimeToGreenwichSiderealTime(lstSetHours, 0, 0, geogLongDeg), 0, 0, gwDateDay, gwDateMonth, gwDateYear);
 		var utRiseAdjustedHours = utRiseHours1 + 0.008333;
@@ -326,15 +326,15 @@ public class PACoordinates
 	/// <returns>Tuple (correctedRAHour, correctedRAMinutes, correctedRASeconds, correctedDecDeg, correctedDecMinutes, correctedDecSeconds)</returns>
 	public (double correctedRAHour, double correctedRAMinutes, double correctedRASeconds, double correctedDecDeg, double correctedDecMinutes, double correctedDecSeconds) CorrectForPrecession(double raHour, double raMinutes, double raSeconds, double decDeg, double decMinutes, double decSeconds, double epoch1Day, int epoch1Month, int epoch1Year, double epoch2Day, int epoch2Month, int epoch2Year)
 	{
-		var ra1Rad = (PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHour, raMinutes, raSeconds))).ToRadians();
-		var dec1Rad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMinutes, decSeconds)).ToRadians();
+		var ra1Rad = PAMacros.DegreeHoursToDecimalDegrees(PAMacros.HMStoDH(raHour, raMinutes, raSeconds)).ToRadians();
+		var dec1Rad = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMinutes, decSeconds).ToRadians();
 		var tCenturies = (PAMacros.CivilDateToJulianDate(epoch1Day, epoch1Month, epoch1Year) - 2415020) / 36525;
 		var mSec = 3.07234 + (0.00186 * tCenturies);
 		var nArcsec = 20.0468 - (0.0085 * tCenturies);
 		var nYears = (PAMacros.CivilDateToJulianDate(epoch2Day, epoch2Month, epoch2Year) - PAMacros.CivilDateToJulianDate(epoch1Day, epoch1Month, epoch1Year)) / 365.25;
-		var s1Hours = ((mSec + (nArcsec * (ra1Rad).Sine() * (dec1Rad).Tangent() / 15)) * nYears) / 3600;
+		var s1Hours = (mSec + (nArcsec * ra1Rad.Sine() * dec1Rad.Tangent() / 15)) * nYears / 3600;
 		var ra2Hours = PAMacros.HMStoDH(raHour, raMinutes, raSeconds) + s1Hours;
-		var s2Deg = (nArcsec * (ra1Rad).Cosine() * nYears) / 3600;
+		var s2Deg = nArcsec * ra1Rad.Cosine() * nYears / 3600;
 		var dec2Deg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(decDeg, decMinutes, decSeconds) + s2Deg;
 
 		var correctedRAHour = PAMacros.DecimalHoursHour(ra2Hours);
@@ -362,7 +362,7 @@ public class PACoordinates
 		var lRad = lDeg2.ToRadians();
 		var bDeg = 5.372617 * tCenturies;
 		var nDeg1 = 259.1833 - 360 * (bDeg - bDeg.Floor());
-		var nDeg2 = nDeg1 - 360 * ((nDeg1 / 360).Floor());
+		var nDeg2 = nDeg1 - 360 * (nDeg1 / 360).Floor();
 		var nRad = nDeg2.ToRadians();
 		var nutInLongArcsec = -17.2 * nRad.Sine() - 1.3 * (2 * lRad).Sine();
 		var nutInOblArcsec = 9.2 * nRad.Cosine() + 0.5 * (2 * lRad).Cosine();
@@ -385,8 +385,8 @@ public class PACoordinates
 		var trueLongDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(trueEclLongDeg, trueEclLongMin, trueEclLongSec);
 		var trueLatDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(trueEclLatDeg, trueEclLatMin, trueEclLatSec);
 		var sunTrueLongDeg = PAMacros.SunLong(utHour, utMinutes, utSeconds, 0, 0, gwDay, gwMonth, gwYear);
-		var dlongArcsec = -20.5 * ((sunTrueLongDeg - trueLongDeg).ToRadians()).Cosine() / ((trueLatDeg).ToRadians()).Cosine();
-		var dlatArcsec = -20.5 * ((sunTrueLongDeg - trueLongDeg).ToRadians()).Sine() * ((trueLatDeg).ToRadians()).Sine();
+		var dlongArcsec = -20.5 * (sunTrueLongDeg - trueLongDeg).ToRadians().Cosine() / trueLatDeg.ToRadians().Cosine();
+		var dlatArcsec = -20.5 * (sunTrueLongDeg - trueLongDeg).ToRadians().Sine() * trueLatDeg.ToRadians().Sine();
 		var apparentLongDeg = trueLongDeg + (dlongArcsec / 3600);
 		var apparentLatDeg = trueLatDeg + (dlatArcsec / 3600);
 
@@ -467,21 +467,21 @@ public class PACoordinates
 		var tCenturies = (julianDateDays - 2415020) / 36525;
 		var longAscNodeDeg = PAMacros.DegreesMinutesSecondsToDecimalDegrees(74, 22, 0) + (84 * tCenturies / 60);
 		var sunLongDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var y = ((longAscNodeDeg - sunLongDeg).ToRadians()).Sine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Cosine();
-		var x = -((longAscNodeDeg - sunLongDeg).ToRadians()).Cosine();
+		var y = (longAscNodeDeg - sunLongDeg).ToRadians().Sine() * PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0).ToRadians().Cosine();
+		var x = -(longAscNodeDeg - sunLongDeg).ToRadians().Cosine();
 		var aDeg = PAMacros.Degrees(y.AngleTangent2(x));
 		var mDeg1 = 360 - (360 * (julianDateDays - 2398220) / 25.38);
 		var mDeg2 = mDeg1 - 360 * (mDeg1 / 360).Floor();
 		var l0Deg1 = mDeg2 + aDeg;
-		var b0Rad = (((sunLongDeg - longAscNodeDeg).ToRadians()).Sine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Sine()).ASine();
-		var theta1Rad = (-((sunLongDeg).ToRadians()).Cosine() * ((PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear)).ToRadians()).Tangent()).AngleTangent();
-		var theta2Rad = (-((longAscNodeDeg - sunLongDeg).ToRadians()).Cosine() * ((PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0)).ToRadians()).Tangent()).AngleTangent();
+		var b0Rad = ((sunLongDeg - longAscNodeDeg).ToRadians().Sine() * PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0).ToRadians().Sine()).ASine();
+		var theta1Rad = (-sunLongDeg.ToRadians().Cosine() * PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear).ToRadians().Tangent()).AngleTangent();
+		var theta2Rad = (-(longAscNodeDeg - sunLongDeg).ToRadians().Cosine() * PAMacros.DegreesMinutesSecondsToDecimalDegrees(7, 15, 0).ToRadians().Tangent()).AngleTangent();
 		var pDeg = PAMacros.Degrees(theta1Rad + theta2Rad);
 		var rho1Deg = helioDisplacementArcmin / 60;
-		var rhoRad = (2 * rho1Deg / PAMacros.SunDia(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ASine() - (rho1Deg).ToRadians();
-		var bRad = ((b0Rad).Sine() * (rhoRad).Cosine() + (b0Rad).Cosine() * (rhoRad).Sine() * ((pDeg - helioPositionAngleDeg).ToRadians()).Cosine()).ASine();
+		var rhoRad = (2 * rho1Deg / PAMacros.SunDia(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ASine() - rho1Deg.ToRadians();
+		var bRad = (b0Rad.Sine() * rhoRad.Cosine() + b0Rad.Cosine() * rhoRad.Sine() * (pDeg - helioPositionAngleDeg).ToRadians().Cosine()).ASine();
 		var bDeg = PAMacros.Degrees(bRad);
-		var lDeg1 = PAMacros.Degrees(((rhoRad).Sine() * ((pDeg - helioPositionAngleDeg).ToRadians()).Sine() / (bRad).Cosine()).ASine()) + l0Deg1;
+		var lDeg1 = PAMacros.Degrees((rhoRad.Sine() * (pDeg - helioPositionAngleDeg).ToRadians().Sine() / bRad.Cosine()).ASine()) + l0Deg1;
 		var lDeg2 = lDeg1 - 360 * (lDeg1 / 360).Floor();
 
 		var helioLongDeg = Math.Round(lDeg2, 2);
@@ -515,19 +515,19 @@ public class PACoordinates
 		var f1 = 93.27191 + 483202.0175 * tCenturies;
 		var f2 = f1 - 360 * (f1 / 360).Floor();
 		var geocentricMoonLongDeg = PAMacros.MoonLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var geocentricMoonLatRad = (PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
-		var inclinationRad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7)).ToRadians();
+		var geocentricMoonLatRad = PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear).ToRadians();
+		var inclinationRad = PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7).ToRadians();
 		var nodeLongRad = (longAscNodeDeg - geocentricMoonLongDeg).ToRadians();
-		var sinBe = -(inclinationRad).Cosine() * (geocentricMoonLatRad).Sine() + (inclinationRad).Sine() * (geocentricMoonLatRad).Cosine() * (nodeLongRad).Sine();
-		var subEarthLatDeg = PAMacros.Degrees((sinBe).ASine());
-		var aRad = (-(geocentricMoonLatRad).Sine() * (inclinationRad).Sine() - (geocentricMoonLatRad).Cosine() * (inclinationRad).Cosine() * (nodeLongRad).Sine()).AngleTangent2((geocentricMoonLatRad).Cosine() * (nodeLongRad).Cosine());
+		var sinBe = -inclinationRad.Cosine() * geocentricMoonLatRad.Sine() + inclinationRad.Sine() * geocentricMoonLatRad.Cosine() * nodeLongRad.Sine();
+		var subEarthLatDeg = PAMacros.Degrees(sinBe.ASine());
+		var aRad = (-geocentricMoonLatRad.Sine() * inclinationRad.Sine() - geocentricMoonLatRad.Cosine() * inclinationRad.Cosine() * nodeLongRad.Sine()).AngleTangent2(geocentricMoonLatRad.Cosine() * nodeLongRad.Cosine());
 		var aDeg = PAMacros.Degrees(aRad);
 		var subEarthLongDeg1 = aDeg - f2;
 		var subEarthLongDeg2 = subEarthLongDeg1 - 360 * (subEarthLongDeg1 / 360).Floor();
 		var subEarthLongDeg3 = (subEarthLongDeg2 > 180) ? subEarthLongDeg2 - 360 : subEarthLongDeg2;
-		var c1Rad = ((nodeLongRad).Cosine() * (inclinationRad).Sine() / ((geocentricMoonLatRad).Cosine() * (inclinationRad).Cosine() + (geocentricMoonLatRad).Sine() * (inclinationRad).Sine() * (nodeLongRad).Sine())).AngleTangent();
-		var obliquityRad = (PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
-		var c2Rad = ((obliquityRad).Sine() * ((geocentricMoonLongDeg).ToRadians()).Cosine() / ((obliquityRad).Sine() * (geocentricMoonLatRad).Sine() * ((geocentricMoonLongDeg).ToRadians()).Sine() - (obliquityRad).Cosine() * (geocentricMoonLatRad).Cosine())).AngleTangent();
+		var c1Rad = (nodeLongRad.Cosine() * inclinationRad.Sine() / (geocentricMoonLatRad.Cosine() * inclinationRad.Cosine() + geocentricMoonLatRad.Sine() * inclinationRad.Sine() * nodeLongRad.Sine())).AngleTangent();
+		var obliquityRad = PAMacros.Obliq(gwdateDay, gwdateMonth, gwdateYear).ToRadians();
+		var c2Rad = (obliquityRad.Sine() * geocentricMoonLongDeg.ToRadians().Cosine() / (obliquityRad.Sine() * geocentricMoonLatRad.Sine() * geocentricMoonLongDeg.ToRadians().Sine() - obliquityRad.Cosine() * geocentricMoonLatRad.Cosine())).AngleTangent();
 		var cDeg = PAMacros.Degrees(c1Rad + c2Rad);
 
 		var subEarthLongitude = Math.Round(subEarthLongDeg3, 2);
@@ -551,15 +551,15 @@ public class PACoordinates
 		var sunGeocentricLongDeg = PAMacros.SunLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
 		var moonEquHorParallaxArcMin = PAMacros.MoonHP(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear) * 60;
 		var sunEarthDistAU = PAMacros.SunDist(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var geocentricMoonLatRad = (PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear)).ToRadians();
+		var geocentricMoonLatRad = PAMacros.MoonLat(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear).ToRadians();
 		var geocentricMoonLongDeg = PAMacros.MoonLong(0, 0, 0, 0, 0, gwdateDay, gwdateMonth, gwdateYear);
-		var adjustedMoonLongDeg = sunGeocentricLongDeg + 180 + (26.4 * (geocentricMoonLatRad).Cosine() * ((sunGeocentricLongDeg - geocentricMoonLongDeg).ToRadians()).Sine() / (moonEquHorParallaxArcMin * sunEarthDistAU));
+		var adjustedMoonLongDeg = sunGeocentricLongDeg + 180 + (26.4 * geocentricMoonLatRad.Cosine() * (sunGeocentricLongDeg - geocentricMoonLongDeg).ToRadians().Sine() / (moonEquHorParallaxArcMin * sunEarthDistAU));
 		var adjustedMoonLatRad = 0.14666 * geocentricMoonLatRad / (moonEquHorParallaxArcMin * sunEarthDistAU);
-		var inclinationRad = (PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7)).ToRadians();
+		var inclinationRad = PAMacros.DegreesMinutesSecondsToDecimalDegrees(1, 32, 32.7).ToRadians();
 		var nodeLongRad = (longAscNodeDeg - adjustedMoonLongDeg).ToRadians();
-		var sinBs = -(inclinationRad).Cosine() * (adjustedMoonLatRad).Sine() + (inclinationRad).Sine() * (adjustedMoonLatRad).Cosine() * (nodeLongRad).Sine();
-		var subSolarLatDeg = PAMacros.Degrees((sinBs).ASine());
-		var aRad = (-(adjustedMoonLatRad).Sine() * (inclinationRad).Sine() - (adjustedMoonLatRad).Cosine() * (inclinationRad).Cosine() * (nodeLongRad).Sine()).AngleTangent2((adjustedMoonLatRad).Cosine() * (nodeLongRad).Cosine());
+		var sinBs = -inclinationRad.Cosine() * adjustedMoonLatRad.Sine() + inclinationRad.Sine() * adjustedMoonLatRad.Cosine() * nodeLongRad.Sine();
+		var subSolarLatDeg = PAMacros.Degrees(sinBs.ASine());
+		var aRad = (-adjustedMoonLatRad.Sine() * inclinationRad.Sine() - adjustedMoonLatRad.Cosine() * inclinationRad.Cosine() * nodeLongRad.Sine()).AngleTangent2(adjustedMoonLatRad.Cosine() * nodeLongRad.Cosine());
 		var aDeg = PAMacros.Degrees(aRad);
 		var subSolarLongDeg1 = aDeg - f2;
 		var subSolarLongDeg2 = subSolarLongDeg1 - 360 * (subSolarLongDeg1 / 360).Floor();

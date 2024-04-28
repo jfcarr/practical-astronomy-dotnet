@@ -21,7 +21,7 @@ public class PAMoon
 	/// </returns>
 	public (double moonRAHour, double moonRAMin, double moonRASec, double moonDecDeg, double moonDecMin, double moonDecSec) ApproximatePositionOfMoon(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var l0 = 91.9293359879052;
 		var p0 = 130.143076320618;
@@ -39,17 +39,17 @@ public class PAMoon
 		var lmDeg = PAMacros.UnwindDeg(13.1763966 * dDays + l0);
 		var mmDeg = PAMacros.UnwindDeg(lmDeg - 0.1114041 * dDays - p0);
 		var nDeg = PAMacros.UnwindDeg(n0 - (0.0529539 * dDays));
-		var evDeg = 1.2739 * ((2.0 * (lmDeg - sunLongDeg) - mmDeg).ToRadians()).Sine();
-		var aeDeg = 0.1858 * (sunMeanAnomalyRad).Sine();
-		var a3Deg = 0.37 * (sunMeanAnomalyRad).Sine();
+		var evDeg = 1.2739 * (2.0 * (lmDeg - sunLongDeg) - mmDeg).ToRadians().Sine();
+		var aeDeg = 0.1858 * sunMeanAnomalyRad.Sine();
+		var a3Deg = 0.37 * sunMeanAnomalyRad.Sine();
 		var mmdDeg = mmDeg + evDeg - aeDeg - a3Deg;
 		var ecDeg = 6.2886 * mmdDeg.ToRadians().Sine();
-		var a4Deg = 0.214 * (2.0 * (mmdDeg).ToRadians()).Sine();
+		var a4Deg = 0.214 * (2.0 * mmdDeg.ToRadians()).Sine();
 		var ldDeg = lmDeg + evDeg + ecDeg - aeDeg + a4Deg;
 		var vDeg = 0.6583 * (2.0 * (ldDeg - sunLongDeg).ToRadians()).Sine();
 		var lddDeg = ldDeg + vDeg;
-		var ndDeg = nDeg - 0.16 * (sunMeanAnomalyRad).Sine();
-		var y = ((lddDeg - ndDeg).ToRadians()).Sine() * i.ToRadians().Cosine();
+		var ndDeg = nDeg - 0.16 * sunMeanAnomalyRad.Sine();
+		var y = (lddDeg - ndDeg).ToRadians().Sine() * i.ToRadians().Cosine();
 		var x = (lddDeg - ndDeg).ToRadians().Cosine();
 
 		var moonLongDeg = PAMacros.UnwindDeg(PAMacros.Degrees(y.AngleTangent2(x)) + ndDeg);
@@ -82,7 +82,7 @@ public class PAMoon
 	/// </returns>
 	public (double moonRAHour, double moonRAMin, double moonRASec, double moonDecDeg, double moonDecMin, double moonDecSec, double earthMoonDistKM, double moonHorParallaxDeg) PrecisePositionOfMoon(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var gdateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var gdateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -117,7 +117,7 @@ public class PAMoon
 	/// </returns>
 	public (double moonPhase, double paBrightLimbDeg) MoonPhase(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, PAAccuracyLevel accuracyLevel)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var gdateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var gdateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -127,15 +127,15 @@ public class PAMoon
 		var moonResult = PAMacros.MoonLongLatHP(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var dRad = (moonResult.moonLongDeg - sunLongDeg).ToRadians();
 
-		var moonPhase1 = (accuracyLevel == PAAccuracyLevel.Precise) ? PAMacros.MoonPhase(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear) : (1.0 - (dRad).Cosine()) / 2.0;
+		var moonPhase1 = (accuracyLevel == PAAccuracyLevel.Precise) ? PAMacros.MoonPhase(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear) : (1.0 - dRad.Cosine()) / 2.0;
 
-		var sunRARad = (PAMacros.EcRA(sunLongDeg, 0, 0, 0, 0, 0, gdateDay, gdateMonth, gdateYear)).ToRadians();
-		var moonRARad = (PAMacros.EcRA(moonResult.moonLongDeg, 0, 0, moonResult.moonLatDeg, 0, 0, gdateDay, gdateMonth, gdateYear)).ToRadians();
-		var sunDecRad = (PAMacros.EcDec(sunLongDeg, 0, 0, 0, 0, 0, gdateDay, gdateMonth, gdateYear)).ToRadians();
-		var moonDecRad = (PAMacros.EcDec(moonResult.moonLongDeg, 0, 0, moonResult.moonLatDeg, 0, 0, gdateDay, gdateMonth, gdateYear)).ToRadians();
+		var sunRARad = PAMacros.EcRA(sunLongDeg, 0, 0, 0, 0, 0, gdateDay, gdateMonth, gdateYear).ToRadians();
+		var moonRARad = PAMacros.EcRA(moonResult.moonLongDeg, 0, 0, moonResult.moonLatDeg, 0, 0, gdateDay, gdateMonth, gdateYear).ToRadians();
+		var sunDecRad = PAMacros.EcDec(sunLongDeg, 0, 0, 0, 0, 0, gdateDay, gdateMonth, gdateYear).ToRadians();
+		var moonDecRad = PAMacros.EcDec(moonResult.moonLongDeg, 0, 0, moonResult.moonLatDeg, 0, 0, gdateDay, gdateMonth, gdateYear).ToRadians();
 
-		var y = (sunDecRad).Cosine() * (sunRARad - moonRARad).Sine();
-		var x = (moonDecRad).Cosine() * (sunDecRad).Sine() - (moonDecRad).Sine() * (sunDecRad).Cosine() * (sunRARad - moonRARad).Cosine();
+		var y = sunDecRad.Cosine() * (sunRARad - moonRARad).Sine();
+		var x = moonDecRad.Cosine() * sunDecRad.Sine() - moonDecRad.Sine() * sunDecRad.Cosine() * (sunRARad - moonRARad).Cosine();
 
 		var chiDeg = PAMacros.Degrees(y.AngleTangent2(x));
 
@@ -162,7 +162,7 @@ public class PAMoon
 	/// </returns>
 	public (double nmLocalTimeHour, double nmLocalTimeMin, double nmLocalDateDay, int nmLocalDateMonth, int nmLocalDateYear, double fmLocalTimeHour, double fmLocalTimeMin, double fmLocalDateDay, int fmLocalDateMonth, int fmLocalDateYear) TimesOfNewMoonAndFullMoon(bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var jdOfNewMoonDays = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var jdOfFullMoonDays = PAMacros.FullMoon(3, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -209,7 +209,7 @@ public class PAMoon
 	/// </returns>
 	public (double earthMoonDist, double angDiameterDeg, double angDiameterMin, double horParallaxDeg, double horParallaxMin, double horParallaxSec) MoonDistAngDiamHorParallax(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var moonDistance = PAMacros.MoonDist(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var moonAngularDiameter = PAMacros.MoonSize(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -244,7 +244,7 @@ public class PAMoon
 	/// </returns>
 	public (double mrLTHour, double mrLTMin, double mrLocalDateDay, int mrLocalDateMonth, int mrLocalDateYear, double mrAzimuthDeg, double msLTHour, double msLTMin, double msLocalDateDay, int msLocalDateMonth, int msLocalDateYear, double msAzimuthDeg) MoonriseAndMoonset(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours, double geogLongDeg, double geogLatDeg)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var localTimeOfMoonriseHours = PAMacros.MoonRiseLCT(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);
 		var moonRiseLCResult = PAMacros.MoonRiseLcDMY(localDateDay, localDateMonth, localDateYear, daylightSaving, zoneCorrectionHours, geogLongDeg, geogLatDeg);

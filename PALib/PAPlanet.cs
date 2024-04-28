@@ -14,7 +14,7 @@ public class PAPlanet
 	/// </summary>
 	public (double planetRAHour, double planetRAMin, double planetRASec, double planetDecDeg, double planetDecMin, double planetDecSec) ApproximatePositionOfPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var planetInfo = PlanetInfo.GetPlanetInfo(planetName);
 
@@ -42,7 +42,7 @@ public class PAPlanet
 		var earthTrueAnomalyDeg = leDeg2 - earthInfo.peri_LongitudePerihelion;
 		var rAU2 = earthInfo.axis_AxisOrbit * (1 - Math.Pow(earthInfo.ecc_EccentricityOrbit, 2)) / (1 + earthInfo.ecc_EccentricityOrbit * earthTrueAnomalyDeg.ToRadians().Cosine());
 		var lpNodeRad = (lpDeg2 - planetInfo.node_LongitudeAscendingNode).ToRadians();
-		var psiRad = ((lpNodeRad).Sine() * planetInfo.incl_OrbitalInclination.ToRadians().Sine()).ASine();
+		var psiRad = (lpNodeRad.Sine() * planetInfo.incl_OrbitalInclination.ToRadians().Sine()).ASine();
 		var y = lpNodeRad.Sine() * planetInfo.incl_OrbitalInclination.ToRadians().Cosine();
 		var x = lpNodeRad.Cosine();
 		var ldDeg = PAMacros.Degrees(y.AngleTangent2(x)) + planetInfo.node_LongitudeAscendingNode;
@@ -53,7 +53,7 @@ public class PAPlanet
 		var aRad = (rdAU < 1) ? atan2Type1 : atan2Type2;
 		var lamdaDeg1 = (rdAU < 1) ? 180 + leDeg2 + PAMacros.Degrees(aRad) : PAMacros.Degrees(aRad) + ldDeg;
 		var lamdaDeg2 = lamdaDeg1 - 360 * (lamdaDeg1 / 360).Floor();
-		var betaDeg = PAMacros.Degrees((rdAU * psiRad.Tangent() * ((lamdaDeg2 - ldDeg).ToRadians()).Sine() / (rAU2 * (-leLdRad).Sine())).AngleTangent());
+		var betaDeg = PAMacros.Degrees((rdAU * psiRad.Tangent() * (lamdaDeg2 - ldDeg).ToRadians().Sine() / (rAU2 * (-leLdRad).Sine())).AngleTangent());
 		var raHours = PAMacros.DecimalDegreesToDegreeHours(PAMacros.EcRA(lamdaDeg2, 0, 0, betaDeg, 0, 0, gdateDay, gdateMonth, gdateYear));
 		var decDeg = PAMacros.EcDec(lamdaDeg2, 0, 0, betaDeg, 0, 0, gdateDay, gdateMonth, gdateYear);
 
@@ -72,7 +72,7 @@ public class PAPlanet
 	/// </summary>
 	public (double planetRAHour, double planetRAMin, double planetRASec, double planetDecDeg, double planetDecMin, double planetDecSec) PrecisePositionOfPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var coordinateResults = PAMacros.PlanetCoordinates(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear, planetName);
 
@@ -104,7 +104,7 @@ public class PAPlanet
 	/// </returns>
 	public (double distanceAU, double angDiaArcsec, double phase, double lightTimeHour, double lightTimeMinutes, double lightTimeSeconds, double posAngleBrightLimbDeg, double approximateMagnitude) VisualAspectsOfAPlanet(double lctHour, double lctMin, double lctSec, bool isDaylightSaving, int zoneCorrectionHours, double localDateDay, int localDateMonth, int localDateYear, string planetName)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var greenwichDateDay = PAMacros.LocalCivilTimeGreenwichDay(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var greenwichDateMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
@@ -112,24 +112,24 @@ public class PAPlanet
 
 		var planetCoordInfo = PAMacros.PlanetCoordinates(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear, planetName);
 
-		var planetRARad = (PAMacros.EcRA(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear)).ToRadians();
-		var planetDecRad = (PAMacros.EcDec(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear)).ToRadians();
+		var planetRARad = PAMacros.EcRA(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear).ToRadians();
+		var planetDecRad = PAMacros.EcDec(planetCoordInfo.planetLongitude, 0, 0, planetCoordInfo.planetLatitude, 0, 0, localDateDay, localDateMonth, localDateYear).ToRadians();
 
 		var lightTravelTimeHours = planetCoordInfo.planetDistanceAU * 0.1386;
 		var planetInfo = PlanetInfo.GetPlanetInfo(planetName);
 		var angularDiameterArcsec = planetInfo.theta0_AngularDiameter / planetCoordInfo.planetDistanceAU;
-		var phase1 = 0.5 * (1.0 + ((planetCoordInfo.planetLongitude - planetCoordInfo.planetHLong1).ToRadians()).Cosine());
+		var phase1 = 0.5 * (1.0 + (planetCoordInfo.planetLongitude - planetCoordInfo.planetHLong1).ToRadians().Cosine());
 
 		var sunEclLongDeg = PAMacros.SunLong(lctHour, lctMin, lctSec, daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
-		var sunRARad = (PAMacros.EcRA(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear)).ToRadians();
-		var sunDecRad = (PAMacros.EcDec(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear)).ToRadians();
+		var sunRARad = PAMacros.EcRA(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear).ToRadians();
+		var sunDecRad = PAMacros.EcDec(sunEclLongDeg, 0, 0, 0, 0, 0, greenwichDateDay, greenwichDateMonth, greenwichDateYear).ToRadians();
 
-		var y = (sunDecRad).Cosine() * (sunRARad - planetRARad).Sine();
-		var x = (planetDecRad).Cosine() * (sunDecRad).Sine() - (planetDecRad).Sine() * (sunDecRad).Cosine() * (sunRARad - planetRARad).Cosine();
+		var y = sunDecRad.Cosine() * (sunRARad - planetRARad).Sine();
+		var x = planetDecRad.Cosine() * sunDecRad.Sine() - planetDecRad.Sine() * sunDecRad.Cosine() * (sunRARad - planetRARad).Cosine();
 
 		var chiDeg = PAMacros.Degrees(y.AngleTangent2(x));
 		var radiusVectorAU = planetCoordInfo.planetRVect;
-		var approximateMagnitude1 = 5.0 * (radiusVectorAU * planetCoordInfo.planetDistanceAU / (phase1).SquareRoot()).Log10() + planetInfo.v0_VisualMagnitude;
+		var approximateMagnitude1 = 5.0 * (radiusVectorAU * planetCoordInfo.planetDistanceAU / phase1.SquareRoot()).Log10() + planetInfo.v0_VisualMagnitude;
 
 		var distanceAU = Math.Round(planetCoordInfo.planetDistanceAU, 5);
 		var angDiaArcsec = Math.Round(angularDiameterArcsec, 1);

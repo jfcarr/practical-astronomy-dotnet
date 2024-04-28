@@ -94,7 +94,7 @@ public class PASun
 	/// </returns>
 	public (double sunDistKm, double sunAngSizeDeg, double sunAngSizeMin, double sunAngSizeSec) SunDistanceAndAngularSize(double lctHours, double lctMinutes, double lctSeconds, double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var gDay = PAMacros.LocalCivilTimeGreenwichDay(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
 		var gMonth = PAMacros.LocalCivilTimeGreenwichMonth(lctHours, lctMinutes, lctSeconds, daylightSaving, zoneCorrection, localDay, localMonth, localYear);
@@ -128,7 +128,7 @@ public class PASun
 	/// </returns>
 	public (double localSunriseHour, double localSunriseMinute, double localSunsetHour, double localSunsetMinute, double azimuthOfSunriseDeg, double azimuthOfSunsetDeg, string status) SunriseAndSunset(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var localSunriseHours = PAMacros.SunriseLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 		var localSunsetHours = PAMacros.SunsetLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
@@ -141,14 +141,14 @@ public class PASun
 		var azimuthOfSunriseDeg1 = PAMacros.SunriseAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 		var azimuthOfSunsetDeg1 = PAMacros.SunsetAZ(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg);
 
-		var localSunriseHour = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedSunriseHours) : 0;
-		var localSunriseMinute = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedSunriseHours) : 0;
+		var localSunriseHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunriseHours) : 0;
+		var localSunriseMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunriseHours) : 0;
 
-		var localSunsetHour = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedSunsetHours) : 0;
-		var localSunsetMinute = (sunRiseSetStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedSunsetHours) : 0;
+		var localSunsetHour = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedSunsetHours) : 0;
+		var localSunsetMinute = sunRiseSetStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedSunsetHours) : 0;
 
-		var azimuthOfSunriseDeg = (sunRiseSetStatus.Equals("OK")) ? Math.Round(azimuthOfSunriseDeg1, 2) : 0;
-		var azimuthOfSunsetDeg = (sunRiseSetStatus.Equals("OK")) ? Math.Round(azimuthOfSunsetDeg1, 2) : 0;
+		var azimuthOfSunriseDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunriseDeg1, 2) : 0;
+		var azimuthOfSunsetDeg = sunRiseSetStatus.Equals("OK") ? Math.Round(azimuthOfSunsetDeg1, 2) : 0;
 
 		var status = sunRiseSetStatus;
 
@@ -175,7 +175,7 @@ public class PASun
 	/// </returns>
 	public (double amTwilightBeginsHour, double amTwilightBeginsMin, double pmTwilightEndsHour, double pmTwilightEndsMin, string status) MorningAndEveningTwilight(double localDay, int localMonth, int localYear, bool isDaylightSaving, int zoneCorrection, double geographicalLongDeg, double geographicalLatDeg, PATwilightType twilightType)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var startOfAMTwilightHours = PAMacros.TwilightAMLCT(localDay, localMonth, localYear, daylightSaving, zoneCorrection, geographicalLongDeg, geographicalLatDeg, twilightType);
 
@@ -186,11 +186,11 @@ public class PASun
 		var adjustedAMStartTime = startOfAMTwilightHours + 0.008333;
 		var adjustedPMStartTime = endOfPMTwilightHours + 0.008333;
 
-		double amTwilightBeginsHour = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedAMStartTime) : -99;
-		double amTwilightBeginsMin = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedAMStartTime) : -99;
+		double amTwilightBeginsHour = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedAMStartTime) : -99;
+		double amTwilightBeginsMin = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedAMStartTime) : -99;
 
-		double pmTwilightEndsHour = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursHour(adjustedPMStartTime) : -99;
-		double pmTwilightEndsMin = (twilightStatus.Equals("OK")) ? PAMacros.DecimalHoursMinute(adjustedPMStartTime) : -99;
+		double pmTwilightEndsHour = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursHour(adjustedPMStartTime) : -99;
+		double pmTwilightEndsMin = twilightStatus.Equals("OK") ? PAMacros.DecimalHoursMinute(adjustedPMStartTime) : -99;
 
 		var status = twilightStatus;
 

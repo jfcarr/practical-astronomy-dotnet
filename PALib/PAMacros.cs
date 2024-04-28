@@ -43,7 +43,7 @@ public static class PAMacros
 		var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 		var e = (c == 60) ? b + 60 : b;
 
-		return (decimalHours < 0) ? (int)-((e / 3600).Floor()) : (int)(e / 3600).Floor();
+		return (decimalHours < 0) ? (int)-(e / 3600).Floor() : (int)(e / 3600).Floor();
 	}
 
 	/// <summary>
@@ -119,7 +119,7 @@ public static class PAMacros
 			}
 		}
 
-		var c = (y < 0) ? (((365.25 * y) - 0.75)).Floor() : (365.25 * y).Floor();
+		var c = (y < 0) ? ((365.25 * y) - 0.75).Floor() : (365.25 * y).Floor();
 		var d = (30.6001 * (m + 1.0)).Floor();
 
 		return b + c + d + fDay + 1720994.5;
@@ -478,7 +478,7 @@ public static class PAMacros
 		var c = Math.Round(b - 60 * (b / 60).Floor(), 2);
 		var e = (c == 60) ? 60 : b;
 
-		return (decimalDegrees < 0) ? -((e / 3600).Floor()) : (e / 3600).Floor();
+		return (decimalDegrees < 0) ? -(e / 3600).Floor() : (e / 3600).Floor();
 	}
 
 	/// <summary>
@@ -636,9 +636,9 @@ public static class PAMacros
 		var n2 = 2.0 * n1;
 
 		var dp = (-17.2327 - 0.01737 * t) * n1.Sine();
-		dp = dp + (-1.2729 - 0.00013 * t) * (l2).Sine() + 0.2088 * (n2).Sine();
-		dp = dp - 0.2037 * (d2).Sine() + (0.1261 - 0.00031 * t) * (m1).Sine();
-		dp = dp + 0.0675 * (m2).Sine() - (0.0497 - 0.00012 * t) * (l2 + m1).Sine();
+		dp = dp + (-1.2729 - 0.00013 * t) * l2.Sine() + 0.2088 * n2.Sine();
+		dp = dp - 0.2037 * d2.Sine() + (0.1261 - 0.00031 * t) * m1.Sine();
+		dp = dp + 0.0675 * m2.Sine() - (0.0497 - 0.00012 * t) * (l2 + m1).Sine();
 		dp = dp - 0.0342 * (d2 - n1).Sine() - 0.0261 * (d2 + m2).Sine();
 		dp = dp + 0.0214 * (l2 - m1).Sine() - 0.0149 * (l2 - d2 + m2).Sine();
 		dp = dp + 0.0124 * (l2 - n1).Sine() + 0.0114 * (d2 - m2).Sine();
@@ -827,12 +827,12 @@ public static class PAMacros
 
 		while (1 == 1)
 		{
-			var d = ae - (ec * (ae).Sine()) - m;
+			var d = ae - (ec * ae.Sine()) - m;
 			if (Math.Abs(d) < 0.000001)
 			{
 				break;
 			}
-			d = d / (1.0 - (ec * (ae).Cosine()));
+			d = d / (1.0 - (ec * ae.Cosine()));
 			ae = ae - d;
 		}
 		var a = ((1 + ec) / (1 - ec)).SquareRoot() * (ae / 2).Tangent();
@@ -855,7 +855,7 @@ public static class PAMacros
 
 		while (1 == 1)
 		{
-			var d = ae - (ec * (ae).Sine()) - m;
+			var d = ae - (ec * ae.Sine()) - m;
 
 			if (Math.Abs(d) < 0.000001)
 			{
@@ -935,7 +935,7 @@ public static class PAMacros
 			return (-(a / b) * d).ToRadians();
 		}
 
-		return -d * 0.00007888888 * pr / ((273.0 + tr) * (y).Tangent());
+		return -d * 0.00007888888 * pr / ((273.0 + tr) * y.Tangent());
 	}
 
 	/// <summary>
@@ -962,12 +962,12 @@ public static class PAMacros
 
 		var rp = 1.0 / hp.ToRadians().Sine();
 
-		var x = (DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs))).ToRadians();
+		var x = DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs)).ToRadians();
 		var x1 = x;
-		var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var y = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var y1 = y;
 
-		var d = (sw.Equals(PACoordinateType.True)) ? 1.0 : -1.0;
+		var d = sw.Equals(PACoordinateType.True) ? 1.0 : -1.0;
 
 		if (d == 1)
 		{
@@ -1014,7 +1014,7 @@ public static class PAMacros
 		var sy = y.Sine();
 		var cy = y.Cosine();
 
-		var aa = (rc * x.Sine()) / ((rp * cy) - (rc * cx));
+		var aa = rc * x.Sine() / ((rp * cy) - (rc * cx));
 
 		var dx = aa.AngleTangent();
 		var p = x + dx;
@@ -1055,13 +1055,13 @@ public static class PAMacros
 
 		var rp = 1.0 / hp.ToRadians().Sine();
 
-		var x = (DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs))).ToRadians();
+		var x = DegreeHoursToDecimalDegrees(HMStoDH(hh, hm, hs)).ToRadians();
 		var x1 = x;
 
-		var y = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var y = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var y1 = y;
 
-		var d = (sw.Equals(PACoordinateType.True)) ? 1.0 : -1.0;
+		var d = sw.Equals(PACoordinateType.True) ? 1.0 : -1.0;
 
 		if (d == 1)
 		{
@@ -1107,7 +1107,7 @@ public static class PAMacros
 		var sy = y.Sine();
 		var cy = y.Cosine();
 
-		var aa = (rc * x.Sine()) / ((rp * cy) - (rc * cx));
+		var aa = rc * x.Sine() / ((rp * cy) - (rc * cx));
 		var dx = aa.AngleTangent();
 		var p = x + dx;
 		var cp = p.Cosine();
@@ -1175,7 +1175,7 @@ public static class PAMacros
 		b = 360 * (a - a.Floor());
 		var h1 = (353.4 + b).ToRadians();
 
-		var d3 = (0.00000543 * a1.Sine() + 0.00001575 * b1.Sine()) + (0.00001627 * c1.Sine() + 0.00003076 * d1.Cosine()) + (0.00000927 * h1.Sine());
+		var d3 = 0.00000543 * a1.Sine() + 0.00001575 * b1.Sine() + (0.00001627 * c1.Sine() + 0.00003076 * d1.Cosine()) + (0.00000927 * h1.Sine());
 
 		return 1.0000002 * (1 - ec * ae.Cosine()) + d3;
 	}
@@ -1208,12 +1208,12 @@ public static class PAMacros
 		m4 = q / m4;
 		m5 = q / m5;
 		m6 = q / m6;
-		m1 = 360 * (m1 - (m1).Floor());
-		m2 = 360 * (m2 - (m2).Floor());
-		m3 = 360 * (m3 - (m3).Floor());
-		m4 = 360 * (m4 - (m4).Floor());
-		m5 = 360 * (m5 - (m5).Floor());
-		m6 = 360 * (m6 - (m6).Floor());
+		m1 = 360 * (m1 - m1.Floor());
+		m2 = 360 * (m2 - m2.Floor());
+		m3 = 360 * (m3 - m3.Floor());
+		m4 = 360 * (m4 - m4.Floor());
+		m5 = 360 * (m5 - m5.Floor());
+		m6 = 360 * (m6 - m6.Floor());
 
 		var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
 		var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
@@ -1223,9 +1223,9 @@ public static class PAMacros
 		var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
 		var a = (51.2 + 20.2 * t).ToRadians();
 		var s1 = a.Sine();
-		var s2 = ((na).ToRadians()).Sine();
+		var s2 = na.ToRadians().Sine();
 		var b = 346.56 + (132.87 - 0.0091731 * t) * t;
-		var s3 = 0.003964 * ((b).ToRadians()).Sine();
+		var s3 = 0.003964 * b.ToRadians().Sine();
 		var c = (na + 275.05 - 2.3 * t).ToRadians();
 		var s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
@@ -1235,19 +1235,19 @@ public static class PAMacros
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
 		var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
 		var e2 = e * e;
-		ml = (ml).ToRadians();
+		ml = ml.ToRadians();
 		ms = ms.ToRadians();
 		me1 = me1.ToRadians();
 		mf = mf.ToRadians();
 		md = md.ToRadians();
 
-		var l = 6.28875 * (md).Sine() + 1.274018 * (2.0 * me1 - md).Sine();
+		var l = 6.28875 * md.Sine() + 1.274018 * (2.0 * me1 - md).Sine();
 		l = l + 0.658309 * (2.0 * me1).Sine() + 0.213616 * (2.0 * md).Sine();
-		l = l - e * 0.185596 * (ms).Sine() - 0.114336 * (2.0 * mf).Sine();
+		l = l - e * 0.185596 * ms.Sine() - 0.114336 * (2.0 * mf).Sine();
 		l = l + 0.058793 * (2.0 * (me1 - md)).Sine();
 		l = l + 0.057212 * e * (2.0 * me1 - ms - md).Sine() + 0.05332 * (2.0 * me1 + md).Sine();
 		l = l + 0.045874 * e * (2.0 * me1 - ms).Sine() + 0.041024 * e * (md - ms).Sine();
-		l = l - 0.034718 * (me1).Sine() - e * 0.030465 * (ms + md).Sine();
+		l = l - 0.034718 * me1.Sine() - e * 0.030465 * (ms + md).Sine();
 		l = l + 0.015326 * (2.0 * (me1 - mf)).Sine() - 0.012528 * (2.0 * mf + md).Sine();
 		l = l - 0.01098 * (2.0 * mf - md).Sine() + 0.010674 * (4.0 * me1 - md).Sine();
 		l = l + 0.010034 * (3.0 * md).Sine() + 0.008548 * (4.0 * me1 - 2.0 * md).Sine();
@@ -1302,12 +1302,12 @@ public static class PAMacros
 		m4 = q / m4;
 		m5 = q / m5;
 		m6 = q / m6;
-		m1 = 360 * (m1 - (m1).Floor());
-		m2 = 360 * (m2 - (m2).Floor());
-		m3 = 360 * (m3 - (m3).Floor());
-		m4 = 360 * (m4 - (m4).Floor());
-		m5 = 360 * (m5 - (m5).Floor());
-		m6 = 360 * (m6 - (m6).Floor());
+		m1 = 360 * (m1 - m1.Floor());
+		m2 = 360 * (m2 - m2.Floor());
+		m3 = 360 * (m3 - m3.Floor());
+		m4 = 360 * (m4 - m4.Floor());
+		m5 = 360 * (m5 - m5.Floor());
+		m6 = 360 * (m6 - m6.Floor());
 
 		var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
 		var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
@@ -1316,12 +1316,12 @@ public static class PAMacros
 		var mf = 11.250889 + m5 - (0.003211 + 0.0000003 * t) * t2;
 		var na = 259.183275 - m6 + (0.002078 + 0.0000022 * t) * t2;
 		var a = (51.2 + 20.2 * t).ToRadians();
-		var s1 = (a).Sine();
+		var s1 = a.Sine();
 		var s2 = na.ToRadians().Sine();
 		var b = 346.56 + (132.87 - 0.0091731 * t) * t;
 		var s3 = 0.003964 * b.ToRadians().Sine();
 		var c = (na + 275.05 - 2.3 * t).ToRadians();
-		var s4 = (c).Sine();
+		var s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
 		ms = ms - 0.001778 * s1;
 		md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
@@ -1329,13 +1329,13 @@ public static class PAMacros
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
 		var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
 		var e2 = e * e;
-		ms = (ms).ToRadians();
-		na = (na).ToRadians();
-		me1 = (me1).ToRadians();
-		mf = (mf).ToRadians();
-		md = (md).ToRadians();
+		ms = ms.ToRadians();
+		na = na.ToRadians();
+		me1 = me1.ToRadians();
+		mf = mf.ToRadians();
+		md = md.ToRadians();
 
-		var g = 5.128189 * (mf).Sine() + 0.280606 * (md + mf).Sine();
+		var g = 5.128189 * mf.Sine() + 0.280606 * (md + mf).Sine();
 		g = g + 0.277693 * (md - mf).Sine() + 0.173238 * (2.0 * me1 - mf).Sine();
 		g = g + 0.055413 * (2.0 * me1 + mf - md).Sine() + 0.046272 * (2.0 * me1 - mf - md).Sine();
 		g = g + 0.032573 * (2.0 * me1 + mf).Sine() + 0.017198 * (2.0 * md + mf).Sine();
@@ -1360,9 +1360,9 @@ public static class PAMacros
 		g = g - e * 0.000353 * (ms + mf + 2.0 * me1).Sine() + 0.000331 * (mf + 4.0 * me1).Sine();
 		g = g + e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
 		g = g + e2 * 0.000306 * (2.0 * (me1 - ms) - mf).Sine() - 0.000283 * (md + 3.0 * mf).Sine();
-		var w1 = 0.0004664 * (na).Cosine();
-		var w2 = 0.0000754 * (c).Cosine();
-		var bm = (g).ToRadians() * (1.0 - w1 - w2);
+		var w1 = 0.0004664 * na.Cosine();
+		var w2 = 0.0000754 * c.Cosine();
+		var bm = g.ToRadians() * (1.0 - w1 - w2);
 
 		return Degrees(bm);
 	}
@@ -1395,12 +1395,12 @@ public static class PAMacros
 		m4 = q / m4;
 		m5 = q / m5;
 		m6 = q / m6;
-		m1 = 360 * (m1 - (m1).Floor());
-		m2 = 360 * (m2 - (m2).Floor());
-		m3 = 360 * (m3 - (m3).Floor());
-		m4 = 360 * (m4 - (m4).Floor());
-		m5 = 360 * (m5 - (m5).Floor());
-		m6 = 360 * (m6 - (m6).Floor());
+		m1 = 360 * (m1 - m1.Floor());
+		m2 = 360 * (m2 - m2.Floor());
+		m3 = 360 * (m3 - m3.Floor());
+		m4 = 360 * (m4 - m4.Floor());
+		m5 = 360 * (m5 - m5.Floor());
+		m6 = 360 * (m6 - m6.Floor());
 
 		var ml = 270.434164 + m1 - (0.001133 - 0.0000019 * t) * t2;
 		var ms = 358.475833 + m2 - (0.00015 + 0.0000033 * t) * t2;
@@ -1422,19 +1422,19 @@ public static class PAMacros
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
 		var e = 1.0 - (0.002495 + 0.00000752 * t) * t;
 		var e2 = e * e;
-		ms = (ms).ToRadians();
-		me1 = (me1).ToRadians();
-		mf = (mf).ToRadians();
-		md = (md).ToRadians();
+		ms = ms.ToRadians();
+		me1 = me1.ToRadians();
+		mf = mf.ToRadians();
+		md = md.ToRadians();
 
-		var pm = 0.950724 + 0.051818 * (md).Cosine() + 0.009531 * (2.0 * me1 - md).Cosine();
+		var pm = 0.950724 + 0.051818 * md.Cosine() + 0.009531 * (2.0 * me1 - md).Cosine();
 		pm = pm + 0.007843 * (2.0 * me1).Cosine() + 0.002824 * (2.0 * md).Cosine();
 		pm = pm + 0.000857 * (2.0 * me1 + md).Cosine() + e * 0.000533 * (2.0 * me1 - ms).Cosine();
 		pm = pm + e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
-		pm = pm + e * 0.00032 * (md - ms).Cosine() - 0.000271 * (me1).Cosine();
+		pm = pm + e * 0.00032 * (md - ms).Cosine() - 0.000271 * me1.Cosine();
 		pm = pm - e * 0.000264 * (ms + md).Cosine() - 0.000198 * (2.0 * mf - md).Cosine();
 		pm = pm + 0.000173 * (3.0 * md).Cosine() + 0.000167 * (4.0 * me1 - md).Cosine();
-		pm = pm - e * 0.000111 * (ms).Cosine() + 0.000103 * (4.0 * me1 - 2.0 * md).Cosine();
+		pm = pm - e * 0.000111 * ms.Cosine() + 0.000103 * (4.0 * me1 - 2.0 * md).Cosine();
 		pm = pm - 0.000084 * (2.0 * md - 2.0 * me1).Cosine() - e * 0.000083 * (2.0 * me1 + ms).Cosine();
 		pm = pm + 0.000079 * (2.0 * me1 + 2.0 * md).Cosine() + 0.000072 * (4.0 * me1).Cosine();
 		pm = pm + e * 0.000064 * (2.0 * me1 - ms + md).Cosine() - e * 0.000063 * (2.0 * me1 + ms - md).Cosine();
@@ -1455,7 +1455,7 @@ public static class PAMacros
 	/// </remarks>
 	public static double MoonDist(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 	{
-		var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+		var hp = MoonHP(lh, lm, ls, ds, zc, dy, mn, yr).ToRadians();
 		var r = 6378.14 / hp.Sine();
 
 		return r;
@@ -1469,7 +1469,7 @@ public static class PAMacros
 	/// </remarks>
 	public static double MoonSize(double lh, double lm, double ls, int ds, int zc, double dy, int mn, int yr)
 	{
-		var hp = (MoonHP(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+		var hp = MoonHP(lh, lm, ls, ds, zc, dy, mn, yr).ToRadians();
 		var r = 6378.14 / hp.Sine();
 		var th = 384401.0 * 0.5181 / r;
 
@@ -1550,9 +1550,9 @@ public static class PAMacros
 	/// </remarks>
 	public static double EcDec(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
 	{
-		var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
-		var b = (DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs)).ToRadians();
-		var c = (Obliq(gd, gm, gy)).ToRadians();
+		var a = DegreesMinutesSecondsToDecimalDegrees(eld, elm, els).ToRadians();
+		var b = DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs).ToRadians();
+		var c = Obliq(gd, gm, gy).ToRadians();
 		var d = b.Sine() * c.Cosine() + b.Cosine() * c.Sine() * a.Sine();
 
 		return Degrees(d.ASine());
@@ -1566,9 +1566,9 @@ public static class PAMacros
 	/// </remarks>
 	public static double EcRA(double eld, double elm, double els, double bd, double bm, double bs, double gd, int gm, int gy)
 	{
-		var a = (DegreesMinutesSecondsToDecimalDegrees(eld, elm, els)).ToRadians();
-		var b = (DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs)).ToRadians();
-		var c = (Obliq(gd, gm, gy)).ToRadians();
+		var a = DegreesMinutesSecondsToDecimalDegrees(eld, elm, els).ToRadians();
+		var b = DegreesMinutesSecondsToDecimalDegrees(bd, bm, bs).ToRadians();
+		var c = Obliq(gd, gm, gy).ToRadians();
 		var d = a.Sine() * c.Cosine() - b.Tangent() * c.Sine();
 		var e = a.Cosine();
 		var f = Degrees(d.AngleTangent2(e));
@@ -1622,7 +1622,7 @@ public static class PAMacros
 		var a = 100.0021359 * t;
 		var b = 360 * (a - a.Floor());
 		var m1 = 358.47583 - (0.00015 + 0.0000033 * t) * t2 + b;
-		var am = Unwind((m1).ToRadians());
+		var am = Unwind(m1.ToRadians());
 
 		return am;
 	}
@@ -1762,11 +1762,11 @@ public static class PAMacros
 	public static double RiseSetLocalSiderealTimeRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 	{
 		var a = HMStoDH(rah, ram, ras);
-		var b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
-		var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
-		var d = (vd).ToRadians();
-		var e = (g).ToRadians();
-		var f = -((d).Sine() + (e).Sine() * (c).Sine()) / ((e).Cosine() * (c).Cosine());
+		var b = DegreeHoursToDecimalDegrees(a).ToRadians();
+		var c = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
+		var d = vd.ToRadians();
+		var e = g.ToRadians();
+		var f = -(d.Sine() + e.Sine() * c.Sine()) / (e.Cosine() * c.Cosine());
 		var h = (Math.Abs(f) < 1) ? f.ACosine() : 0;
 		var i = DecimalDegreesToDegreeHours(Degrees(b - h));
 
@@ -1782,8 +1782,8 @@ public static class PAMacros
 	public static double RiseSetLocalSiderealTimeSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 	{
 		var a = HMStoDH(rah, ram, ras);
-		var b = (DegreeHoursToDecimalDegrees(a)).ToRadians();
-		var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var b = DegreeHoursToDecimalDegrees(a).ToRadians();
+		var c = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var d = vd.ToRadians();
 		var e = g.ToRadians();
 		var f = -(d.Sine() + e.Sine() * c.Sine()) / (e.Cosine() * c.Cosine());
@@ -1802,11 +1802,11 @@ public static class PAMacros
 	public static double RiseSetAzimuthRise(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 	{
 		var a = HMStoDH(rah, ram, ras);
-		var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var c = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var d = vd.ToRadians();
 		var e = g.ToRadians();
 		var f = (c.Sine() + d.Sine() * e.Sine()) / (d.Cosine() * e.Cosine());
-		var h = (ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK")) ? f.ACosine() : 0;
+		var h = ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK") ? f.ACosine() : 0;
 		var i = Degrees(h);
 
 		return i - 360 * (i / 360).Floor();
@@ -1821,11 +1821,11 @@ public static class PAMacros
 	public static double RiseSetAzimuthSet(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 	{
 		var a = HMStoDH(rah, ram, ras);
-		var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var c = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var d = vd.ToRadians();
 		var e = g.ToRadians();
 		var f = (c.Sine() + d.Sine() * e.Sine()) / (d.Cosine() * e.Cosine());
-		var h = (ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK")) ? f.ACosine() : 0;
+		var h = ERS(rah, ram, ras, dd, dm, ds, vd, g).Equals("OK") ? f.ACosine() : 0;
 		var i = 360 - Degrees(h);
 
 		return i - 360 * (i / 360).Floor();
@@ -1841,7 +1841,7 @@ public static class PAMacros
 	public static string ERS(double rah, double ram, double ras, double dd, double dm, double ds, double vd, double g)
 	{
 		var a = HMStoDH(rah, ram, ras);
-		var c = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
+		var c = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
 		var d = vd.ToRadians();
 		var e = g.ToRadians();
 		var f = -(d.Sine() + e.Sine() * c.Sine()) / (e.Cosine() * c.Cosine());
@@ -2213,11 +2213,11 @@ public static class PAMacros
 	public static double Angle(double xx1, double xm1, double xs1, double dd1, double dm1, double ds1, double xx2, double xm2, double xs2, double dd2, double dm2, double ds2, PAAngleMeasure s
 	)
 	{
-		var a = (s.Equals(PAAngleMeasure.Hours)) ? DegreeHoursToDecimalDegrees(HMStoDH(xx1, xm1, xs1)) : DegreesMinutesSecondsToDecimalDegrees(xx1, xm1, xs1);
+		var a = s.Equals(PAAngleMeasure.Hours) ? DegreeHoursToDecimalDegrees(HMStoDH(xx1, xm1, xs1)) : DegreesMinutesSecondsToDecimalDegrees(xx1, xm1, xs1);
 		var b = a.ToRadians();
 		var c = DegreesMinutesSecondsToDecimalDegrees(dd1, dm1, ds1);
 		var d = c.ToRadians();
-		var e = (s.Equals(PAAngleMeasure.Hours)) ? DegreeHoursToDecimalDegrees(HMStoDH(xx2, xm2, xs2)) : DegreesMinutesSecondsToDecimalDegrees(xx2, xm2, xs2);
+		var e = s.Equals(PAAngleMeasure.Hours) ? DegreeHoursToDecimalDegrees(HMStoDH(xx2, xm2, xs2)) : DegreesMinutesSecondsToDecimalDegrees(xx2, xm2, xs2);
 		var f = e.ToRadians();
 		var g = DegreesMinutesSecondsToDecimalDegrees(dd2, dm2, ds2);
 		var h = g.ToRadians();
@@ -2497,7 +2497,7 @@ public static class PAMacros
 		g = b62;
 		h = b63;
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2539,7 +2539,7 @@ public static class PAMacros
 		h = c63;
 
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2581,7 +2581,7 @@ public static class PAMacros
 		h = d63;
 
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2623,7 +2623,7 @@ public static class PAMacros
 		h = e63;
 
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2665,7 +2665,7 @@ public static class PAMacros
 		h = f63;
 
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2707,7 +2707,7 @@ public static class PAMacros
 		h = g63;
 
 		aa = a1 * t;
-		b = 360.0 * (aa - (aa).Floor());
+		b = 360.0 * (aa - aa.Floor());
 		c = a0 + b + (a3 * t + a2) * t * t;
 
 		pl.Add(new PlanetDataPrecise()
@@ -2730,7 +2730,7 @@ public static class PAMacros
 
 		var li = 0.0;
 		var ms = SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr);
-		var sr = (SunLong(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians();
+		var sr = SunLong(lh, lm, ls, ds, zc, dy, mn, yr).ToRadians();
 		var re = SunDist(lh, lm, ls, ds, zc, dy, mn, yr);
 		var lg = sr + Math.PI;
 
@@ -2782,7 +2782,7 @@ public static class PAMacros
 			var ec = matchPlanet.Value4 + qd;
 			var am = matchPlanet.APValue + qe;
 			var at = TrueAnomaly(am, ec);
-			var pvv = (matchPlanet.Value7 + qf) * (1.0 - ec * ec) / (1.0 + ec * (at).Cosine());
+			var pvv = (matchPlanet.Value7 + qf) * (1.0 - ec * ec) / (1.0 + ec * at.Cosine());
 			var lp = Degrees(at) + matchPlanet.Value3 + Degrees(qc - qe);
 			lp = lp.ToRadians();
 			var om = matchPlanet.Value6.ToRadians();
@@ -2795,7 +2795,7 @@ public static class PAMacros
 			var y = so * inn.Cosine();
 			var ps = sp.ASine() + qg;
 			sp = ps.Sine();
-			pd = y.AngleTangent2(co) + om + (qa).ToRadians();
+			pd = y.AngleTangent2(co) + om + qa.ToRadians();
 			pd = Unwind(pd);
 			ci = ps.Cosine();
 			rd = pvv * ci;
@@ -2946,16 +2946,16 @@ public static class PAMacros
 		if (new string[] { "Jupiter", "Saturn" }.Contains(planet.Name))
 		{
 			var j7 = j3 - j2;
-			var u1 = (j3).Sine();
-			var u2 = (j3).Cosine();
+			var u1 = j3.Sine();
+			var u2 = j3.Cosine();
 			var u3 = (2.0 * j3).Sine();
 			var u4 = (2.0 * j3).Cosine();
-			var u5 = (j5).Sine();
-			var u6 = (j5).Cosine();
+			var u5 = j5.Sine();
+			var u6 = j5.Cosine();
 			var u7 = (2.0 * j5).Sine();
-			var u8a = (j6).Sine();
-			var u9 = (j7).Sine();
-			var ua = (j7).Cosine();
+			var u8a = j6.Sine();
+			var u9 = j7.Sine();
+			var ua = j7.Cosine();
 			var ub = (2.0 * j7).Sine();
 			var uc = (2.0 * j7).Cosine();
 			var ud = (3.0 * j7).Sine();
@@ -3091,8 +3091,8 @@ public static class PAMacros
 		{
 			var j8 = Unwind(1.46205 + 3.81337 * t);
 			var j9 = 2.0 * j8 - j4;
-			var vj = (j9).Sine();
-			var uu = (j9).Cosine();
+			var vj = j9.Sine();
+			var uu = j9.Cosine();
 			var uv = (2.0 * j9).Sine();
 			var uw = (2.0 * j9).Cosine();
 
@@ -3117,16 +3117,16 @@ public static class PAMacros
 
 				var vd = (2.0 * jc).Sine();
 				var ve = (2.0 * jc).Cosine();
-				var vf = (j8).Sine();
-				var vg = (j8).Cosine();
-				qa = -0.009556 * (ja).Sine() - 0.005178 * (jb).Sine();
+				var vf = j8.Sine();
+				var vg = j8.Cosine();
+				qa = -0.009556 * ja.Sine() - 0.005178 * jb.Sine();
 				qa = qa + 0.002572 * vd - 0.002972 * ve * vf - 0.002833 * vd * vg;
 
 				qg = 0.000336 * ve * vf + 0.000364 * vd * vg;
 				qg = qg.ToRadians();
 
-				qb = -40596.0 + 4992.0 * (ja).Cosine() + 2744.0 * (jb).Cosine();
-				qb = qb + 2044.0 * (jc).Cosine() + 1051.0 * ve;
+				qb = -40596.0 + 4992.0 * ja.Cosine() + 2744.0 * jb.Cosine();
+				qb = qb + 2044.0 * jc.Cosine() + 1051.0 * ve;
 				qb = qb * 0.000001;
 
 				return (qa, qb, qc, qd, qe, qf, qg);
@@ -3137,7 +3137,7 @@ public static class PAMacros
 			jc = j8 - j4;
 			qc = (0.864319 - 0.001583 * j1) * vj;
 			qc = qc + (0.082222 - 0.006833 * j1) * uu + 0.036017 * uv;
-			qc = qc - 0.003019 * uw + 0.008122 * (j6).Sine();
+			qc = qc - 0.003019 * uw + 0.008122 * j6.Sine();
 			qc = qc.ToRadians();
 
 			vk = 0.120303 * vj + 0.006197 * uv;
@@ -3152,9 +3152,9 @@ public static class PAMacros
 			qa = (-0.038581 + (0.002031 - 0.00191 * j1) * j1) * (j4 + jb).Cosine();
 			qa = qa + (0.010122 - 0.000988 * j1) * (j4 + jb).Sine();
 			var a = (0.034964 - (0.001038 - 0.000868 * j1) * j1) * (2.0 * j4 + jb).Cosine();
-			qa = a + qa + 0.005594 * (j4 + 3.0 * jc).Sine() - 0.014808 * (ja).Sine();
-			qa = qa - 0.005794 * (jb).Sine() + 0.002347 * (jb).Cosine();
-			qa = qa + 0.009872 * (jc).Sine() + 0.008803 * (2.0 * jc).Sine();
+			qa = a + qa + 0.005594 * (j4 + 3.0 * jc).Sine() - 0.014808 * ja.Sine();
+			qa = qa - 0.005794 * jb.Sine() + 0.002347 * jb.Cosine();
+			qa = qa + 0.009872 * jc.Sine() + 0.008803 * (2.0 * jc).Sine();
 			qa = qa - 0.004308 * (3.0 * jc).Sine();
 
 			var ux = jb.Sine();
@@ -3168,8 +3168,8 @@ public static class PAMacros
 			qg = qg + 0.000403 * ((2.0 * jc).Cosine() * vb + (2.0 * jc).Sine() * vc);
 			qg = qg.ToRadians();
 
-			qb = -25948.0 + 4985.0 * (ja).Cosine() - 1230.0 * va + 3354.0 * uy;
-			qb = qb + 904.0 * (2.0 * jc).Cosine() + 894.0 * ((jc).Cosine() - (3.0 * jc).Cosine());
+			qb = -25948.0 + 4985.0 * ja.Cosine() - 1230.0 * va + 3354.0 * uy;
+			qb = qb + 904.0 * (2.0 * jc).Cosine() + 894.0 * (jc.Cosine() - (3.0 * jc).Cosine());
 			qb = qb + (5795.0 * va - 1165.0 * uz + 1388.0 * vc) * ux;
 			qb = qb + (1351.0 * va + 5702.0 * uz + 1388.0 * vb) * uy;
 			qb = qb * 0.000001;
@@ -3250,7 +3250,7 @@ public static class PAMacros
 
 		for (int k = 1; k < 3; k++)
 		{
-			var s = SolveCubic(0.0364911624 * tpe / (q * (q).SquareRoot()));
+			var s = SolveCubic(0.0364911624 * tpe / (q * q.SquareRoot()));
 			var nu = 2.0 * s.AngleTangent();
 			var r = q * (1.0 + s * s);
 			var l = nu + p.ToRadians();
@@ -3266,19 +3266,19 @@ public static class PAMacros
 			var ll = lc - lg;
 			c3 = ll.Cosine();
 			s3 = ll.Sine();
-			var rh = ((re * re) + (r * r) - (2.0 * re * rd * c3 * (ps).Cosine())).SquareRoot();
+			var rh = ((re * re) + (r * r) - (2.0 * re * rd * c3 * ps.Cosine())).SquareRoot();
 			if (k == 1)
 			{
-				rh2 = ((re * re) + (r * r) - (2.0 * re * r * (ps).Cosine() * (l + (n).ToRadians() - lg).Cosine())).SquareRoot();
+				rh2 = ((re * re) + (r * r) - (2.0 * re * r * ps.Cosine() * (l + n.ToRadians() - lg).Cosine())).SquareRoot();
 			}
 		}
 
 		double ep;
 
-		ep = (rd < re) ? ((-rd * s3) / (re - (rd * c3))).AngleTangent() + lg + 3.141592654 : ((re * s3) / (rd - (re * c3))).AngleTangent() + lc;
+		ep = (rd < re) ? (-rd * s3 / (re - (rd * c3))).AngleTangent() + lg + 3.141592654 : (re * s3 / (rd - (re * c3))).AngleTangent() + lc;
 		ep = Unwind(ep);
 
-		var tb = (rd * s2 * (ep - lc).Sine()) / (c2 * re * s3);
+		var tb = rd * s2 * (ep - lc).Sine() / (c2 * re * s3);
 		var bp = tb.AngleTangent();
 
 		var cometLongDeg = Degrees(ep);
@@ -3459,13 +3459,13 @@ public static class PAMacros
 	{
 		var moonResult = MoonLongLatHP(lh, lm, ls, ds, zc, dy, mn, yr);
 
-		var cd = ((moonResult.moonLongDeg - SunLong(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians()).Cosine() * ((moonResult.moonLatDeg).ToRadians()).Cosine();
+		var cd = (moonResult.moonLongDeg - SunLong(lh, lm, ls, ds, zc, dy, mn, yr)).ToRadians().Cosine() * moonResult.moonLatDeg.ToRadians().Cosine();
 		var d = cd.ACosine();
 		var sd = d.Sine();
-		var i = 0.1468 * sd * (1.0 - 0.0549 * (MoonMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr)).Sine());
-		i = i / (1.0 - 0.0167 * (SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr)).Sine());
+		var i = 0.1468 * sd * (1.0 - 0.0549 * MoonMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr).Sine());
+		i = i / (1.0 - 0.0167 * SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr).Sine());
 		i = 3.141592654 - d - i.ToRadians();
-		var k = (1.0 + (i).Cosine()) / 2.0;
+		var k = (1.0 + i.Cosine()) / 2.0;
 
 		return Math.Round(k, 2);
 	}
@@ -3696,9 +3696,9 @@ public static class PAMacros
 	/// </summary>
 	public static double EQELat(double rah, double ram, double ras, double dd, double dm, double ds, double gd, int gm, int gy)
 	{
-		var a = (DegreeHoursToDecimalDegrees(HMStoDH(rah, ram, ras))).ToRadians();
-		var b = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
-		var c = (Obliq(gd, gm, gy)).ToRadians();
+		var a = DegreeHoursToDecimalDegrees(HMStoDH(rah, ram, ras)).ToRadians();
+		var b = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
+		var c = Obliq(gd, gm, gy).ToRadians();
 		var d = b.Sine() * c.Cosine() - b.Cosine() * c.Sine() * a.Sine();
 
 		return Degrees(d.ASine());
@@ -3709,9 +3709,9 @@ public static class PAMacros
 	/// </summary>
 	public static double EQELong(double rah, double ram, double ras, double dd, double dm, double ds, double gd, int gm, int gy)
 	{
-		var a = (DegreeHoursToDecimalDegrees(HMStoDH(rah, ram, ras))).ToRadians();
-		var b = (DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds)).ToRadians();
-		var c = (Obliq(gd, gm, gy)).ToRadians();
+		var a = DegreeHoursToDecimalDegrees(HMStoDH(rah, ram, ras)).ToRadians();
+		var b = DegreesMinutesSecondsToDecimalDegrees(dd, dm, ds).ToRadians();
+		var c = Obliq(gd, gm, gy).ToRadians();
 		var d = a.Sine() * c.Cosine() + b.Tangent() * c.Sine();
 		var e = a.Cosine();
 		var f = Degrees(d.AngleTangent2(e));
@@ -3821,7 +3821,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -3943,7 +3943,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -4051,7 +4051,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -4164,7 +4164,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -4285,7 +4285,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -4394,7 +4394,7 @@ public static class PAMacros
 	{
 		var mm = MoonLong(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		var bm = MoonLat(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		var pm = (MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1)).ToRadians();
+		var pm = MoonHP(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1).ToRadians();
 		var dp = NutatLong(gdy, gmn, gyr);
 		var th = 0.27249 * pm.Sine();
 		var di = th + 0.0098902 - pm;
@@ -4508,15 +4508,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4533,7 +4533,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4582,15 +4582,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4607,7 +4607,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4662,15 +4662,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4687,7 +4687,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4739,15 +4739,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4764,7 +4764,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4831,15 +4831,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4856,7 +4856,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4920,15 +4920,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -4945,7 +4945,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -4972,7 +4972,7 @@ public static class PAMacros
 		if (dd < 0.0)
 			return -99.0;
 
-		var zd = (dd).SquareRoot();
+		var zd = dd.SquareRoot();
 		var z6 = z1 - zd;
 
 		r = rm + ru;
@@ -4982,7 +4982,7 @@ public static class PAMacros
 		if (dd < 0.0)
 			return -99.0;
 
-		zd = (dd).SquareRoot();
+		zd = dd.SquareRoot();
 		var z8 = z1 - zd;
 
 		r = ru - rm;
@@ -4992,7 +4992,7 @@ public static class PAMacros
 		if (dd < 0.0)
 			return -99.0;
 
-		zd = (dd).SquareRoot();
+		zd = dd.SquareRoot();
 		var zcc = z1 - zd;
 
 		if (zcc < 0.0)
@@ -5022,15 +5022,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5047,7 +5047,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -5121,15 +5121,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utfm = xi * 24.0;
 		var ut = utfm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utfm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5146,7 +5146,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
 		by = by - q;
@@ -5260,8 +5260,8 @@ public static class PAMacros
 		a2 = a2.ToRadians();
 		f = f.ToRadians();
 
-		var dd = (0.1734 - 0.000393 * t) * (a1).Sine() + 0.0021 * (2.0 * a1).Sine();
-		dd = dd - 0.4068 * (a2).Sine() + 0.0161 * (2.0 * a2).Sine() - 0.0004 * (3.0 * a2).Sine();
+		var dd = (0.1734 - 0.000393 * t) * a1.Sine() + 0.0021 * (2.0 * a1).Sine();
+		dd = dd - 0.4068 * a2.Sine() + 0.0161 * (2.0 * a2).Sine() - 0.0004 * (3.0 * a2).Sine();
 		dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
 		dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
 		dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
@@ -5296,15 +5296,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utnm = xi * 24.0;
 		var ut = utnm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utnm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5335,7 +5335,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
@@ -5384,8 +5384,8 @@ public static class PAMacros
 		var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-		var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
-		var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
+		var p = EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
+		var q = EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
 
 		return (paa, qaa, xaa, pbb, qbb, xbb, p, q);
 	}
@@ -5411,15 +5411,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utnm = xi * 24.0;
 		var ut = utnm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utnm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5450,7 +5450,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
@@ -5502,8 +5502,8 @@ public static class PAMacros
 		var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-		var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
-		var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
+		var p = EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
+		var q = EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
 
 		return (paa, qaa, xaa, pbb, qbb, xbb, p, q);
 	}
@@ -5529,15 +5529,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utnm = xi * 24.0;
 		var ut = utnm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utnm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5568,7 +5568,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
@@ -5617,8 +5617,8 @@ public static class PAMacros
 		var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-		var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
-		var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
+		var p = EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
+		var q = EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
 
 		return (paa, qaa, xaa, pbb, qbb, xbb, p, q);
 	}
@@ -5644,15 +5644,15 @@ public static class PAMacros
 		var xi = gday - igday;
 		var utnm = xi * 24.0;
 		var ut = utnm - 1.0;
-		var ly = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var my = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var by = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hy = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var ly = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var my = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var by = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hy = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		ut = utnm + 1.0;
-		var sb = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians() - ly;
-		var mz = (MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var bz = (MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
-		var hz = (MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sb = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians() - ly;
+		var mz = MoonLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var bz = MoonLat(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
+		var hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
 			sb = sb + tp;
@@ -5683,7 +5683,7 @@ public static class PAMacros
 		var mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		var rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
-		var sr = (SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear)).ToRadians();
+		var sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
@@ -5733,8 +5733,8 @@ public static class PAMacros
 		var pbb = ParallaxHA(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var qbb = ParallaxDec(xaa, 0.0, 0.0, qaa, 0.0, 0.0, PACoordinateType.True, glat, 0.0, Degrees(hp));
 		var xbb = HourAngleToRightAscension(pbb, 0.0, 0.0, tm, 0.0, 0.0, 0, 0, igday, gmonth, gyear, glong);
-		var p = (EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
-		var q = (EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear)).ToRadians();
+		var p = EQELong(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
+		var q = EQELat(xbb, 0.0, 0.0, qbb, 0.0, 0.0, igday, gmonth, gyear).ToRadians();
 
 		return (paa, qaa, xaa, pbb, qbb, xbb, p, q);
 	}

@@ -19,12 +19,12 @@ public class PAEclipses
 	/// </returns>
 	public (string status, double eventDateDay, int eventDateMonth, int eventDateYear) LunarEclipseOccurrence(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var julianDateOfFullMoon = PAMacros.FullMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 
 		var gDateOfFullMoonDay = PAMacros.JulianDateDay(julianDateOfFullMoon);
-		var integerDay = (gDateOfFullMoonDay).Floor();
+		var integerDay = gDateOfFullMoonDay.Floor();
 		var gDateOfFullMoonMonth = PAMacros.JulianDateMonth(julianDateOfFullMoon);
 		var gDateOfFullMoonYear = PAMacros.JulianDateYear(julianDateOfFullMoon);
 		var utOfFullMoonHours = gDateOfFullMoonDay - integerDay;
@@ -68,7 +68,7 @@ public class PAEclipses
 	/// </returns>
 	public (double lunarEclipseCertainDateDay, double lunarEclipseCertainDateMonth, double lunarEclipseCertainDateYear, double utStartPenPhaseHour, double utStartPenPhaseMinutes, double utStartUmbralPhaseHour, double utStartUmbralPhaseMinutes, double utStartTotalPhaseHour, double utStartTotalPhaseMinutes, double utMidEclipseHour, double utMidEclipseMinutes, double utEndTotalPhaseHour, double utEndTotalPhaseMinutes, double utEndUmbralPhaseHour, double utEndUmbralPhaseMinutes, double utEndPenPhaseHour, double utEndPenPhaseMinutes, double eclipseMagnitude) LunarEclipseCircumstances(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var julianDateOfFullMoon = PAMacros.FullMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var gDateOfFullMoonDay = PAMacros.JulianDateDay(julianDateOfFullMoon);
@@ -132,11 +132,11 @@ public class PAEclipses
 	/// </returns>
 	public (string status, double eventDateDay, int eventDateMonth, int eventDateYear) SolarEclipseOccurrence(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var julianDateOfNewMoon = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var gDateOfNewMoonDay = PAMacros.JulianDateDay(julianDateOfNewMoon);
-		var integerDay = (gDateOfNewMoonDay).Floor();
+		var integerDay = gDateOfNewMoonDay.Floor();
 		var gDateOfNewMoonMonth = PAMacros.JulianDateMonth(julianDateOfNewMoon);
 		var gDateOfNewMoonYear = PAMacros.JulianDateYear(julianDateOfNewMoon);
 		var utOfNewMoonHours = gDateOfNewMoonDay - integerDay;
@@ -172,11 +172,11 @@ public class PAEclipses
 	/// </returns>
 	public (double solarEclipseCertainDateDay, int solarEclipseCertainDateMonth, int solarEclipseCertainDateYear, double utFirstContactHour, double utFirstContactMinutes, double utMidEclipseHour, double utMidEclipseMinutes, double utLastContactHour, double utLastContactMinutes, double eclipseMagnitude) SolarEclipseCircumstances(double localDateDay, int localDateMonth, int localDateYear, bool isDaylightSaving, int zoneCorrectionHours, double geogLongitudeDeg, double geogLatitudeDeg)
 	{
-		var daylightSaving = (isDaylightSaving) ? 1 : 0;
+		var daylightSaving = isDaylightSaving ? 1 : 0;
 
 		var julianDateOfNewMoon = PAMacros.NewMoon(daylightSaving, zoneCorrectionHours, localDateDay, localDateMonth, localDateYear);
 		var gDateOfNewMoonDay = PAMacros.JulianDateDay(julianDateOfNewMoon);
-		var integerDay = (gDateOfNewMoonDay).Floor();
+		var integerDay = gDateOfNewMoonDay.Floor();
 		var gDateOfNewMoonMonth = PAMacros.JulianDateMonth(julianDateOfNewMoon);
 		var gDateOfNewMoonYear = PAMacros.JulianDateYear(julianDateOfNewMoon);
 		var utOfNewMoonHours = gDateOfNewMoonDay - integerDay;
