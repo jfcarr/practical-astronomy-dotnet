@@ -44,7 +44,7 @@ public class PADateTime
 	{
 		if (month <= 2)
 		{
-			month = month - 1;
+			month--;
 			month = year.IsLeapYear() ? month * 62 : month * 63;
 			month = (int)((double)month / 2).Floor();
 		}

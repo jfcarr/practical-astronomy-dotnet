@@ -808,7 +808,7 @@ public static class PAMacros
 		double sr = at + (l - m1 + d2).ToRadians();
 		double tp = 6.283185308;
 
-		sr = sr - tp * (sr / tp).Floor();
+		sr -= tp * (sr / tp).Floor();
 
 		return Degrees(sr);
 	}
@@ -832,8 +832,8 @@ public static class PAMacros
 			{
 				break;
 			}
-			d = d / (1.0 - (ec * ae.Cosine()));
-			ae = ae - d;
+			d /= (1.0 - (ec * ae.Cosine()));
+			ae -= d;
 		}
 		double a = ((1 + ec) / (1 - ec)).SquareRoot() * (ae / 2).Tangent();
 		double at = 2.0 * a.AngleTangent();
@@ -862,8 +862,8 @@ public static class PAMacros
 				break;
 			}
 
-			d = d / (1 - (ec * ae.Cosine()));
-			ae = ae - d;
+			d /= (1 - (ec * ae.Cosine()));
+			ae -= d;
 		}
 
 		return ae;
@@ -1020,7 +1020,7 @@ public static class PAMacros
 		double p = x + dx;
 		double cp = p.Cosine();
 
-		p = p - tp * (p / tp).Floor();
+		p -= tp * (p / tp).Floor();
 		double q = (cp * (rp * sy - rs) / (rp * cy * cx - rc)).AngleTangent();
 
 		return (p, q);
@@ -1112,7 +1112,7 @@ public static class PAMacros
 		double p = x + dx;
 		double cp = p.Cosine();
 
-		p = p - tp * (p / tp).Floor();
+		p -= tp * (p / tp).Floor();
 		double q = (cp * (rp * sy - rs) / (rp * cy * cx - rc)).AngleTangent();
 
 		return (p, q);
@@ -1229,7 +1229,7 @@ public static class PAMacros
 		double c = (na + 275.05 - 2.3 * t).ToRadians();
 		double s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
-		ms = ms - 0.001778 * s1;
+		ms -= 0.001778 * s1;
 		md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
 		mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
@@ -1244,7 +1244,7 @@ public static class PAMacros
 		double l = 6.28875 * md.Sine() + 1.274018 * (2.0 * me1 - md).Sine();
 		l = l + 0.658309 * (2.0 * me1).Sine() + 0.213616 * (2.0 * md).Sine();
 		l = l - e * 0.185596 * ms.Sine() - 0.114336 * (2.0 * mf).Sine();
-		l = l + 0.058793 * (2.0 * (me1 - md)).Sine();
+		l += 0.058793 * (2.0 * (me1 - md)).Sine();
 		l = l + 0.057212 * e * (2.0 * me1 - ms - md).Sine() + 0.05332 * (2.0 * me1 + md).Sine();
 		l = l + 0.045874 * e * (2.0 * me1 - ms).Sine() + 0.041024 * e * (md - ms).Sine();
 		l = l - 0.034718 * me1.Sine() - e * 0.030465 * (ms + md).Sine();
@@ -1262,13 +1262,13 @@ public static class PAMacros
 		l = l - 0.001773 * (md + 2.0 * (me1 - mf)).Sine() - 0.001595 * (2.0 * (mf + me1)).Sine();
 		l = l + e * 0.00122 * (4.0 * me1 - ms - md).Sine() - 0.00111 * (2.0 * (md + mf)).Sine();
 		l = l + 0.000892 * (md - 3.0 * me1).Sine() - e * 0.000811 * (ms + md + 2.0 * me1).Sine();
-		l = l + e * 0.000761 * (4.0 * me1 - ms - 2.0 * md).Sine();
-		l = l + e2 * 0.000704 * (md - 2.0 * (ms + me1)).Sine();
-		l = l + e * 0.000693 * (ms - 2.0 * (md - me1)).Sine();
-		l = l + e * 0.000598 * (2.0 * (me1 - mf) - ms).Sine();
+		l += e * 0.000761 * (4.0 * me1 - ms - 2.0 * md).Sine();
+		l += e2 * 0.000704 * (md - 2.0 * (ms + me1)).Sine();
+		l += e * 0.000693 * (ms - 2.0 * (md - me1)).Sine();
+		l += e * 0.000598 * (2.0 * (me1 - mf) - ms).Sine();
 		l = l + 0.00055 * (md + 4.0 * me1).Sine() + 0.000538 * (4.0 * md).Sine();
 		l = l + e * 0.000521 * (4.0 * me1 - ms).Sine() + 0.000486 * (2.0 * md - me1).Sine();
-		l = l + e2 * 0.000717 * (md - 2.0 * ms).Sine();
+		l += e2 * 0.000717 * (md - 2.0 * ms).Sine();
 		double mm = Unwind(ml + l.ToRadians());
 
 		return Degrees(mm);
@@ -1323,7 +1323,7 @@ public static class PAMacros
 		double c = (na + 275.05 - 2.3 * t).ToRadians();
 		double s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
-		ms = ms - 0.001778 * s1;
+		ms -= 0.001778 * s1;
 		md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
 		mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
@@ -1342,9 +1342,9 @@ public static class PAMacros
 		g = g + 0.009267 * (2.0 * me1 + md - mf).Sine() + 0.008823 * (2.0 * md - mf).Sine();
 		g = g + e * 0.008247 * (2.0 * me1 - ms - mf).Sine() + 0.004323 * (2.0 * (me1 - md) - mf).Sine();
 		g = g + 0.0042 * (2.0 * me1 + mf + md).Sine() + e * 0.003372 * (mf - ms - 2.0 * me1).Sine();
-		g = g + e * 0.002472 * (2.0 * me1 + mf - ms - md).Sine();
-		g = g + e * 0.002222 * (2.0 * me1 + mf - ms).Sine();
-		g = g + e * 0.002072 * (2.0 * me1 - mf - ms - md).Sine();
+		g += e * 0.002472 * (2.0 * me1 + mf - ms - md).Sine();
+		g += e * 0.002222 * (2.0 * me1 + mf - ms).Sine();
+		g += e * 0.002072 * (2.0 * me1 - mf - ms - md).Sine();
 		g = g + e * 0.001877 * (mf - ms + md).Sine() + 0.001828 * (4.0 * me1 - mf - md).Sine();
 		g = g - e * 0.001803 * (mf + ms).Sine() - 0.00175 * (3.0 * mf).Sine();
 		g = g + e * 0.00157 * (md - ms - mf).Sine() - 0.001487 * (mf + me1).Sine();
@@ -1353,12 +1353,12 @@ public static class PAMacros
 		g = g + 0.001106 * (mf + 3.0 * md).Sine() + 0.00102 * (4.0 * me1 - mf).Sine();
 		g = g + 0.000833 * (mf + 4.0 * me1 - md).Sine() + 0.000781 * (md - 3.0 * mf).Sine();
 		g = g + 0.00067 * (mf + 4.0 * me1 - 2.0 * md).Sine() + 0.000606 * (2.0 * me1 - 3.0 * mf).Sine();
-		g = g + 0.000597 * (2.0 * (me1 + md) - mf).Sine();
+		g += 0.000597 * (2.0 * (me1 + md) - mf).Sine();
 		g = g + e * 0.000492 * (2.0 * me1 + md - ms - mf).Sine() + 0.00045 * (2.0 * (md - me1) - mf).Sine();
 		g = g + 0.000439 * (3.0 * md - mf).Sine() + 0.000423 * (mf + 2.0 * (me1 + md)).Sine();
 		g = g + 0.000422 * (2.0 * me1 - mf - 3.0 * md).Sine() - e * 0.000367 * (ms + mf + 2.0 * me1 - md).Sine();
 		g = g - e * 0.000353 * (ms + mf + 2.0 * me1).Sine() + 0.000331 * (mf + 4.0 * me1).Sine();
-		g = g + e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
+		g += e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
 		g = g + e2 * 0.000306 * (2.0 * (me1 - ms) - mf).Sine() - 0.000283 * (md + 3.0 * mf).Sine();
 		double w1 = 0.0004664 * na.Cosine();
 		double w2 = 0.0000754 * c.Cosine();
@@ -1416,7 +1416,7 @@ public static class PAMacros
 		double c = (na + 275.05 - 2.3 * t).ToRadians();
 		double s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
-		ms = ms - 0.001778 * s1;
+		ms -= 0.001778 * s1;
 		md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
 		mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
@@ -1430,7 +1430,7 @@ public static class PAMacros
 		double pm = 0.950724 + 0.051818 * md.Cosine() + 0.009531 * (2.0 * me1 - md).Cosine();
 		pm = pm + 0.007843 * (2.0 * me1).Cosine() + 0.002824 * (2.0 * md).Cosine();
 		pm = pm + 0.000857 * (2.0 * me1 + md).Cosine() + e * 0.000533 * (2.0 * me1 - ms).Cosine();
-		pm = pm + e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
+		pm += e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
 		pm = pm + e * 0.00032 * (md - ms).Cosine() - 0.000271 * me1.Cosine();
 		pm = pm - e * 0.000264 * (ms + md).Cosine() - 0.000198 * (2.0 * mf - md).Cosine();
 		pm = pm + 0.000173 * (3.0 * md).Cosine() + 0.000167 * (4.0 * me1 - md).Cosine();
@@ -1442,7 +1442,7 @@ public static class PAMacros
 		pm = pm - 0.000033 * (3.0 * md - 2.0 * me1).Cosine() - 0.00003 * (md + me1).Cosine();
 		pm = pm - 0.000029 * (2.0 * (mf - me1)).Cosine() - e * 0.000029 * (2.0 * md + ms).Cosine();
 		pm = pm + e2 * 0.000026 * (2.0 * (me1 - ms)).Cosine() - 0.000023 * (2.0 * (mf - me1) + md).Cosine();
-		pm = pm + e * 0.000019 * (4.0 * me1 - ms - md).Cosine();
+		pm += e * 0.000019 * (4.0 * me1 - ms - md).Cosine();
 
 		return pm;
 	}
@@ -2790,7 +2790,7 @@ public static class PAMacros
 			double so = lo.Sine();
 			double co = lo.Cosine();
 			double inn = matchPlanet.Value5.ToRadians();
-			pvv = pvv + qb;
+			pvv += qb;
 			sp = so * inn.Sine();
 			double y = so * inn.Cosine();
 			double ps = sp.ASine() + qg;
@@ -2839,14 +2839,14 @@ public static class PAMacros
 	public static (double qa, double qb) PlanetLong_L4685(List<PlanetDataPrecise> pl)
 	{
 		double qa = 0.00204 * (5.0 * pl[2].APValue - 2.0 * pl[1].APValue + 0.21328).Cosine();
-		qa = qa + 0.00103 * (2.0 * pl[2].APValue - pl[1].APValue - 2.8046).Cosine();
-		qa = qa + 0.00091 * (2.0 * pl[4].APValue - pl[1].APValue - 0.64582).Cosine();
-		qa = qa + 0.00078 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue + 0.17692).Cosine();
+		qa += 0.00103 * (2.0 * pl[2].APValue - pl[1].APValue - 2.8046).Cosine();
+		qa += 0.00091 * (2.0 * pl[4].APValue - pl[1].APValue - 0.64582).Cosine();
+		qa += 0.00078 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue + 0.17692).Cosine();
 
 		double qb = 0.000007525 * (2.0 * pl[4].APValue - pl[1].APValue + 0.925251).Cosine();
-		qb = qb + 0.000006802 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue - 4.53642).Cosine();
-		qb = qb + 0.000005457 * (2.0 * pl[2].APValue - 2.0 * pl[1].APValue - 1.24246).Cosine();
-		qb = qb + 0.000003569 * (5.0 * pl[2].APValue - pl[1].APValue - 1.35699).Cosine();
+		qb += 0.000006802 * (5.0 * pl[2].APValue - 3.0 * pl[1].APValue - 4.53642).Cosine();
+		qb += 0.000005457 * (2.0 * pl[2].APValue - 2.0 * pl[1].APValue - 1.24246).Cosine();
+		qb += 0.000003569 * (5.0 * pl[2].APValue - pl[1].APValue - 1.35699).Cosine();
 
 		return (qa, qb);
 	}
@@ -2861,18 +2861,18 @@ public static class PAMacros
 		double qe = qc;
 
 		double qa = 0.00313 * (2.0 * ms - 2.0 * pl[2].APValue - 2.587).Cosine();
-		qa = qa + 0.00198 * (3.0 * ms - 3.0 * pl[2].APValue + 0.044768).Cosine();
-		qa = qa + 0.00136 * (ms - pl[2].APValue - 2.0788).Cosine();
-		qa = qa + 0.00096 * (3.0 * ms - 2.0 * pl[2].APValue - 2.3721).Cosine();
-		qa = qa + 0.00082 * (pl[4].APValue - pl[2].APValue - 3.6318).Cosine();
+		qa += 0.00198 * (3.0 * ms - 3.0 * pl[2].APValue + 0.044768).Cosine();
+		qa += 0.00136 * (ms - pl[2].APValue - 2.0788).Cosine();
+		qa += 0.00096 * (3.0 * ms - 2.0 * pl[2].APValue - 2.3721).Cosine();
+		qa += 0.00082 * (pl[4].APValue - pl[2].APValue - 3.6318).Cosine();
 
 		double qb = 0.000022501 * (2.0 * ms - 2.0 * pl[2].APValue - 1.01592).Cosine();
-		qb = qb + 0.000019045 * (3.0 * ms - 3.0 * pl[2].APValue + 1.61577).Cosine();
-		qb = qb + 0.000006887 * (pl[4].APValue - pl[2].APValue - 2.06106).Cosine();
-		qb = qb + 0.000005172 * (ms - pl[2].APValue - 0.508065).Cosine();
-		qb = qb + 0.00000362 * (5.0 * ms - 4.0 * pl[2].APValue - 1.81877).Cosine();
-		qb = qb + 0.000003283 * (4.0 * ms - 4.0 * pl[2].APValue + 1.10851).Cosine();
-		qb = qb + 0.000003074 * (2.0 * pl[4].APValue - 2.0 * pl[2].APValue - 0.962846).Cosine();
+		qb += 0.000019045 * (3.0 * ms - 3.0 * pl[2].APValue + 1.61577).Cosine();
+		qb += 0.000006887 * (pl[4].APValue - pl[2].APValue - 2.06106).Cosine();
+		qb += 0.000005172 * (ms - pl[2].APValue - 0.508065).Cosine();
+		qb += 0.00000362 * (5.0 * ms - 4.0 * pl[2].APValue - 1.81877).Cosine();
+		qb += 0.000003283 * (4.0 * ms - 4.0 * pl[2].APValue + 1.10851).Cosine();
+		qb += 0.000003074 * (2.0 * pl[4].APValue - 2.0 * pl[2].APValue - 0.962846).Cosine();
 
 		return (qa, qb, qc, qe);
 	}
@@ -2890,28 +2890,28 @@ public static class PAMacros
 		double qe = qc;
 
 		double qa = 0.00705 * (pl[4].APValue - pl[3].APValue - 0.85448).Cosine();
-		qa = qa + 0.00607 * (2.0 * pl[4].APValue - pl[3].APValue - 3.2873).Cosine();
-		qa = qa + 0.00445 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 3.3492).Cosine();
-		qa = qa + 0.00388 * (ms - 2.0 * pl[3].APValue + 0.35771).Cosine();
-		qa = qa + 0.00238 * (ms - pl[3].APValue + 0.61256).Cosine();
-		qa = qa + 0.00204 * (2.0 * ms - 3.0 * pl[3].APValue + 2.7688).Cosine();
-		qa = qa + 0.00177 * (3.0 * pl[3].APValue - pl[2].APValue - 1.0053).Cosine();
-		qa = qa + 0.00136 * (2.0 * ms - 4.0 * pl[3].APValue + 2.6894).Cosine();
-		qa = qa + 0.00104 * (pl[4].APValue + 0.30749).Cosine();
+		qa += 0.00607 * (2.0 * pl[4].APValue - pl[3].APValue - 3.2873).Cosine();
+		qa += 0.00445 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 3.3492).Cosine();
+		qa += 0.00388 * (ms - 2.0 * pl[3].APValue + 0.35771).Cosine();
+		qa += 0.00238 * (ms - pl[3].APValue + 0.61256).Cosine();
+		qa += 0.00204 * (2.0 * ms - 3.0 * pl[3].APValue + 2.7688).Cosine();
+		qa += 0.00177 * (3.0 * pl[3].APValue - pl[2].APValue - 1.0053).Cosine();
+		qa += 0.00136 * (2.0 * ms - 4.0 * pl[3].APValue + 2.6894).Cosine();
+		qa += 0.00104 * (pl[4].APValue + 0.30749).Cosine();
 
 		double qb = 0.000053227 * (pl[4].APValue - pl[3].APValue + 0.717864).Cosine();
-		qb = qb + 0.000050989 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 1.77997).Cosine();
-		qb = qb + 0.000038278 * (2.0 * pl[4].APValue - pl[3].APValue - 1.71617).Cosine();
-		qb = qb + 0.000015996 * (ms - pl[3].APValue - 0.969618).Cosine();
-		qb = qb + 0.000014764 * (2.0 * ms - 3.0 * pl[3].APValue + 1.19768).Cosine();
-		qb = qb + 0.000008966 * (pl[4].APValue - 2.0 * pl[3].APValue + 0.761225).Cosine();
-		qb = qb + 0.000007914 * (3.0 * pl[4].APValue - 2.0 * pl[3].APValue - 2.43887).Cosine();
-		qb = qb + 0.000007004 * (2.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.79573).Cosine();
-		qb = qb + 0.00000662 * (ms - 2.0 * pl[3].APValue + 1.97575).Cosine();
-		qb = qb + 0.00000493 * (3.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.33069).Cosine();
-		qb = qb + 0.000004693 * (3.0 * ms - 5.0 * pl[3].APValue + 3.32665).Cosine();
-		qb = qb + 0.000004571 * (2.0 * ms - 4.0 * pl[3].APValue + 4.27086).Cosine();
-		qb = qb + 0.000004409 * (3.0 * pl[4].APValue - pl[3].APValue - 2.02158).Cosine();
+		qb += 0.000050989 * (2.0 * pl[4].APValue - 2.0 * pl[3].APValue - 1.77997).Cosine();
+		qb += 0.000038278 * (2.0 * pl[4].APValue - pl[3].APValue - 1.71617).Cosine();
+		qb += 0.000015996 * (ms - pl[3].APValue - 0.969618).Cosine();
+		qb += 0.000014764 * (2.0 * ms - 3.0 * pl[3].APValue + 1.19768).Cosine();
+		qb += 0.000008966 * (pl[4].APValue - 2.0 * pl[3].APValue + 0.761225).Cosine();
+		qb += 0.000007914 * (3.0 * pl[4].APValue - 2.0 * pl[3].APValue - 2.43887).Cosine();
+		qb += 0.000007004 * (2.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.79573).Cosine();
+		qb += 0.00000662 * (ms - 2.0 * pl[3].APValue + 1.97575).Cosine();
+		qb += 0.00000493 * (3.0 * pl[4].APValue - 3.0 * pl[3].APValue - 1.33069).Cosine();
+		qb += 0.000004693 * (3.0 * ms - 5.0 * pl[3].APValue + 3.32665).Cosine();
+		qb += 0.000004571 * (2.0 * ms - 4.0 * pl[3].APValue + 4.27086).Cosine();
+		qb += 0.000004409 * (3.0 * pl[4].APValue - pl[3].APValue - 2.02158).Cosine();
 
 		return (a, sa, ca, qc, qe, qa, qb);
 	}
@@ -2979,8 +2979,8 @@ public static class PAMacros
 				double ur = (3.0 * j8).Cosine();
 
 				qc = 0.007581 * u7 - 0.007986 * u8a - 0.148811 * u9;
-				qc = qc - (0.814181 - (0.01815 - 0.016714 * j1) * j1) * u5;
-				qc = qc - (0.010497 - (0.160906 - 0.0041 * j1) * j1) * u6;
+				qc -= (0.814181 - (0.01815 - 0.016714 * j1) * j1) * u5;
+				qc -= (0.010497 - (0.160906 - 0.0041 * j1) * j1) * u6;
 				qc = qc - 0.015208 * ud - 0.006339 * uf - 0.006244 * u1;
 				qc = qc - 0.0165 * ub * u1 - 0.040786 * ub;
 				qc = qc + (0.008931 + 0.002728 * j1) * u9 * u1 - 0.005775 * ud * u1;
@@ -3009,20 +3009,20 @@ public static class PAMacros
 				qd = qd + 561.0 * ue * u4 + 343.0 * ug * u4 + 469.0 * uq * u4 - 242.0 * ur * u4;
 				qd = qd - 205.0 * u9 * ui + 262.0 * ud * ui + 208.0 * ua * uj - 271.0 * ue * uj;
 				qd = qd - 382.0 * ue * uk - 376.0 * ud * ul;
-				qd = qd * 0.0000001;
+				qd *= 0.0000001;
 
 				vk = (0.077108 + (0.007186 - 0.001533 * j1) * j1) * u5;
-				vk = vk - 0.007075 * u9;
-				vk = vk + (0.045803 - (0.014766 + 0.000536 * j1) * j1) * u6;
+				vk -= 0.007075 * u9;
+				vk += (0.045803 - (0.014766 + 0.000536 * j1) * j1) * u6;
 				vk = vk - 0.072586 * u2 - 0.075825 * u9 * u1 - 0.024839 * ub * u1;
 				vk = vk - 0.008631 * ud * u1 - 0.150383 * ua * u2;
 				vk = vk + 0.026897 * uc * u2 + 0.010053 * ue * u2;
 				vk = vk - (0.013597 + 0.001719 * j1) * u9 * u3 + 0.011981 * ub * u4;
-				vk = vk - (0.007742 - 0.001517 * j1) * ua * u3;
-				vk = vk + (0.013586 - 0.001375 * j1) * uc * u3;
-				vk = vk - (0.013667 - 0.001239 * j1) * u9 * u4;
-				vk = vk + (0.014861 + 0.001136 * j1) * ua * u4;
-				vk = vk - (0.013064 + 0.001628 * j1) * uc * u4;
+				vk -= (0.007742 - 0.001517 * j1) * ua * u3;
+				vk += (0.013586 - 0.001375 * j1) * uc * u3;
+				vk -= (0.013667 - 0.001239 * j1) * u9 * u4;
+				vk += (0.014861 + 0.001136 * j1) * ua * u4;
+				vk -= (0.013064 + 0.001628 * j1) * uc * u4;
 				qe = qc - (vk.ToRadians() / planet.Value4);
 
 				qf = 572.0 * u5 - 1590.0 * ub * u2 + 2933.0 * u6 - 647.0 * ud * u2;
@@ -3034,8 +3034,8 @@ public static class PAMacros
 				qf = qf + 441.0 * ub * u4 + 2138.0 * ua * u1 + 296.0 * uc * u4 - 999.0 * uc * u1;
 				qf = qf + 211.0 * ue * u4 - 642.0 * ue * u1 - 427.0 * u9 * ui - 325.0 * ug * u1;
 				qf = qf + 398.0 * ud * ui - 890.0 * u2 + 344.0 * ua * uj + 2206.0 * u9 * u2;
-				qf = qf - 427.0 * ue * uj;
-				qf = qf * 0.000001;
+				qf -= 427.0 * ue * uj;
+				qf *= 0.000001;
 
 				qg = 0.000747 * ua * u1 + 0.001069 * ua * u2 + 0.002108 * ub * u3;
 				qg = qg + 0.001261 * uc * u3 + 0.001236 * ub * u4 - 0.002075 * uc * u4;
@@ -3045,8 +3045,8 @@ public static class PAMacros
 			}
 
 			qc = (0.331364 - (0.010281 + 0.004692 * j1) * j1) * u5;
-			qc = qc + (0.003228 - (0.064436 - 0.002075 * j1) * j1) * u6;
-			qc = qc - (0.003083 + (0.000275 - 0.000489 * j1) * j1) * u7;
+			qc += (0.003228 - (0.064436 - 0.002075 * j1) * j1) * u6;
+			qc -= (0.003083 + (0.000275 - 0.000489 * j1) * j1) * u7;
 			qc = qc + 0.002472 * u8a + 0.013619 * u9 + 0.018472 * ub;
 			qc = qc + 0.006717 * ud + 0.002775 * uf + 0.006417 * ub * u1;
 			qc = qc + (0.007275 - 0.001253 * j1) * u9 * u1 + 0.002439 * ud * u1;
@@ -3067,10 +3067,10 @@ public static class PAMacros
 			qd = qd + 148.0 * ue * u3 + (99.0 * j1 - 956.0) * u9 * u4 + 490.0 * ub * u4;
 			qd = qd + 158.0 * ud * u4 + 179.0 * u4 + (1024.0 + 75.0 * j1) * ua * u4;
 			qd = qd - 437.0 * uc * u4 - 132.0 * ue * u4;
-			qd = qd * 0.0000001;
+			qd *= 0.0000001;
 
 			vk = (0.007192 - 0.003147 * j1) * u5 - 0.004344 * u1;
-			vk = vk + (j1 * (0.000197 * j1 - 0.000675) - 0.020428) * u6;
+			vk += (j1 * (0.000197 * j1 - 0.000675) - 0.020428) * u6;
 			vk = vk + 0.034036 * ua * u1 + (0.007269 + 0.000672 * j1) * u9 * u1;
 			vk = vk + 0.005614 * uc * u1 + 0.002964 * ue * u1 + 0.037761 * u9 * u2;
 			vk = vk + 0.006158 * ub * u2 - 0.006603 * ua * u2 - 0.005356 * u9 * u3;
@@ -3081,8 +3081,8 @@ public static class PAMacros
 
 			qf = 205.0 * ua - 263.0 * u6 + 693.0 * uc + 312.0 * ue + 147.0 * ug + 299.0 * u9 * u1;
 			qf = qf + 181.0 * uc * u1 + 204.0 * ub * u2 + 111.0 * ud * u2 - 337.0 * ua * u2;
-			qf = qf - 111.0 * uc * u2;
-			qf = qf * 0.000001;
+			qf -= 111.0 * uc * u2;
+			qf *= 0.000001;
 
 			return (qa, qb, qc, qd, qe, qf, qg);
 		}
@@ -3106,14 +3106,14 @@ public static class PAMacros
 				qc = qc.ToRadians();
 
 				vk = 0.024039 * vj - 0.025303 * uu + 0.006206 * uv;
-				vk = vk - 0.005992 * uw;
+				vk -= 0.005992 * uw;
 				qe = qc - (vk.ToRadians() / planet.Value4);
 
 				qd = 4389.0 * vj + 1129.0 * uv + 4262.0 * uu + 1089.0 * uw;
-				qd = qd * 0.0000001;
+				qd *= 0.0000001;
 
 				qf = 8189.0 * uu - 817.0 * vj + 781.0 * uw;
-				qf = qf * 0.000001;
+				qf *= 0.000001;
 
 				double vd = (2.0 * jc).Sine();
 				double ve = (2.0 * jc).Cosine();
@@ -3127,7 +3127,7 @@ public static class PAMacros
 
 				qb = -40596.0 + 4992.0 * ja.Cosine() + 2744.0 * jb.Cosine();
 				qb = qb + 2044.0 * jc.Cosine() + 1051.0 * ve;
-				qb = qb * 0.000001;
+				qb *= 0.000001;
 
 				return (qa, qb, qc, qd, qe, qf, qg);
 			}
@@ -3141,21 +3141,21 @@ public static class PAMacros
 			qc = qc.ToRadians();
 
 			vk = 0.120303 * vj + 0.006197 * uv;
-			vk = vk + (0.019472 - 0.000947 * j1) * uu;
+			vk += (0.019472 - 0.000947 * j1) * uu;
 			qe = qc - (vk.ToRadians() / planet.Value4);
 
 			qd = (163.0 * j1 - 3349.0) * vj + 20981.0 * uu + 1311.0 * uw;
-			qd = qd * 0.0000001;
+			qd *= 0.0000001;
 
 			qf = -0.003825 * uu;
 
 			qa = (-0.038581 + (0.002031 - 0.00191 * j1) * j1) * (j4 + jb).Cosine();
-			qa = qa + (0.010122 - 0.000988 * j1) * (j4 + jb).Sine();
+			qa += (0.010122 - 0.000988 * j1) * (j4 + jb).Sine();
 			double a = (0.034964 - (0.001038 - 0.000868 * j1) * j1) * (2.0 * j4 + jb).Cosine();
 			qa = a + qa + 0.005594 * (j4 + 3.0 * jc).Sine() - 0.014808 * ja.Sine();
 			qa = qa - 0.005794 * jb.Sine() + 0.002347 * jb.Cosine();
 			qa = qa + 0.009872 * jc.Sine() + 0.008803 * (2.0 * jc).Sine();
-			qa = qa - 0.004308 * (3.0 * jc).Sine();
+			qa -= 0.004308 * (3.0 * jc).Sine();
 
 			double ux = jb.Sine();
 			double uy = jb.Cosine();
@@ -3164,15 +3164,15 @@ public static class PAMacros
 			double vb = (2.0 * j4).Sine();
 			double vc = (2.0 * j4).Cosine();
 			qg = (0.000458 * ux - 0.000642 * uy - 0.000517 * (4.0 * jc).Cosine()) * uz;
-			qg = qg - (0.000347 * ux + 0.000853 * uy + 0.000517 * (4.0 * jb).Sine()) * va;
-			qg = qg + 0.000403 * ((2.0 * jc).Cosine() * vb + (2.0 * jc).Sine() * vc);
+			qg -= (0.000347 * ux + 0.000853 * uy + 0.000517 * (4.0 * jb).Sine()) * va;
+			qg += 0.000403 * ((2.0 * jc).Cosine() * vb + (2.0 * jc).Sine() * vc);
 			qg = qg.ToRadians();
 
 			qb = -25948.0 + 4985.0 * ja.Cosine() - 1230.0 * va + 3354.0 * uy;
 			qb = qb + 904.0 * (2.0 * jc).Cosine() + 894.0 * (jc.Cosine() - (3.0 * jc).Cosine());
-			qb = qb + (5795.0 * va - 1165.0 * uz + 1388.0 * vc) * ux;
-			qb = qb + (1351.0 * va + 5702.0 * uz + 1388.0 * vb) * uy;
-			qb = qb * 0.000001;
+			qb += (5795.0 * va - 1165.0 * uz + 1388.0 * vc) * ux;
+			qb += (1351.0 * va + 5702.0 * uz + 1388.0 * vb) * uy;
+			qb *= 0.000001;
 
 			return (qa, qb, qc, qd, qe, qf, qg);
 		}
@@ -3350,7 +3350,7 @@ public static class PAMacros
 		double c = (na + 275.05 - 2.3 * t).ToRadians();
 		double s4 = c.Sine();
 		ml = ml + 0.000233 * s1 + s3 + 0.001964 * s2;
-		ms = ms - 0.001778 * s1;
+		ms -= 0.001778 * s1;
 		md = md + 0.000817 * s1 + s3 + 0.002541 * s2;
 		mf = mf + s3 - 0.024691 * s2 - 0.004328 * s4;
 		me1 = me1 + 0.002011 * s1 + s3 + 0.001964 * s2;
@@ -3367,7 +3367,7 @@ public static class PAMacros
 		double l = 6.28875 * md.Sine() + 1.274018 * (2.0 * me1 - md).Sine();
 		l = l + 0.658309 * (2.0 * me1).Sine() + 0.213616 * (2.0 * md).Sine();
 		l = l - e * 0.185596 * ms.Sine() - 0.114336 * (2.0 * mf).Sine();
-		l = l + 0.058793 * (2.0 * (me1 - md)).Sine();
+		l += 0.058793 * (2.0 * (me1 - md)).Sine();
 		l = l + 0.057212 * e * (2.0 * me1 - ms - md).Sine() + 0.05332 * (2.0 * me1 + md).Sine();
 		l = l + 0.045874 * e * (2.0 * me1 - ms).Sine() + 0.041024 * e * (md - ms).Sine();
 		l = l - 0.034718 * me1.Sine() - e * 0.030465 * (ms + md).Sine();
@@ -3385,13 +3385,13 @@ public static class PAMacros
 		l = l - 0.001773 * (md + 2.0 * (me1 - mf)).Sine() - 0.001595 * (2.0 * (mf + me1)).Sine();
 		l = l + e * 0.00122 * (4.0 * me1 - ms - md).Sine() - 0.00111 * (2.0 * (md + mf)).Sine();
 		l = l + 0.000892 * (md - 3.0 * me1).Sine() - e * 0.000811 * (ms + md + 2.0 * me1).Sine();
-		l = l + e * 0.000761 * (4.0 * me1 - ms - 2.0 * md).Sine();
-		l = l + e2 * 0.000704 * (md - 2.0 * (ms + me1)).Sine();
-		l = l + e * 0.000693 * (ms - 2.0 * (md - me1)).Sine();
-		l = l + e * 0.000598 * (2.0 * (me1 - mf) - ms).Sine();
+		l += e * 0.000761 * (4.0 * me1 - ms - 2.0 * md).Sine();
+		l += e2 * 0.000704 * (md - 2.0 * (ms + me1)).Sine();
+		l += e * 0.000693 * (ms - 2.0 * (md - me1)).Sine();
+		l += e * 0.000598 * (2.0 * (me1 - mf) - ms).Sine();
 		l = l + 0.00055 * (md + 4.0 * me1).Sine() + 0.000538 * (4.0 * md).Sine();
 		l = l + e * 0.000521 * (4.0 * me1 - ms).Sine() + 0.000486 * (2.0 * md - me1).Sine();
-		l = l + e2 * 0.000717 * (md - 2.0 * ms).Sine();
+		l += e2 * 0.000717 * (md - 2.0 * ms).Sine();
 		double mm = Unwind(ml + l.ToRadians());
 
 		// Latitude-specific
@@ -3402,9 +3402,9 @@ public static class PAMacros
 		g = g + 0.009267 * (2.0 * me1 + md - mf).Sine() + 0.008823 * (2.0 * md - mf).Sine();
 		g = g + e * 0.008247 * (2.0 * me1 - ms - mf).Sine() + 0.004323 * (2.0 * (me1 - md) - mf).Sine();
 		g = g + 0.0042 * (2.0 * me1 + mf + md).Sine() + e * 0.003372 * (mf - ms - 2.0 * me1).Sine();
-		g = g + e * 0.002472 * (2.0 * me1 + mf - ms - md).Sine();
-		g = g + e * 0.002222 * (2.0 * me1 + mf - ms).Sine();
-		g = g + e * 0.002072 * (2.0 * me1 - mf - ms - md).Sine();
+		g += e * 0.002472 * (2.0 * me1 + mf - ms - md).Sine();
+		g += e * 0.002222 * (2.0 * me1 + mf - ms).Sine();
+		g += e * 0.002072 * (2.0 * me1 - mf - ms - md).Sine();
 		g = g + e * 0.001877 * (mf - ms + md).Sine() + 0.001828 * (4.0 * me1 - mf - md).Sine();
 		g = g - e * 0.001803 * (mf + ms).Sine() - 0.00175 * (3.0 * mf).Sine();
 		g = g + e * 0.00157 * (md - ms - mf).Sine() - 0.001487 * (mf + me1).Sine();
@@ -3413,12 +3413,12 @@ public static class PAMacros
 		g = g + 0.001106 * (mf + 3.0 * md).Sine() + 0.00102 * (4.0 * me1 - mf).Sine();
 		g = g + 0.000833 * (mf + 4.0 * me1 - md).Sine() + 0.000781 * (md - 3.0 * mf).Sine();
 		g = g + 0.00067 * (mf + 4.0 * me1 - 2.0 * md).Sine() + 0.000606 * (2.0 * me1 - 3.0 * mf).Sine();
-		g = g + 0.000597 * (2.0 * (me1 + md) - mf).Sine();
+		g += 0.000597 * (2.0 * (me1 + md) - mf).Sine();
 		g = g + e * 0.000492 * (2.0 * me1 + md - ms - mf).Sine() + 0.00045 * (2.0 * (md - me1) - mf).Sine();
 		g = g + 0.000439 * (3.0 * md - mf).Sine() + 0.000423 * (mf + 2.0 * (me1 + md)).Sine();
 		g = g + 0.000422 * (2.0 * me1 - mf - 3.0 * md).Sine() - e * 0.000367 * (ms + mf + 2.0 * me1 - md).Sine();
 		g = g - e * 0.000353 * (ms + mf + 2.0 * me1).Sine() + 0.000331 * (mf + 4.0 * me1).Sine();
-		g = g + e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
+		g += e * 0.000317 * (2.0 * me1 + mf - ms + md).Sine();
 		g = g + e2 * 0.000306 * (2.0 * (me1 - ms) - mf).Sine() - 0.000283 * (md + 3.0 * mf).Sine();
 		double w1 = 0.0004664 * na.Cosine();
 		double w2 = 0.0000754 * c.Cosine();
@@ -3428,7 +3428,7 @@ public static class PAMacros
 		double pm = 0.950724 + 0.051818 * md.Cosine() + 0.009531 * (2.0 * me1 - md).Cosine();
 		pm = pm + 0.007843 * (2.0 * me1).Cosine() + 0.002824 * (2.0 * md).Cosine();
 		pm = pm + 0.000857 * (2.0 * me1 + md).Cosine() + e * 0.000533 * (2.0 * me1 - ms).Cosine();
-		pm = pm + e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
+		pm += e * 0.000401 * (2.0 * me1 - md - ms).Cosine();
 		pm = pm + e * 0.00032 * (md - ms).Cosine() - 0.000271 * me1.Cosine();
 		pm = pm - e * 0.000264 * (ms + md).Cosine() - 0.000198 * (2.0 * mf - md).Cosine();
 		pm = pm + 0.000173 * (3.0 * md).Cosine() + 0.000167 * (4.0 * me1 - md).Cosine();
@@ -3440,7 +3440,7 @@ public static class PAMacros
 		pm = pm - 0.000033 * (3.0 * md - 2.0 * me1).Cosine() - 0.00003 * (md + me1).Cosine();
 		pm = pm - 0.000029 * (2.0 * (mf - me1)).Cosine() - e * 0.000029 * (2.0 * md + ms).Cosine();
 		pm = pm + e2 * 0.000026 * (2.0 * (me1 - ms)).Cosine() - 0.000023 * (2.0 * (mf - me1) + md).Cosine();
-		pm = pm + e * 0.000019 * (4.0 * me1 - ms - md).Cosine();
+		pm += e * 0.000019 * (4.0 * me1 - ms - md).Cosine();
 
 		double moonLongDeg = Degrees(mm);
 		double moonLatDeg = Degrees(bm);
@@ -3463,7 +3463,7 @@ public static class PAMacros
 		double d = cd.ACosine();
 		double sd = d.Sine();
 		double i = 0.1468 * sd * (1.0 - 0.0549 * MoonMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr).Sine());
-		i = i / (1.0 - 0.0167 * SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr).Sine());
+		i /= (1.0 - 0.0167 * SunMeanAnomaly(lh, lm, ls, ds, zc, dy, mn, yr).Sine());
 		i = 3.141592654 - d - i.ToRadians();
 		double k = (1.0 + i.Cosine()) / 2.0;
 
@@ -3547,7 +3547,7 @@ public static class PAMacros
 		double ni = nmfmResult1.a;
 		double nf = nmfmResult1.b;
 		t = tf;
-		k = k + 0.5;
+		k += 0.5;
 		(double a, double b, double f) nmfmResult2 = NewMoonFullMoon_L6855(k, t);
 
 		return ni + 2415020.0 + nf;
@@ -3578,7 +3578,7 @@ public static class PAMacros
 		double t = tn;
 		(double a, double b, double f) nmfnResult1 = NewMoonFullMoon_L6855(k, t);
 		t = tf;
-		k = k + 0.5;
+		k += 0.5;
 		(double a, double b, double f) nmfnResult2 = NewMoonFullMoon_L6855(k, t);
 		double fi = nmfnResult2.a;
 		double ff = nmfnResult2.b;
@@ -3600,7 +3600,7 @@ public static class PAMacros
 		double a = k / 12.36886;
 		double a1 = 359.2242 + 360.0 * Fract(a) - (0.0000333 + 0.00000347 * t) * t2;
 		double a2 = 306.0253 + 360.0 * Fract(k / 0.9330851);
-		a2 = a2 + (0.0107306 + 0.00001236 * t) * t2;
+		a2 += (0.0107306 + 0.00001236 * t) * t2;
 		a = k / 0.9214926;
 		double f = 21.2964 + 360.0 * Fract(a) - (0.0016528 + 0.00000239 * t) * t2;
 		a1 = UnwindDeg(a1);
@@ -3615,12 +3615,12 @@ public static class PAMacros
 		dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
 		dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
 		dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
-		dd = dd + 0.0005 * (a1 + 2.0 * a2).Sine();
+		dd += 0.0005 * (a1 + 2.0 * a2).Sine();
 		double e1 = e.Floor();
 		b = b + dd + (e - e1);
 		double b1 = b.Floor();
 		a = e1 + b1;
-		b = b - b1;
+		b -= b1;
 
 		return (a, b, f);
 	}
@@ -3784,7 +3784,7 @@ public static class PAMacros
 
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -3799,7 +3799,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -3809,7 +3809,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -3904,7 +3904,7 @@ public static class PAMacros
 
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		dy1 = UniversalTime_LocalCivilDay(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -3921,7 +3921,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -3931,7 +3931,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -4029,7 +4029,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4039,7 +4039,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -4127,7 +4127,7 @@ public static class PAMacros
 
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4142,7 +4142,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4152,7 +4152,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -4246,7 +4246,7 @@ public static class PAMacros
 
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		dy1 = UniversalTime_LocalCivilDay(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4263,7 +4263,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4273,7 +4273,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -4372,7 +4372,7 @@ public static class PAMacros
 	{
 		if (!EGstUt(x, 0.0, 0.0, gdy, gmn, gyr).Equals(PAWarningFlag.OK))
 			if (Math.Abs(g1 - ut) > 0.5)
-				ut = ut + 23.93447;
+				ut += 23.93447;
 
 		ut = UTDayAdjust(ut, g1);
 		double lct = UniversalTimeToLocalCivilTime(ut, 0.0, 0.0, ds, zc, gdy, gmn, gyr);
@@ -4382,7 +4382,7 @@ public static class PAMacros
 		gdy = LocalCivilTimeGreenwichDay(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gmn = LocalCivilTimeGreenwichMonth(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
 		gyr = LocalCivilTimeGreenwichYear(lct, 0.0, 0.0, ds, zc, dy1, mn1, yr1);
-		ut = ut - 24.0 * (ut / 24.0).Floor();
+		ut -= 24.0 * (ut / 24.0).Floor();
 
 		return (ut, lct, dy1, mn1, yr1, gdy, gmn, gyr);
 	}
@@ -4427,7 +4427,7 @@ public static class PAMacros
 		double t = tn;
 		(double f, double dd, double e1, double b1, double a, double b) l6855result1 = LunarEclipseOccurrence_L6855(t, k);
 		t = tf;
-		k = k + 0.5;
+		k += 0.5;
 		(double f, double dd, double e1, double b1, double a, double b) l6855result2 = LunarEclipseOccurrence_L6855(t, k);
 		double fb = l6855result2.f;
 
@@ -4462,7 +4462,7 @@ public static class PAMacros
 		double a = k / 12.36886;
 		double a1 = 359.2242 + 360.0 * FPart(a) - (0.0000333 + 0.00000347 * t) * t2;
 		double a2 = 306.0253 + 360.0 * FPart(k / 0.9330851);
-		a2 = a2 + (0.0107306 + 0.00001236 * t) * t2;
+		a2 += (0.0107306 + 0.00001236 * t) * t2;
 		a = k / 0.9214926;
 		double f = 21.2964 + 360.0 * FPart(a) - (0.0016528 + 0.00000239 * t) * t2;
 		a1 = UnwindDeg(a1);
@@ -4477,12 +4477,12 @@ public static class PAMacros
 		dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
 		dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
 		dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
-		dd = dd + 0.0005 * (a1 + 2.0 * a2).Sine();
+		dd += 0.0005 * (a1 + 2.0 * a2).Sine();
 		double e1 = e.Floor();
 		b = b + dd + (e - e1);
 		double b1 = b.Floor();
 		a = e1 + b1;
-		b = b - b1;
+		b -= b1;
 
 		return (f, dd, e1, b1, a, b);
 	}
@@ -4519,14 +4519,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4534,10 +4534,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -4593,14 +4593,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4608,10 +4608,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -4636,7 +4636,7 @@ public static class PAMacros
 		double z6 = z1 - zd;
 
 		if (z6 < 0.0)
-			z6 = z6 + 24.0;
+			z6 += 24.0;
 
 		return z6;
 	}
@@ -4673,14 +4673,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4688,10 +4688,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -4750,14 +4750,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4765,10 +4765,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -4805,7 +4805,7 @@ public static class PAMacros
 		double z8 = z1 - zd;
 
 		if (z8 < 0.0)
-			z8 = z8 + 24.0;
+			z8 += 24.0;
 
 		return z8;
 	}
@@ -4842,14 +4842,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4857,10 +4857,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -4931,14 +4931,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -4946,10 +4946,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5033,14 +5033,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -5048,10 +5048,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5132,14 +5132,14 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utfm;
 		double x0 = xh + 1.0 - (2.0 * bz / (bz - by));
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double q = 0.0;
@@ -5147,10 +5147,10 @@ public static class PAMacros
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		sr = sr + Math.PI - Lint((sr + Math.PI) / tp) * tp;
-		by = by - q;
-		bz = bz - q;
+		by -= q;
+		bz -= q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5217,7 +5217,7 @@ public static class PAMacros
 		(double f, double dd, double e1, double b1, double a, double b) l6855result1 = SolarEclipseOccurrence_L6855(t, k);
 		double nb = l6855result1.f;
 		t = tf;
-		k = k + 0.5;
+		k += 0.5;
 		(double f, double dd, double e1, double b1, double a, double b) l6855result2 = SolarEclipseOccurrence_L6855(t, k);
 
 		double df = Math.Abs(nb - 3.141592654 * Lint(nb / 3.141592654));
@@ -5250,7 +5250,7 @@ public static class PAMacros
 		double a = k / 12.36886;
 		double a1 = 359.2242 + 360.0 * FPart(a) - (0.0000333 + 0.00000347 * t) * t2;
 		double a2 = 306.0253 + 360.0 * FPart(k / 0.9330851);
-		a2 = a2 + (0.0107306 + 0.00001236 * t) * t2;
+		a2 += (0.0107306 + 0.00001236 * t) * t2;
 		a = k / 0.9214926;
 		double f = 21.2964 + 360.0 * FPart(a) - (0.0016528 + 0.00000239 * t) * t2;
 		a1 = UnwindDeg(a1);
@@ -5265,12 +5265,12 @@ public static class PAMacros
 		dd = dd + 0.0104 * (2.0 * f).Sine() - 0.0051 * (a1 + a2).Sine();
 		dd = dd - 0.0074 * (a1 - a2).Sine() + 0.0004 * (2.0 * f + a1).Sine();
 		dd = dd - 0.0004 * (2.0 * f - a1).Sine() - 0.0006 * (2.0 * f + a2).Sine() + 0.001 * (2.0 * f - a2).Sine();
-		dd = dd + 0.0005 * (a1 + 2.0 * a2).Sine();
+		dd += 0.0005 * (a1 + 2.0 * a2).Sine();
 		double e1 = e.Floor();
 		b = b + dd + (e - e1);
 		double b1 = b.Floor();
 		a = e1 + b1;
-		b = b - b1;
+		b -= b1;
 
 		return (f, dd, e1, b1, a, b);
 	}
@@ -5307,7 +5307,7 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utnm;
 		double x = my;
@@ -5329,14 +5329,14 @@ public static class PAMacros
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
 		tm = ut;
@@ -5344,8 +5344,8 @@ public static class PAMacros
 		(double paa, double qaa, double xaa, double pbb, double qbb, double xbb, double p, double q) l7390result3 = UTMaxSolarEclipse_L7390(x, y, igday, gmonth, gyear, tm, glong, glat, hp);
 		// let(_paa, _qaa, _xaa, _pbb, _qbb, _xbb, p, q) =
 		sr = l7390result3.p;
-		by = by - l7390result3.q;
-		bz = bz - l7390result3.q;
+		by -= l7390result3.q;
+		bz -= l7390result3.q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5422,7 +5422,7 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utnm;
 		double x = my;
@@ -5444,22 +5444,22 @@ public static class PAMacros
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
 		tm = ut;
 		hp = 0.00004263452 / rr;
 		(double paa, double qaa, double xaa, double pbb, double qbb, double xbb, double p, double q) l7390result3 = UTFirstContactSolarEclipse_L7390(x, y, igday, gmonth, gyear, tm, glong, glat, hp);
 		sr = l7390result3.p;
-		by = by - l7390result3.q;
-		bz = bz - l7390result3.q;
+		by -= l7390result3.q;
+		bz -= l7390result3.q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5486,7 +5486,7 @@ public static class PAMacros
 		double z6 = z1 - zd;
 
 		if (z6 < 0.0)
-			z6 = z6 + 24.0;
+			z6 += 24.0;
 
 		return z6;
 	}
@@ -5540,7 +5540,7 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utnm;
 		double x = my;
@@ -5562,22 +5562,22 @@ public static class PAMacros
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
 		tm = ut;
 		hp = 0.00004263452 / rr;
 		(double paa, double qaa, double xaa, double pbb, double qbb, double xbb, double p, double q) l7390result3 = UTLastContactSolarEclipse_L7390(x, y, igday, gmonth, gyear, tm, glong, glat, hp);
 		sr = l7390result3.p;
-		by = by - l7390result3.q;
-		bz = bz - l7390result3.q;
+		by -= l7390result3.q;
+		bz -= l7390result3.q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
@@ -5655,7 +5655,7 @@ public static class PAMacros
 		double hz = MoonHP(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
 
 		if (sb < 0.0)
-			sb = sb + tp;
+			sb += tp;
 
 		double xh = utnm;
 		double x = my;
@@ -5677,22 +5677,22 @@ public static class PAMacros
 		double dm = mz - my;
 
 		if (dm < 0.0)
-			dm = dm + tp;
+			dm += tp;
 
 		double lj = (dm - sb) / 2.0;
 		double mr = my + (dm * (x0 - xh + 1.0) / 2.0);
 		ut = x0 - 0.13851852;
 		double rr = SunDist(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear);
 		double sr = SunLong(ut, 0.0, 0.0, 0, 0, igday, gmonth, gyear).ToRadians();
-		sr = sr + (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
+		sr += (NutatLong(igday, gmonth, gyear) - 0.00569).ToRadians();
 		x = sr;
 		y = 0.0;
 		tm = ut;
 		hp = 0.00004263452 / rr;
 		(double paa, double qaa, double xaa, double pbb, double qbb, double xbb, double p, double q) l7390result3 = MagSolarEclipse_L7390(x, y, igday, gmonth, gyear, tm, glong, glat, hp);
 		sr = l7390result3.p;
-		by = by - l7390result3.q;
-		bz = bz - l7390result3.q;
+		by -= l7390result3.q;
+		bz -= l7390result3.q;
 		double p3 = 0.00004263;
 		double zh = (sr - mr) / lj;
 		double tc = x0 + zh;
