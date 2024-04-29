@@ -4,11 +4,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageId>PracticalAstronomyDotNet</PackageId>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Authors>Jim Carr</Authors>
 		<Title>Algorithms from "Practical Astronomy with your Calculator or Spreadsheet"</Title>
 		<Description>
-			This library contains an implementation of the algorithms from the "Practical Astronomy with your Calculator or Spreadsheet" book, authored by Peter Duffet-Smith and Jonathan Zwart.
+			This library contains an implementation of the algorithms from the "Practical Astronomy
+			with your Calculator or Spreadsheet" book, authored by Peter Duffet-Smith and Jonathan
+			Zwart.
 		</Description>
 		<RepositoryUrl>https://github.com/jfcarr-practical-astronomy/practical-astronomy-dotnet</RepositoryUrl>
 	</PropertyGroup>
