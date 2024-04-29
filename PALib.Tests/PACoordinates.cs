@@ -99,7 +99,7 @@ public class PACoordinates_Tests
 	[Fact]
 	public void NutationInEclipticLongitudeAndObliquity()
 	{
-		var result = _paCoordinates.NutationInEclipticLongitudeAndObliquity(1, 9, 1988);
+		(double nutInLongDeg, double nutInOblDeg) result = _paCoordinates.NutationInEclipticLongitudeAndObliquity(1, 9, 1988);
 
 		Assert.Equal((0.001525808, 0.0025671), (Math.Round(result.nutInLongDeg, 9), Math.Round(result.nutInOblDeg, 7)));
 	}
@@ -119,7 +119,7 @@ public class PACoordinates_Tests
 	[Fact]
 	public void CorrectionsForGeocentricParallax()
 	{
-		var result = _paCoordinates.CorrectionsForGeocentricParallax(22, 35, 19, -7, 41, 13, PACoordinateType.True, 1.019167, -100, 50, 60, 0, -6, 26, 2, 1979, 10, 45, 0);
+		(double correctedRAHour, double correctedRAMin, double correctedRASec, double correctedDecDeg, double correctedDecMin, double correctedDecSec) result = _paCoordinates.CorrectionsForGeocentricParallax(22, 35, 19, -7, 41, 13, PACoordinateType.True, 1.019167, -100, 50, 60, 0, -6, 26, 2, 1979, 10, 45, 0);
 
 		Assert.Equal((22, 36, 43.22, -8, 32, 17.4), result);
 	}

@@ -264,7 +264,7 @@ public static class CometInfoElliptical
 	/// </summary>
 	public static CometDataElliptical GetCometEllipticalInfo(string name)
 	{
-		var returnValue = _cometDataElliptical
+		CometDataElliptical returnValue = _cometDataElliptical
 			.Where(x => x.Name == name)
 			.Select(x => x)
 			.FirstOrDefault();
@@ -301,7 +301,7 @@ public static class CometInfoParabolic
 	/// </summary>
 	public static CometDataParabolic GetCometParabolicInfo(string name)
 	{
-		var returnValue = _cometDataParabolic
+		CometDataParabolic returnValue = _cometDataParabolic
 			.Where(x => x.Name == name)
 			.Select(x => x)
 			.FirstOrDefault();
